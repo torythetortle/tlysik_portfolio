@@ -1,158 +1,50 @@
-<script lang="ts">
-	import type { PageData } from './$types';
-	
-	export let data: PageData;
-</script>
-
 <svelte:head>
-	<title>Tory Lysik</title>
+	<title>Tory Lysik - Data Journalist</title>
+	<meta
+		name="description"
+		content="Portfolio of Tory Lysik. Data journalist specializing in investigations, computational journalism, and visual storytelling."
+	/>
 </svelte:head>
 
-<div class="container">
-	<header>
-		<h1 class="name">Tory Lysik</h1>
-		<p class="bio">
-			I am a journalist and AI researcher who tells stories with data and graphics.
-		</p>
-	</header>
-
-	<main>
-		<div class="projects-grid">
-			{#each data.projects as project}
-				<a href="/work/{project.slug}" class="project-card">
-					<div class="project-image">
-						<img src={project.thumbnail} alt={project.title} />
-					</div>
-					<div class="project-info">
-						<h3 class="project-outlet">{project.outlet}</h3>
-						<h2 class="project-title">{project.title}</h2>
-						<p class="project-description">{project.description}</p>
-					</div>
-				</a>
-			{/each}
+<div class="page">
+	<div class="container">
+		<div class="bio">
+			<p>
+				I'm a data journalist, researcher, and web developer based in New York City. I'm currently a Reporter at the Tow Center for Digital Journalism. I'm passionate about using data and graphics to uncover the stories that impact lives and build a better world. I love actually talking to real human beings, making order from chaos, and figuring out seemingly unsolvable problems. I also care deeply about accessibility — taking insanely complex topics and critical information and making it clear and understandable for everyone.
+			</p>
+			<p>
+				My career has sometimes followed a bit of a zigzag path, but I've worked at outlets including <a href="https://www.axios.com/results?q=tory%20lysik&sort=2" target="_blank" rel="noopener noreferrer">Axios</a>, <a href="https://www.vox.com/" target="_blank" rel="noopener noreferrer">Vox</a>, <a href="https://www.themarshallproject.org/" target="_blank" rel="noopener noreferrer">The Marshall Project</a>, the <a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Associated Press</a>, and others. My work spans from producing interactive data visualizations to writing compelling data-driven articles on topics including AI-generated falsifications and misinformation, U.S. weapons sales, and law enforcement staffing trends. The work I've been a part of has received numerous awards, including a <a href="https://www.axios.com/local/denver/2024/02/09/emergency-overdose-calls-deaths-rise-fentanyl-polis" target="_blank" rel="noopener noreferrer">data-driven deep dive into how Colorado's fentanyl laws increased overdose deaths</a> due to fears of prison time for calling 911, and an <a href="https://www.axios.com/us-immigration-cities-travel-itinerary" target="_blank" rel="noopener noreferrer">interactive story on the history of small towns and how you can take an international trip without leaving your state</a>.
+			</p>
+			<p>
+				I love what I do. Whether it's diving down rabbit holes in legal documents, filing the perfect FOIA request, or building detailed maps to surface human rights issues, I thrive in the meticulous, detail-heavy work that makes complex stories click — on tight deadlines or over months.
+			</p>
+			<p>
+				In my free time, I'm usually escaping the concrete jungle of NYC for the mountains or trying to become fluent in a fifth language.
+			</p>
 		</div>
-	</main>
+	</div>
 </div>
 
 <style>
-	:global(body) {
-		margin: 0;
-		padding: 0;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-		background: #fff;
-		color: #1a1a1a;
-		line-height: 1.6;
-	}
-
-	.container {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 60px 24px;
-	}
-
-	header {
-		margin-bottom: 80px;
-	}
-
-	.name {
-		font-size: 2.5rem;
-		font-weight: 700;
-		margin: 0 0 16px 0;
-		letter-spacing: -0.02em;
+	.page {
+		padding-top: var(--space-lg);
 	}
 
 	.bio {
-		font-size: 1.125rem;
-		color: #666;
-		max-width: 600px;
-		margin: 0;
-		line-height: 1.7;
+		max-width: none;
 	}
 
-	.projects-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-		gap: 48px 32px;
+	.bio p {
+		font-size: 1.0625rem;
+		line-height: 1.8;
+		color: var(--color-text);
 	}
 
-	.project-card {
-		text-decoration: none;
-		color: inherit;
-		display: block;
-		transition: transform 0.2s ease;
+	.bio p:last-child {
+		margin-bottom: 0;
 	}
 
-	.project-card:hover {
-		transform: translateY(-4px);
-	}
-
-	.project-card:hover .project-image img {
-		transform: scale(1.05);
-	}
-
-	.project-image {
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		background: #f5f5f5;
-		border-radius: 8px;
-		overflow: hidden;
-		margin-bottom: 16px;
-	}
-
-	.project-image img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transition: transform 0.3s ease;
-	}
-
-	.project-info {
-		padding: 0 4px;
-	}
-
-	.project-outlet {
-		font-size: 0.875rem;
+	.bio a {
 		font-weight: 600;
-		color: #666;
-		margin: 0 0 4px 0;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.project-title {
-		font-size: 1.25rem;
-		font-weight: 700;
-		margin: 0 0 8px 0;
-		line-height: 1.3;
-	}
-
-	.project-description {
-		font-size: 0.9375rem;
-		color: #666;
-		margin: 0;
-		line-height: 1.5;
-	}
-
-	@media (max-width: 768px) {
-		.container {
-			padding: 40px 20px;
-		}
-
-		header {
-			margin-bottom: 50px;
-		}
-
-		.name {
-			font-size: 2rem;
-		}
-
-		.bio {
-			font-size: 1rem;
-		}
-
-		.projects-grid {
-			grid-template-columns: 1fr;
-			gap: 40px;
-		}
 	}
 </style>

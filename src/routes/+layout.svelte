@@ -1,11 +1,27 @@
-<script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
+<script>
+	import '../app.css';
+	import Navigation from '$lib/components/Navigation.svelte';
+	import Footer from '$lib/components/Footer.svelte';
+	import HexagonBackground from '$lib/components/HexagonBackground.svelte';
 
 	let { children } = $props();
 </script>
 
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
+<HexagonBackground />
+<div class="content-wrapper">
+	<Navigation />
+	<main>
+		{@render children()}
+	</main>
+	<Footer />
+</div>
 
-{@render children?.()}
+<style>
+	.content-wrapper {
+		position: relative;
+		z-index: 1;
+	}
+	main {
+		min-height: 0;
+	}
+</style>

@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+:root {
+	--color-bg: #0d0d0f;
+	--color-bg-subtle: #131316;
+	--color-text: #f0f0f0;
+	--color-text-muted: #cccccc;
+	--color-text-bright: #ffffff;
+	--color-border: #2a2a2e;
+	--color-accent: #c4a8e0;
+	--color-accent-hover: #d4bee8;
+
+	--font-mono: 'IBM Plex Mono', monospace;
+	--font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+	--space-xs: 0.5rem;
+	--space-sm: 1rem;
+	--space-md: 1.5rem;
+	--space-lg: 2rem;
+	--space-xl: 3rem;
+	--space-2xl: 5rem;
+
+	--max-width: 900px;
+	--transition-base: 0.2s ease;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+	background: var(--color-bg);
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-body);
+	background: transparent;
+	color: var(--color-text);
+	line-height: 1.7;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-mono);
+	font-weight: 700;
+	line-height: 1.3;
+	margin-top: 0;
+	color: var(--color-text-bright);
+}
+
+p {
+	margin-top: 0;
+	margin-bottom: 1rem;
+}
+
+a {
+	color: var(--color-accent);
+	text-decoration: none;
+	transition: color var(--transition-base);
+}
+
+a:hover {
+	color: var(--color-accent-hover);
+}
+
+a:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+::selection {
+	background: var(--color-accent);
+	color: var(--color-bg);
+}
+
+.container {
+	max-width: var(--max-width);
+	margin: 0;
+	padding: 0 var(--space-xl);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	*, *::before, *::after {
+		animation-duration: 0.01ms !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+@media (max-width: 768px) {
+	.container {
+		padding: 0 var(--space-md);
+	}
+}
