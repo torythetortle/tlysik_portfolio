@@ -73,22 +73,83 @@
 		<section class="resume-section">
 			<h2>Awards</h2>
 			<div class="entries">
-				<div class="entry-simple"><strong>Information is Beautiful:</strong> 2023 Finalist — "No Passport No Problem" — Axios</div>
-				<div class="entry-simple"><strong>Colorado Press Association:</strong> Best Infographics & Best Newsletter of 2023 — Axios; Best Editorial Collaboration of 2022 — "The Central 70 Project" — The Denver Gazette</div>
-				<div class="entry-simple"><strong>Society of Professional Journalists:</strong> Best Online News Reporting winner, 2019 and 2020</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">Information is Beautiful</span>
+						<span class="title">2023 Finalist — "No Passport No Problem" — Axios</span>
+					</div>
+					<span class="date">2023</span>
+				</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">Colorado Press Association</span>
+						<span class="title">Best Infographics & Best Newsletter of 2023 — Axios</span>
+						<span class="title">Best Editorial Collaboration of 2022 — "The Central 70 Project" — The Denver Gazette</span>
+					</div>
+					<span class="date">2022–2023</span>
+				</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">Society of Professional Journalists</span>
+						<span class="title">Best Online News Reporting winner</span>
+					</div>
+					<span class="date">2019–2020</span>
+				</div>
 			</div>
 		</section>
 
 		<section class="resume-section">
 			<h2>Speaking & Engagement</h2>
 			<div class="entries">
-				<div class="entry-simple"><strong>Data Visualization Society:</strong> Mentor, 2023–Present</div>
-				<div class="entry-simple"><strong>Columbia Journalism School:</strong> Asst. Professor, Mapping and Data Visualization course, 2025</div>
-				<div class="entry-simple"><strong>NICAR 2025, 2026:</strong> Multiple talks including making your first SvelteKit and web scraping with AI</div>
-				<div class="entry-simple"><strong>C+J 2025:</strong> Scraper Factories — Using AI to write fleets of unique scrapers at once</div>
-				<div class="entry-simple"><strong>Al Nakkula Award for Police Reporting:</strong> Judge, 2023–2024</div>
-				<div class="entry-simple"><strong>Information is Beautiful Awards:</strong> Judge, 2024–2025</div>
-				<div class="entry-simple"><strong>Slate Money Podcast:</strong> Multiple appearances, 2023–2025</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">Data Visualization Society</span>
+						<span class="title">Mentor</span>
+					</div>
+					<span class="date">2023–Present</span>
+				</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">Columbia Journalism School</span>
+						<span class="title">Asst. Professor, Mapping and Data Visualization course</span>
+					</div>
+					<span class="date">2025</span>
+				</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">NICAR</span>
+						<span class="title">Multiple talks including making your first SvelteKit and web scraping with AI</span>
+					</div>
+					<span class="date">2025–2026</span>
+				</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">C+J 2025 Conference</span>
+						<span class="title">Scraper Factories: Using AI to write fleets of unique scrapers at once</span>
+					</div>
+					<span class="date">2025</span>
+				</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">Al Nakkula Award for Police Reporting</span>
+						<span class="title">Judge</span>
+					</div>
+					<span class="date">2023–2024</span>
+				</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">Information is Beautiful Awards</span>
+						<span class="title">Judge</span>
+					</div>
+					<span class="date">2024–2025</span>
+				</div>
+				<div class="entry">
+					<div class="entry-left">
+						<span class="org">Slate Money Podcast</span>
+						<span class="title">Multiple appearances for various topics</span>
+					</div>
+					<span class="date">2023–2025</span>
+				</div>
 			</div>
 		</section>
 
