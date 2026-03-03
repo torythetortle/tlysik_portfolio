@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { base } from '$app/paths';
 
 	const navLinks = [
 		{ name: 'Portfolio', url: '/portfolio' },
@@ -13,10 +12,10 @@
 <header class="header">
 	<div class="container">
 		<nav class="nav" aria-label="Main navigation">
-			<a href="{base}/" class="name">Tory Lysik</a>
+			<a href="/" class="name">Tory Lysik</a>
 			<div class="links">
 				{#each navLinks as link}
-					<a href="{base}{link.url}" class:active={page.url.pathname === link.url}>{link.name}</a>
+					<a href={link.url} class:active={page.url.pathname === link.url}>{link.name}</a>
 				{/each}
 			</div>
 		</nav>
