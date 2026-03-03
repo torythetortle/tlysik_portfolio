@@ -16,6 +16,21 @@ export interface Project {
 
 export const projects: Project[] = [
 	{
+		slug: 'annotation-highlight-tool',
+		outlet: 'Tow Center for Digital Journalism',
+		title: 'Annotation and highlighting tool',
+		description:
+			'Built a browser-based PDF annotation tool for internal use at the Tow Center. Used to cleanly show and systematically mark up multi-page text in any file format — color-coding and tagging headlines, fact-checking information, and linking quotes to sources. Built with React, pdf.js, and a custom SVG overlay system handling cross-page arrow routing and annotation merging. Used regularly to produce structured datasets and golden sets from hundreds of news articles for academic analysis.',
+		thumbnail: '/images/highlighttool.png',
+		link: '',
+		date: '2026-01-01',
+		tags: ['react', 'pdf.js', 'AI', 'javascript', 'Vite'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Research'
+	},
+	{
 		slug: 'super-bowl-asl',
 		outlet: 'Axios',
 		title: 'Super Bowl broadcasts have mixed history of screen time for sign language performers',
