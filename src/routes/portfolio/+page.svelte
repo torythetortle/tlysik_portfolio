@@ -54,12 +54,6 @@
 
 						<p class="project-description">{project.description}</p>
 
-						{#if project.collaborators.length > 0}
-							<p class="project-meta">
-								With {project.collaborators.join(', ')}
-							</p>
-						{/if}
-
 						{#if project.additionalLinks?.length}
 							<p class="project-meta project-links">
 								<a href={project.link} target="_blank" rel="noopener noreferrer">Part 1</a>
