@@ -38,7 +38,7 @@ export const projects: Project[] = [
 			'Led the creation and reporting of data graphics, visual explainers, and data analysis for the first and second editions of Use Case, an international crypto magazine. Emphasis on building stories accessible on print, web, and mobile.',
 		thumbnail: '/images/usecase.png',
 		link: 'https://www.usecase.xyz/',
-		date: '2025-11-01',
+		date: '2025-10-01',
 		tags: ['Adobe Illustrator', 'Photoshop', 'Procreate', 'data analysis', 'UI', 'print design', 'HTML'],
 		collaborators: [],
 		awards: '',
