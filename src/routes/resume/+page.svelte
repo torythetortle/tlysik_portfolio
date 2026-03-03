@@ -82,55 +82,13 @@
 		<section class="resume-section">
 			<h2>Speaking & Engagement</h2>
 			<div class="entries">
-				<div class="entry">
-					<div class="entry-left">
-						<span class="org">Data Visualization Society</span>
-						<span class="title">Mentor</span>
-					</div>
-					<span class="date">2023–Present</span>
-				</div>
-				<div class="entry">
-					<div class="entry-left">
-						<span class="org">Columbia Journalism School, Data Journalism Masters Program</span>
-						<span class="title">Asst. Professor, Mapping and Data Visualization course</span>
-					</div>
-					<span class="date">2025</span>
-				</div>
-				<div class="entry">
-					<div class="entry-left">
-						<span class="org">NICAR 2025, 2026</span>
-						<span class="title">Multiple talks including making your first SvelteKit and web scraping with AI</span>
-					</div>
-					<span class="date">2025–2026</span>
-				</div>
-				<div class="entry">
-					<div class="entry-left">
-						<span class="org">C+J 2025 Conference</span>
-						<span class="title">Scraper Factories: Using AI to write fleets of unique scrapers at once</span>
-					</div>
-					<span class="date">2025</span>
-				</div>
-				<div class="entry">
-					<div class="entry-left">
-						<span class="org">Al Nakkula Award for Police Reporting</span>
-						<span class="title">Judge</span>
-					</div>
-					<span class="date">2023–2024</span>
-				</div>
-				<div class="entry">
-					<div class="entry-left">
-						<span class="org">Information is Beautiful Awards</span>
-						<span class="title">Judge</span>
-					</div>
-					<span class="date">2024–2025</span>
-				</div>
-				<div class="entry">
-					<div class="entry-left">
-						<span class="org">Slate Money Podcast</span>
-						<span class="title">Multiple appearances for various topics</span>
-					</div>
-					<span class="date">2023–2025</span>
-				</div>
+				<div class="entry-simple">Data Visualization Society: Mentor, 2023–Present</div>
+				<div class="entry-simple">Columbia Journalism School: Asst. Professor, Mapping and Data Visualization course, 2025</div>
+				<div class="entry-simple">NICAR 2025, 2026: Multiple talks including making your first SvelteKit and web scraping with AI</div>
+				<div class="entry-simple">C+J 2025: Scraper Factories — Using AI to write fleets of unique scrapers at once</div>
+				<div class="entry-simple">Al Nakkula Award for Police Reporting: Judge, 2023–2024</div>
+				<div class="entry-simple">Information is Beautiful Awards: Judge, 2024–2025</div>
+				<div class="entry-simple">Slate Money Podcast: Multiple appearances, 2023–2025</div>
 			</div>
 		</section>
 
