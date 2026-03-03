@@ -43,8 +43,8 @@
 					rotationSpeed: (Math.random() - 0.5) * 0.001,
 					vx: (Math.random() - 0.5) * 0.1,
 					vy: (Math.random() - 0.5) * 0.1,
-					opacity: 0.07 + Math.random() * 0.05,
-					lineWidth: 0.75
+					opacity: 0.14 + Math.random() * 0.08,
+					lineWidth: 1
 				});
 			}
 
@@ -59,8 +59,8 @@
 					rotationSpeed: (Math.random() - 0.5) * 0.003,
 					vx: (Math.random() - 0.5) * 0.3,
 					vy: (Math.random() - 0.5) * 0.3,
-					opacity: 0.08 + Math.random() * 0.07,
-					lineWidth: 1
+					opacity: 0.15 + Math.random() * 0.1,
+					lineWidth: 1.25
 				});
 			}
 		}
