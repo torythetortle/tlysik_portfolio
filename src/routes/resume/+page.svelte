@@ -23,13 +23,16 @@
 					<div class="entry-left">
 						<span class="org">Freelancer</span>
 						<span class="title">Data and Graphics Journalist</span>
+						<span class="description">Pitched and reported stories for Cipher, Stacker, Business Insider, Use Case Magazine, Them</span>
+						<span class="description">Long-term contractor for The Marshall Project — Dagster ML pipelines, interactive graphics, Svelte stories, reporting for incarcerated survey projects</span>
+						<span class="description">Contract data analyst for the Associated Press' 2024 and 2025 election coverage</span>
 					</div>
 					<span class="date">Aug 2024–May 2025</span>
 				</div>
 				<div class="entry">
 					<div class="entry-left">
 						<span class="org">Axios</span>
-						<span class="title">Data Visualization Journalist</span>
+						<span class="title">Data Visualization Journalist (laid off in team-wide layoff)</span>
 					</div>
 					<span class="date">Aug 2022–Aug 2024</span>
 				</div>
@@ -42,7 +45,7 @@
 				</div>
 				<div class="entry">
 					<div class="entry-left">
-						<span class="org">D.C. Witness</span>
+						<span class="org">D.C. Witness + Poynter Institute</span>
 						<span class="title">Associate Editor, Data Reporter</span>
 					</div>
 					<span class="date">Apr 2021–May 2022</span>
@@ -66,6 +69,21 @@
 					</div>
 				</div>
 			</div>
+		</section>
+
+		<section class="resume-section">
+			<h2>Awards</h2>
+			<div class="entries">
+				<div class="entry-simple">Information is Beautiful: 2023 Finalist — "No Passport No Problem" — Axios</div>
+				<div class="entry-simple">Colorado Press Association: Best Infographics & Best Newsletter of 2023 — Axios; Best Editorial Collaboration of 2022 — "The Central 70 Project" — The Denver Gazette</div>
+				<div class="entry-simple">Society of Professional Journalists: Best Online News Reporting winner, 2019 and 2020</div>
+				<div class="entry-simple">Judge: 2023 Al Nakkula Award for Police Reporting; 2023 and 2024 Information is Beautiful Awards</div>
+			</div>
+		</section>
+
+		<section class="resume-section">
+			<h2>Professional Affiliations</h2>
+			<p class="affiliations">Data Visualization Society, Investigative Reporters and Editors, Online News Association, Society of Professional Journalists, Overseas Press Club, Society for News Design, The Association of LGBTQ+ Journalists, International Federation of Journalists, National Association of Hispanic Journalists, Association of Health Care Journalists, Society of Environmental Journalists</p>
 		</section>
 	</div>
 </div>
@@ -138,5 +156,27 @@
 		color: var(--color-muted);
 		white-space: nowrap;
 		flex-shrink: 0;
+	}
+
+	.description {
+		font-family: var(--font-sans);
+		font-size: 0.8rem;
+		color: var(--color-muted);
+		line-height: 1.5;
+	}
+
+	.entry-simple {
+		font-family: var(--font-sans);
+		font-size: 0.85rem;
+		color: var(--color-text);
+		line-height: 1.6;
+	}
+
+	.affiliations {
+		font-family: var(--font-sans);
+		font-size: 0.85rem;
+		color: var(--color-text);
+		line-height: 1.6;
+		margin: 0;
 	}
 </style>
