@@ -36,7 +36,7 @@ export const projects: Project[] = [
 		title: 'Crypto magazine data analysis and visualizations',
 		description:
 			'Led the creation and reporting of data graphics, visual explainers, and data analysis for the first and second editions of Use Case, an international crypto magazine. Emphasis on building stories accessible on print, web, and mobile.',
-		thumbnail: '',
+		thumbnail: '/images/usecase.png',
 		link: 'https://www.usecase.xyz/',
 		date: '2025-11-01',
 		tags: ['Adobe Illustrator', 'Photoshop', 'Procreate', 'data analysis', 'UI', 'print design', 'HTML'],
