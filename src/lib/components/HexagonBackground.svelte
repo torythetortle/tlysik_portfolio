@@ -13,6 +13,7 @@
 		vy: number;
 		opacity: number;
 		lineWidth: number;
+		filled: boolean;
 	}
 
 	onMount(() => {
@@ -44,7 +45,8 @@
 					vx: (Math.random() - 0.5) * 0.1,
 					vy: (Math.random() - 0.5) * 0.1,
 					opacity: 0.14 + Math.random() * 0.08,
-					lineWidth: 1
+					lineWidth: 1,
+					filled: Math.random() < 0.25
 				});
 			}
 
@@ -60,7 +62,8 @@
 					vx: (Math.random() - 0.5) * 0.3,
 					vy: (Math.random() - 0.5) * 0.3,
 					opacity: 0.15 + Math.random() * 0.1,
-					lineWidth: 1.25
+					lineWidth: 1.25,
+					filled: Math.random() < 0.3
 				});
 			}
 		}
@@ -78,6 +81,10 @@
 				else ctx.lineTo(px, py);
 			}
 			ctx.closePath();
+			if (hex.filled) {
+				ctx.fillStyle = `rgba(196, 168, 224, ${hex.opacity * 0.4})`;
+				ctx.fill();
+			}
 			ctx.strokeStyle = `rgba(196, 168, 224, ${hex.opacity})`;
 			ctx.lineWidth = hex.lineWidth;
 			ctx.stroke();
