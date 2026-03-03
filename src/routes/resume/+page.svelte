@@ -73,22 +73,22 @@
 		<section class="resume-section">
 			<h2>Awards</h2>
 			<div class="entries">
-				<div class="entry-simple">Information is Beautiful: 2023 Finalist — "No Passport No Problem" — Axios</div>
-				<div class="entry-simple">Colorado Press Association: Best Infographics & Best Newsletter of 2023 — Axios; Best Editorial Collaboration of 2022 — "The Central 70 Project" — The Denver Gazette</div>
-				<div class="entry-simple">Society of Professional Journalists: Best Online News Reporting winner, 2019 and 2020</div>
+				<div class="entry-simple"><strong>Information is Beautiful:</strong> 2023 Finalist — "No Passport No Problem" — Axios</div>
+				<div class="entry-simple"><strong>Colorado Press Association:</strong> Best Infographics & Best Newsletter of 2023 — Axios; Best Editorial Collaboration of 2022 — "The Central 70 Project" — The Denver Gazette</div>
+				<div class="entry-simple"><strong>Society of Professional Journalists:</strong> Best Online News Reporting winner, 2019 and 2020</div>
 			</div>
 		</section>
 
 		<section class="resume-section">
 			<h2>Speaking & Engagement</h2>
 			<div class="entries">
-				<div class="entry-simple">Data Visualization Society: Mentor, 2023–Present</div>
-				<div class="entry-simple">Columbia Journalism School: Asst. Professor, Mapping and Data Visualization course, 2025</div>
-				<div class="entry-simple">NICAR 2025, 2026: Multiple talks including making your first SvelteKit and web scraping with AI</div>
-				<div class="entry-simple">C+J 2025: Scraper Factories — Using AI to write fleets of unique scrapers at once</div>
-				<div class="entry-simple">Al Nakkula Award for Police Reporting: Judge, 2023–2024</div>
-				<div class="entry-simple">Information is Beautiful Awards: Judge, 2024–2025</div>
-				<div class="entry-simple">Slate Money Podcast: Multiple appearances, 2023–2025</div>
+				<div class="entry-simple"><strong>Data Visualization Society:</strong> Mentor, 2023–Present</div>
+				<div class="entry-simple"><strong>Columbia Journalism School:</strong> Asst. Professor, Mapping and Data Visualization course, 2025</div>
+				<div class="entry-simple"><strong>NICAR 2025, 2026:</strong> Multiple talks including making your first SvelteKit and web scraping with AI</div>
+				<div class="entry-simple"><strong>C+J 2025:</strong> Scraper Factories — Using AI to write fleets of unique scrapers at once</div>
+				<div class="entry-simple"><strong>Al Nakkula Award for Police Reporting:</strong> Judge, 2023–2024</div>
+				<div class="entry-simple"><strong>Information is Beautiful Awards:</strong> Judge, 2024–2025</div>
+				<div class="entry-simple"><strong>Slate Money Podcast:</strong> Multiple appearances, 2023–2025</div>
 			</div>
 		</section>
 
@@ -123,10 +123,10 @@
 
 	h2 {
 		font-family: var(--font-mono);
-		font-size: 0.75rem;
+		font-size: 0.9375rem;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
-		color: var(--color-muted);
+		color: var(--color-text);
 		margin-bottom: var(--space-md);
 	}
 
