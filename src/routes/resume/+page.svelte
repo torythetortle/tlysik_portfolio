@@ -21,11 +21,10 @@
 				</div>
 				<div class="entry">
 					<div class="entry-left">
-						<span class="org">Freelancer</span>
+						<span class="org">Freelance</span>
 						<span class="title">Data and Graphics Journalist</span>
-						<span class="description">Pitched and reported stories for Cipher, Stacker, Business Insider, Use Case Magazine, Them</span>
-						<span class="description">Long-term contractor for The Marshall Project — Dagster ML pipelines, interactive graphics, Svelte stories, reporting for incarcerated survey projects</span>
-						<span class="description">Contract data analyst for the Associated Press' 2024 and 2025 election coverage</span>
+						<span class="description">Pitched and reported stories for Cipher, Business Insider, Use Case Magazine, Them, AP, and others</span>
+						<span class="description">Long-term contractor for The Marshall Project — Dagster ML pipelines, interactive graphics, Svelte stories, source interviewing</span>
 					</div>
 					<span class="date">Aug 2024–May 2025</span>
 				</div>
