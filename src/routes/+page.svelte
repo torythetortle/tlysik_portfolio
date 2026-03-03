@@ -47,4 +47,11 @@
 	.bio a {
 		font-weight: 600;
 	}
+
+	@media (max-width: 480px) {
+		.bio p {
+			font-size: 1rem;
+			line-height: 1.7;
+		}
+	}
 </style>

@@ -178,4 +178,36 @@
 		line-height: 1.6;
 		margin: 0;
 	}
+
+	@media (max-width: 640px) {
+		.entry {
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+
+		.date {
+			white-space: normal;
+			font-size: 0.75rem;
+		}
+
+		.org {
+			font-size: 0.85rem;
+		}
+
+		.title {
+			font-size: 0.8rem;
+		}
+
+		.description {
+			font-size: 0.75rem;
+		}
+
+		.entry-simple {
+			font-size: 0.8rem;
+		}
+
+		.affiliations {
+			font-size: 0.8rem;
+		}
+	}
 </style>

@@ -195,5 +195,19 @@
 		.project-title {
 			font-size: 1rem;
 		}
+
+		.project-outlet {
+			font-size: 0.8rem;
+		}
+
+		.project-tags {
+			font-size: 0.75rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.grid {
+			gap: var(--space-lg);
+		}
 	}
 </style>

@@ -36,4 +36,15 @@
 	p a:hover {
 		color: var(--color-text-bright);
 	}
+
+	@media (max-width: 480px) {
+		.footer {
+			padding: var(--space-lg) 0 var(--space-md);
+			margin-top: var(--space-lg);
+		}
+
+		p {
+			font-size: 0.75rem;
+		}
+	}
 </style>

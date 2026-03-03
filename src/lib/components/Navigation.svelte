@@ -58,6 +58,7 @@
 	.links a {
 		color: var(--color-text-muted);
 		text-decoration: underline;
+		padding: 0.25rem 0;
 	}
 
 	.links a:hover {
@@ -70,13 +71,22 @@
 	}
 
 	@media (max-width: 480px) {
+		.header {
+			padding: var(--space-lg) 0 var(--space-sm);
+		}
+
 		.name {
-			font-size: 2rem;
+			font-size: 1.75rem;
 		}
 
 		.links {
-			gap: 1rem;
+			gap: 0.75rem;
 			flex-wrap: wrap;
+		}
+
+		.links a {
+			padding: 0.375rem 0;
+			font-size: 0.8125rem;
 		}
 	}
 </style>
