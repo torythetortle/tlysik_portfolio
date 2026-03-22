@@ -24,6 +24,18 @@
 		name="description"
 		content="Selected data journalism, investigations, and visual storytelling by Tory Lysik."
 	/>
+	<link rel="canonical" href="https://tlysik.com/portfolio" />
+
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://tlysik.com/portfolio" />
+	<meta property="og:title" content="Portfolio - Tory Lysik" />
+	<meta property="og:description" content="Selected data journalism, investigations, and visual storytelling by Tory Lysik." />
+	<meta property="og:image" content="https://tlysik.com/images/headshot.png" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Portfolio - Tory Lysik" />
+	<meta name="twitter:description" content="Selected data journalism, investigations, and visual storytelling by Tory Lysik." />
+	<meta name="twitter:image" content="https://tlysik.com/images/headshot.png" />
 </svelte:head>
 
 <div class="page">

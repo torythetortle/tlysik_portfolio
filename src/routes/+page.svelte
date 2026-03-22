@@ -1,9 +1,39 @@
 <svelte:head>
-	<title>Tory Lysik - Data Journalist</title>
+	<title>Tory Lysik - Journalist</title>
 	<meta
 		name="description"
 		content="Portfolio of Tory Lysik. Data journalist specializing in investigations, computational journalism, and visual storytelling."
 	/>
+	<link rel="canonical" href="https://tlysik.com/" />
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://tlysik.com/" />
+	<meta property="og:title" content="Tory Lysik - Journalist" />
+	<meta property="og:description" content="Data journalist specializing in investigations, computational journalism, and visual storytelling." />
+	<meta property="og:image" content="https://tlysik.com/images/headshot.png" />
+	<meta property="og:site_name" content="Tory Lysik" />
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Tory Lysik - Journalist" />
+	<meta name="twitter:description" content="Data journalist specializing in investigations, computational journalism, and visual storytelling." />
+	<meta name="twitter:image" content="https://tlysik.com/images/headshot.png" />
+
+	<!-- JSON-LD Structured Data -->
+	{@html `<script type="application/ld+json">${JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "Person",
+		"name": "Tory Lysik",
+		"url": "https://tlysik.com",
+		"jobTitle": "Data and Graphics Journalist",
+		"worksFor": { "@type": "Organization", "name": "Tow Center for Digital Journalism" },
+		"sameAs": [
+			"https://github.com/torythetortle"
+		],
+		"image": "https://tlysik.com/images/headshot.png",
+		"description": "Data journalist specializing in investigations, computational journalism, and visual storytelling."
+	})}</script>`}
 </svelte:head>
 
 <div class="page">

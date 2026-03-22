@@ -50,6 +50,18 @@
 		name="description"
 		content="Full portfolio of data journalism, investigations, visual storytelling, and research by Tory Lysik."
 	/>
+	<link rel="canonical" href="https://tlysik.com/work" />
+
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://tlysik.com/work" />
+	<meta property="og:title" content="Work - Tory Lysik" />
+	<meta property="og:description" content="Full portfolio of data journalism, investigations, visual storytelling, and research by Tory Lysik." />
+	<meta property="og:image" content="https://tlysik.com/images/headshot.png" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Work - Tory Lysik" />
+	<meta name="twitter:description" content="Full portfolio of data journalism, investigations, visual storytelling, and research by Tory Lysik." />
+	<meta name="twitter:image" content="https://tlysik.com/images/headshot.png" />
 </svelte:head>
 
 {#if !authenticated}
