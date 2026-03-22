@@ -56,12 +56,12 @@
 	<meta property="og:url" content="https://tlysik.com/work" />
 	<meta property="og:title" content="Work - Tory Lysik" />
 	<meta property="og:description" content="Full portfolio of data journalism, investigations, visual storytelling, and research by Tory Lysik." />
-	<meta property="og:image" content="https://tlysik.com/images/headshot.png" />
+	<meta property="og:image" content="https://tlysik.com/images/headshot.webp" />
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Work - Tory Lysik" />
 	<meta name="twitter:description" content="Full portfolio of data journalism, investigations, visual storytelling, and research by Tory Lysik." />
-	<meta name="twitter:image" content="https://tlysik.com/images/headshot.png" />
+	<meta name="twitter:image" content="https://tlysik.com/images/headshot.webp" />
 </svelte:head>
 
 {#if !authenticated}

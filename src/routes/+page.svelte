@@ -11,14 +11,14 @@
 	<meta property="og:url" content="https://tlysik.com/" />
 	<meta property="og:title" content="Tory Lysik - Journalist" />
 	<meta property="og:description" content="Data journalist specializing in investigations, computational journalism, and visual storytelling." />
-	<meta property="og:image" content="https://tlysik.com/images/headshot.png" />
+	<meta property="og:image" content="https://tlysik.com/images/headshot.webp" />
 	<meta property="og:site_name" content="Tory Lysik" />
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Tory Lysik - Journalist" />
 	<meta name="twitter:description" content="Data journalist specializing in investigations, computational journalism, and visual storytelling." />
-	<meta name="twitter:image" content="https://tlysik.com/images/headshot.png" />
+	<meta name="twitter:image" content="https://tlysik.com/images/headshot.webp" />
 
 	<!-- JSON-LD Structured Data -->
 	{@html `<script type="application/ld+json">${JSON.stringify({
@@ -31,7 +31,7 @@
 		"sameAs": [
 			"https://github.com/torythetortle"
 		],
-		"image": "https://tlysik.com/images/headshot.png",
+		"image": "https://tlysik.com/images/headshot.webp",
 		"description": "Data journalist specializing in investigations, computational journalism, and visual storytelling."
 	})}</script>`}
 </svelte:head>

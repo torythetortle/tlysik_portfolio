@@ -14,6 +14,24 @@
 		opacity: number;
 		lineWidth: number;
 		filled: boolean;
+		color: [number, number, number];
+	}
+
+	const hexColors: [number, number, number][] = [
+		[40, 120, 200],  // deep blue
+		[70, 190, 220],  // cyan
+		[110, 198, 200], // teal
+		[50, 200, 160],  // emerald
+		[80, 220, 120],  // bright green
+		[140, 230, 180], // mint
+		[30, 150, 180],  // ocean
+		[100, 160, 240], // cornflower
+		[60, 180, 140],  // jade
+		[90, 210, 210],  // aqua
+	];
+
+	function pickColor(): [number, number, number] {
+		return hexColors[Math.floor(Math.random() * hexColors.length)];
 	}
 
 	onMount(() => {
@@ -46,7 +64,8 @@
 					vy: (Math.random() - 0.5) * 0.1,
 					opacity: 0.14 + Math.random() * 0.08,
 					lineWidth: 1,
-					filled: Math.random() < 0.25
+					filled: Math.random() < 0.25,
+					color: pickColor()
 				});
 			}
 
@@ -63,7 +82,8 @@
 					vy: (Math.random() - 0.5) * 0.3,
 					opacity: 0.15 + Math.random() * 0.1,
 					lineWidth: 1.25,
-					filled: Math.random() < 0.3
+					filled: Math.random() < 0.3,
+					color: pickColor()
 				});
 			}
 		}
@@ -82,10 +102,10 @@
 			}
 			ctx.closePath();
 			if (hex.filled) {
-				ctx.fillStyle = `rgba(196, 168, 224, ${hex.opacity * 0.4})`;
+				ctx.fillStyle = `rgba(${hex.color[0]}, ${hex.color[1]}, ${hex.color[2]}, ${hex.opacity * 0.4})`;
 				ctx.fill();
 			}
-			ctx.strokeStyle = `rgba(196, 168, 224, ${hex.opacity})`;
+			ctx.strokeStyle = `rgba(${hex.color[0]}, ${hex.color[1]}, ${hex.color[2]}, ${hex.opacity})`;
 			ctx.lineWidth = hex.lineWidth;
 			ctx.stroke();
 			ctx.restore();

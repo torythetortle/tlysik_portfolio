@@ -30,12 +30,12 @@
 	<meta property="og:url" content="https://tlysik.com/portfolio" />
 	<meta property="og:title" content="Portfolio - Tory Lysik" />
 	<meta property="og:description" content="Selected data journalism, investigations, and visual storytelling by Tory Lysik." />
-	<meta property="og:image" content="https://tlysik.com/images/headshot.png" />
+	<meta property="og:image" content="https://tlysik.com/images/headshot.webp" />
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Portfolio - Tory Lysik" />
 	<meta name="twitter:description" content="Selected data journalism, investigations, and visual storytelling by Tory Lysik." />
-	<meta name="twitter:image" content="https://tlysik.com/images/headshot.png" />
+	<meta name="twitter:image" content="https://tlysik.com/images/headshot.webp" />
 </svelte:head>
 
 <div class="page">
@@ -45,9 +45,7 @@
 				<article class="project">
 					{#if project.thumbnail}
 						<a
-							href={project.link}
-							target="_blank"
-							rel="noopener noreferrer"
+							href="/portfolio/{project.slug}"
 							class="project-thumbnail"
 						>
 							<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
@@ -55,9 +53,7 @@
 					{/if}
 					<div class="project-content">
 						<a
-							href={project.link}
-							target="_blank"
-							rel="noopener noreferrer"
+							href="/portfolio/{project.slug}"
 							class="project-title"
 						>
 							{project.title}
