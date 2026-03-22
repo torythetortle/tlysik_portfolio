@@ -17,12 +17,21 @@
 	<div class="container">
 		<p class="contact-intro">Feel free to reach out by email or on Signal.</p>
 
-		<div class="contact-details">
-			<p><span class="label">Email:</span> <a href="mailto:lysiktory@gmail.com">lysiktory@gmail.com</a> and/or <a href="mailto:TL3291@columbia.edu">TL3291@columbia.edu</a></p>
-			<p><span class="label">Signal:</span> TBLysik.85</p>
+		<div class="contact-list">
+			<div class="contact-row">
+				<span class="label">Email</span>
+				<div class="contact-value">
+					<a href="mailto:lysiktory@gmail.com">lysiktory@gmail.com</a>
+					<a href="mailto:TL3291@columbia.edu">TL3291@columbia.edu</a>
+				</div>
+			</div>
+			<div class="contact-row">
+				<span class="label">Signal</span>
+				<span class="contact-value">TBLysik.85</span>
+			</div>
 		</div>
 
-		<div class="contact-links">
+		<div class="social-links">
 			<a href="https://github.com/torythetortle" target="_blank" rel="noopener noreferrer">GitHub</a>
 			<a href="https://www.linkedin.com/in/tory-lysik/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
 			<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">X</a>
@@ -40,47 +49,79 @@
 	.contact-intro {
 		font-size: 1rem;
 		color: var(--color-text);
-		margin-bottom: var(--space-lg);
+		margin-bottom: var(--space-xl);
 	}
 
-	.contact-details {
-		font-family: var(--font-mono);
-		font-size: 0.9375rem;
-		color: var(--color-text-muted);
-		margin-bottom: var(--space-lg);
+	.contact-list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-xs);
+		gap: var(--space-md);
+		margin-bottom: var(--space-xl);
 	}
 
-	.contact-details a {
-		color: var(--color-text-muted);
-		text-decoration: underline;
-	}
-
-	.contact-details a:hover {
-		color: var(--color-text-bright);
+	.contact-row {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-lg);
 	}
 
 	.label {
-		color: var(--color-text-bright);
-	}
-
-	.contact-links {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-sm);
-	}
-
-	.contact-links a {
 		font-family: var(--font-mono);
-		font-size: 1rem;
-		color: var(--color-text-muted);
-		text-decoration: underline;
-		width: fit-content;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-accent);
+		min-width: 4.5rem;
+		flex-shrink: 0;
 	}
 
-	.contact-links a:hover {
+	.contact-value {
+		font-family: var(--font-mono);
+		font-size: 0.9375rem;
+		color: var(--color-text-muted);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-xs) var(--space-md);
+	}
+
+	.contact-value a {
+		color: var(--color-text-muted);
+		text-decoration: none;
+		border-bottom: 1px solid var(--color-border);
+		transition: color var(--transition-base), border-color var(--transition-base);
+	}
+
+	.contact-value a:hover {
 		color: var(--color-text-bright);
+		border-color: var(--color-accent);
+	}
+
+	.social-links {
+		display: flex;
+		gap: var(--space-md);
+		padding-top: var(--space-md);
+	}
+
+	.social-links a {
+		font-family: var(--font-mono);
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+		text-decoration: none;
+		transition: color var(--transition-base);
+	}
+
+	.social-links a:hover {
+		color: var(--color-text-bright);
+	}
+
+	@media (max-width: 480px) {
+		.contact-row {
+			flex-direction: column;
+			gap: var(--space-xs);
+		}
+
+		.social-links {
+			flex-wrap: wrap;
+		}
 	}
 </style>

@@ -9,7 +9,7 @@
 			<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>,
 			<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">Twitter</a>,
 			<a href="https://www.linkedin.com/in/tory-lysik/" target="_blank" rel="noopener noreferrer">LinkedIn</a>,
-			or see whatever coding and repositories I happen to have public on <a href="https://github.com/torythetortle" target="_blank" rel="noopener noreferrer">GitHub</a>.
+			or see whatever code and repositories I happen to have public on <a href="https://github.com/torythetortle" target="_blank" rel="noopener noreferrer">GitHub</a>.
 		</p>
 	</div>
 </footer>
