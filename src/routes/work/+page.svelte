@@ -102,7 +102,7 @@
 							>
 								{#if project.thumbnail}
 									<div class="card-image">
-										<img src={project.thumbnail} alt={project.title} loading="lazy" />
+										<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
 									</div>
 								{/if}
 								<div class="card-body">

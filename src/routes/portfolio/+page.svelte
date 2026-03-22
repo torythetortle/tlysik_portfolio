@@ -50,7 +50,7 @@
 							rel="noopener noreferrer"
 							class="project-thumbnail"
 						>
-							<img src={project.thumbnail} alt={project.title} loading="lazy" />
+							<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
 						</a>
 					{/if}
 					<div class="project-content">
