@@ -307,7 +307,7 @@ export const projects: Project[] = [
 		title: 'Drought just hit a 3-year low. Here is how that is a bad thing in four maps.',
 		description:
 			'Reported and visualized U.S. drought data for a social-first story showing that only 35% of the lower 48 states experienced drought leading up to Earth Day 2023\u2014the lowest in three years\u2014while contextualizing the ongoing crisis in the Colorado River Basin. Built the drought map in R with data analysis in Python, prioritizing color accessibility and design for colorblind readers to ensure the data was immediately understandable across platforms.',
-		thumbnail: '',
+		thumbnail: '/images/drought.webp',
 		link: 'https://www.axios.com/2023/04/22/drought-winter-colorado-river',
 		date: '2023-04-22',
 		tags: ['environmental', 'mapping', 'svelte', 'R', 'data visualization'],
@@ -337,7 +337,7 @@ export const projects: Project[] = [
 		title: 'Millions sought asylum in 2022 but now countries are closing their doors',
 		description:
 			'Rapidly reported and visualized breaking UN data showing 2.9 million asylum applications in 2022\u2014the highest number since UNHCR began tracking in 2000. When the dataset dropped days earlier than expected, I pivoted quickly to analyze global migration patterns and interview policy experts, producing the story on an accelerated timeline. The piece identified that 40% of applications came from Latin America and the Caribbean, contextualizing a historic surge driving political debates across the U.S. and Europe.',
-		thumbnail: '',
+		thumbnail: '/images/asylum.webp',
 		link: 'https://www.axios.com/2023/07/16/record-migration-backlash-us-europe',
 		date: '2023-07-16',
 		tags: ['data visualization', 'international', 'immigration'],
@@ -406,6 +406,81 @@ export const projects: Project[] = [
 		awards: '',
 		featured: true,
 		category: 'Research'
+	},
+	{
+		slug: 'twin-births-decline',
+		outlet: 'Axios',
+		title: 'Twin births decline after a decades-long boom',
+		description:
+			'Visualized demographic data showing the sharp reversal in U.S. twin birth rates after decades of steady increase driven by fertility treatments and older maternal age.',
+		thumbnail: '/images/twins.webp',
+		link: 'https://www.axios.com/2023/08/06/twin-births-decline-after-boom',
+		date: '2023-08-06',
+		tags: ['data visualization', 'data reporting', 'Datawrapper'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Data & Analysis'
+	},
+	{
+		slug: 'shark-attacks-overfishing',
+		outlet: 'Axios',
+		title: 'Shark attacks are rare but the real crisis is what we are doing to them',
+		description:
+			'Reported on the gap between public fear of shark attacks and the reality of overfishing decimating shark populations worldwide, using data visualization to reframe the narrative around Shark Week.',
+		thumbnail: '/images/sharks.webp',
+		link: 'https://www.axios.com/2023/07/29/shark-week-attacks-overfishing-beaches',
+		date: '2023-07-29',
+		tags: ['data visualization', 'environmental', 'data reporting'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Data & Analysis'
+	},
+	{
+		slug: 'global-population-8-billion',
+		outlet: 'Axios',
+		title: 'The world just hit 8 billion people',
+		description:
+			'Visualized the milestone of global population reaching 8 billion, contextualizing growth trends, regional disparities, and what the demographic shift means for the future.',
+		thumbnail: '/images/population.webp',
+		link: 'https://www.axios.com/2022/11/14/global-population-8-billion-data-world-humans-un',
+		date: '2022-11-14',
+		tags: ['data visualization', 'international', 'data reporting'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Data & Analysis'
+	},
+	{
+		slug: 'earthquake-new-york-city',
+		outlet: 'Axios',
+		title: 'Earthquake rattles the New York City area',
+		description:
+			'Rapidly reported on a rare earthquake felt across the New York City metro area, mapping the quake data and contextualizing seismic activity in the region.',
+		thumbnail: '/images/earthquake.webp',
+		link: 'https://www.axios.com/2024/04/05/earthquake-new-york-city-news',
+		date: '2024-04-05',
+		tags: ['breaking news', 'mapping', 'data reporting'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Data & Analysis'
+	},
+	{
+		slug: 'ev-charging-deserts',
+		outlet: 'Axios',
+		title: 'Charging deserts threaten the EV revolution',
+		description:
+			'Mapped the uneven distribution of EV charging infrastructure across the U.S., highlighting the rural and low-income areas being left behind in the electric vehicle transition.',
+		thumbnail: '/images/EVs.webp',
+		link: 'https://www.axios.com/2024/06/25/charging-deserts-evs-electric-cars',
+		date: '2024-06-25',
+		tags: ['mapping', 'data visualization', 'environmental', 'Cartography'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Data & Analysis'
 	},
 	{
 		slug: 'coal-plants-shutdown',
