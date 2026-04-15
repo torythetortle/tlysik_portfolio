@@ -16,6 +16,36 @@ export interface Project {
 
 export const projects: Project[] = [
 	{
+		slug: 'graphics-templates',
+		outlet: 'Personal project',
+		title: 'Graphics Templates: Accessible chart components for newsrooms',
+		description:
+			'A personal library of accessible chart templates I built and use for newsroom graphics. 18 components built with Svelte 5 and D3, with screen reader support, keyboard navigation, colorblind-safe palettes, and print-ready styling.',
+		thumbnail: '',
+		link: 'https://torythetortle.github.io/graphics-templates/',
+		date: '2026-04-01',
+		tags: ['Svelte', 'D3', 'TypeScript', 'accessibility', 'open source', 'data visualization'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Visual & Interactive'
+	},
+	{
+		slug: 'political-cash-flows',
+		outlet: 'Personal project',
+		title: 'Political Cash Flows',
+		description:
+			'A personal project visualizing the flow of political campaign donations, tracking where money comes from and where it goes across elections.',
+		thumbnail: '',
+		link: 'https://torythetortle.github.io/political-cash-flows/',
+		date: '2026-04-01',
+		tags: ['data visualization', 'politics', 'finance', 'JavaScript', 'interactive design'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Visual & Interactive'
+	},
+	{
 		slug: 'nyc-nurse-strike',
 		outlet: 'Data Visualization Society',
 		title: 'Why NYC nurses went on strike, again',
@@ -144,7 +174,8 @@ export const projects: Project[] = [
 		thumbnail: '/images/eparmp.webp',
 		link: 'https://www.axios.com/hazardous-chemicals-US-near-you-data',
 		additionalLinks: [
-			{ label: 'Part 2', url: 'https://www.axios.com/2023/09/22/chemicals-accidents-epa-ammonia-chlorine' }
+			{ label: 'Part 2', url: 'https://www.axios.com/2023/09/22/chemicals-accidents-epa-ammonia-chlorine' },
+			{ label: 'Interactive map', url: 'https://torythetortle.github.io/epa-databases-rmp/' }
 		],
 		date: '2023-06-01',
 		tags: ['SQL', 'web development', 'react', 'svelte', 'Mapbox', 'R', 'APIs', 'web scraping', 'FOIA', 'UI', 'Cartography', 'responsive design', 'CSS', 'Tailwind'],
