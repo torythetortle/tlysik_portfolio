@@ -50,7 +50,7 @@ export const projects: Project[] = [
 		outlet: 'Data Visualization Society',
 		title: 'Why NYC nurses went on strike, again',
 		description:
-			'A project done to help teach a mentee about how to collaborate on graphics projects, as part of my mentoring for the Data Visualization Society. Emphasis on learning how to make a story that is social first but can be read on mobile, web, or anything else, as well as making it quick turnaround since we created it from scratch in less than a few hours. Also emphasized learning web accessibility and building for screen readers. We scraped the data, hand-drew the visuals, and made data graphics, all while reporting on the ground on the last day of the strike.',
+			'A project done to teach a mentee about how to collaborate on graphics projects, as part of my mentoring for DVS. Focus was learning how to make a story that is social first but can be read on mobile + web, and breaking news since we created it from scratch in less than a few hours. Also emphasized learning web accessibility and building for screen readers. We scraped the data, hand-drew the visuals, and made data graphics, all while reporting on the ground on the last day of the strike.',
 		thumbnail: '/images/nurses.webp',
 		link: 'https://torythetortle.github.io/2026_nyc_nurse_strike/',
 		date: '2026-02-01',
