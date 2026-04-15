@@ -21,7 +21,7 @@ export const projects: Project[] = [
 		title: 'Graphics Templates: Accessible chart components for newsrooms',
 		description:
 			'A personal library of accessible chart templates I built and use for newsroom graphics. 18 components built with Svelte 5 and D3, with screen reader support, keyboard navigation, colorblind-safe palettes, and print-ready styling.',
-		thumbnail: '',
+		thumbnail: '/images/templates.webp',
 		link: 'https://torythetortle.github.io/graphics-templates/',
 		date: '2026-04-01',
 		tags: ['Svelte', 'D3', 'TypeScript', 'accessibility', 'open source', 'data visualization'],
@@ -36,7 +36,7 @@ export const projects: Project[] = [
 		title: 'Political Cash Flows',
 		description:
 			'A personal project visualizing the flow of political campaign donations, tracking where money comes from and where it goes across elections.',
-		thumbnail: '',
+		thumbnail: '/images/cashflow.webp',
 		link: 'https://torythetortle.github.io/political-cash-flows/',
 		date: '2026-04-01',
 		tags: ['data visualization', 'politics', 'finance', 'JavaScript', 'interactive design'],
