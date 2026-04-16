@@ -30,16 +30,19 @@
 	.nav {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-sm);
+		align-items: center;
+		gap: var(--space-md);
+		text-align: center;
 	}
 
 	.name {
-		font-family: var(--font-mono);
-		font-size: 2.75rem;
-		font-weight: 700;
+		font-family: var(--font-display);
+		font-size: 3rem;
+		font-weight: 400;
 		color: var(--color-text-bright);
 		text-decoration: none;
 		line-height: 1.2;
+		letter-spacing: 0.02em;
 	}
 
 	.name:hover {
@@ -48,16 +51,17 @@
 
 	.links {
 		display: flex;
-		gap: 1.5rem;
+		gap: var(--space-lg);
 		font-family: var(--font-mono);
-		font-size: 0.875rem;
+		font-size: 1.125rem;
+		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: 0.08em;
 	}
 
 	.links a {
 		color: var(--color-text-muted);
-		text-decoration: underline;
+		text-decoration: none;
 		padding: 0.25rem 0;
 	}
 
@@ -66,7 +70,7 @@
 	}
 
 	.links a.active {
-		color: var(--color-text-bright);
+		color: var(--color-accent);
 		font-weight: 700;
 	}
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { Project } from '$lib/data/projects';
 
 	let { data } = $props();
@@ -16,6 +17,36 @@
 	const featuredProjects = [...data.projects]
 		.filter((p: Project) => p.featured)
 		.sort((a: Project, b: Project) => b.date.localeCompare(a.date));
+
+	let columnCount = $state(3);
+
+	const columns = $derived.by(() => {
+		const cols: Project[][] = Array.from({ length: columnCount }, () => []);
+		featuredProjects.forEach((project, i) => {
+			cols[i % columnCount].push(project);
+		});
+		return cols;
+	});
+
+	onMount(() => {
+		const desktopQuery = window.matchMedia('(min-width: 1025px)');
+		const tabletQuery = window.matchMedia('(min-width: 641px) and (max-width: 1024px)');
+
+		function updateColumns() {
+			if (desktopQuery.matches) columnCount = 3;
+			else if (tabletQuery.matches) columnCount = 2;
+			else columnCount = 1;
+		}
+
+		updateColumns();
+		desktopQuery.addEventListener('change', updateColumns);
+		tabletQuery.addEventListener('change', updateColumns);
+
+		return () => {
+			desktopQuery.removeEventListener('change', updateColumns);
+			tabletQuery.removeEventListener('change', updateColumns);
+		};
+	});
 </script>
 
 <svelte:head>
@@ -41,49 +72,53 @@
 <div class="page">
 	<div class="container">
 		<div class="grid">
-			{#each featuredProjects as project}
-				<article class="project">
-					{#if project.thumbnail}
-						<a
-							href="/portfolio/{project.slug}"
-							class="project-thumbnail"
-						>
-							<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
-						</a>
-					{/if}
-					<div class="project-content">
-						<a
-							href="/portfolio/{project.slug}"
-							class="project-title"
-						>
-							{project.title}
-						</a>
-						<span class="project-outlet">{project.outlet} · {formatDate(project.date)}</span>
+			{#each columns as columnProjects}
+				<div class="column">
+					{#each columnProjects as project}
+						<article class="project">
+							{#if project.thumbnail}
+								<a
+									href="/portfolio/{project.slug}"
+									class="project-thumbnail"
+								>
+									<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
+								</a>
+							{/if}
+							<div class="project-content">
+								<a
+									href="/portfolio/{project.slug}"
+									class="project-title"
+								>
+									{project.title}
+								</a>
+								<span class="project-outlet">{project.outlet} · {formatDate(project.date)}</span>
 
-						<p class="project-description">{project.description}</p>
+								<p class="project-description">{project.description}</p>
 
-						{#if project.additionalLinks?.length}
-							<p class="project-meta project-links">
-								<a href={project.link} target="_blank" rel="noopener noreferrer">Part 1</a>
-								{#each project.additionalLinks as extra}
-									· <a href={extra.url} target="_blank" rel="noopener noreferrer">{extra.label}</a>
-								{/each}
-							</p>
-						{/if}
+								{#if project.additionalLinks?.length}
+									<p class="project-meta project-links">
+										<a href={project.link} target="_blank" rel="noopener noreferrer">Part 1</a>
+										{#each project.additionalLinks as extra}
+											· <a href={extra.url} target="_blank" rel="noopener noreferrer">{extra.label}</a>
+										{/each}
+									</p>
+								{/if}
 
-						{#if project.awards}
-							<p class="project-meta project-award">
-								{project.awards}
-							</p>
-						{/if}
+								{#if project.awards}
+									<p class="project-meta project-award">
+										{project.awards}
+									</p>
+								{/if}
 
-						{#if project.tags.length > 0}
-							<p class="project-meta project-tags">
-								{project.tags.join(' / ')}
-							</p>
-						{/if}
-					</div>
-				</article>
+								{#if project.tags.length > 0}
+									<p class="project-meta project-tags">
+										{project.tags.join(' / ')}
+									</p>
+								{/if}
+							</div>
+						</article>
+					{/each}
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -100,9 +135,17 @@
 	}
 
 	.grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		display: flex;
 		gap: var(--space-xl);
+		align-items: flex-start;
+	}
+
+	.column {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+		min-width: 0;
 	}
 
 	.project {
@@ -112,7 +155,6 @@
 
 	.project-thumbnail {
 		display: block;
-		border-radius: 8px;
 		overflow: hidden;
 		margin-bottom: var(--space-sm);
 	}
@@ -122,7 +164,6 @@
 		aspect-ratio: 16 / 10;
 		object-fit: cover;
 		display: block;
-		border-radius: 8px;
 		opacity: 0.85;
 		transition: opacity var(--transition-base);
 	}
@@ -191,13 +232,13 @@
 
 	@media (max-width: 1024px) {
 		.grid {
-			grid-template-columns: 1fr 1fr;
+			gap: var(--space-lg);
 		}
 	}
 
 	@media (max-width: 640px) {
 		.grid {
-			grid-template-columns: 1fr;
+			flex-direction: column;
 		}
 
 		.project-title {

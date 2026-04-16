@@ -13,25 +13,21 @@
 		vy: number;
 		opacity: number;
 		lineWidth: number;
-		filled: boolean;
+		hatched: boolean;
 		color: [number, number, number];
+		wobble: number[];
 	}
 
-	const hexColors: [number, number, number][] = [
-		[40, 120, 200],  // deep blue
-		[70, 190, 220],  // cyan
-		[110, 198, 200], // teal
-		[50, 200, 160],  // emerald
-		[80, 220, 120],  // bright green
-		[140, 230, 180], // mint
-		[30, 150, 180],  // ocean
-		[100, 160, 240], // cornflower
-		[60, 180, 140],  // jade
-		[90, 210, 210],  // aqua
+	const palette: [number, number, number][] = [
+		[244, 184, 197], // cherry blossom pink
+		[236, 192, 201], // soft blush
+		[247, 220, 226], // pale petal
+		[212, 120, 150], // deeper rose
+		[247, 236, 232]  // warm cream
 	];
 
 	function pickColor(): [number, number, number] {
-		return hexColors[Math.floor(Math.random() * hexColors.length)];
+		return palette[Math.floor(Math.random() * palette.length)];
 	}
 
 	onMount(() => {
@@ -48,10 +44,13 @@
 			canvas.height = window.innerHeight;
 		}
 
+		function makeWobble(): number[] {
+			return Array.from({ length: 12 }, () => 0);
+		}
+
 		function createHexagons() {
 			hexagons = [];
 
-			// Deep layer: medium, faint, slow — atmospheric depth
 			const deepCount = Math.min(30, Math.floor((canvas.width * canvas.height) / 40000));
 			for (let i = 0; i < deepCount; i++) {
 				hexagons.push({
@@ -64,12 +63,12 @@
 					vy: (Math.random() - 0.5) * 0.1,
 					opacity: 0.14 + Math.random() * 0.08,
 					lineWidth: 1,
-					filled: Math.random() < 0.25,
-					color: pickColor()
+					hatched: Math.random() < 0.35,
+					color: pickColor(),
+					wobble: makeWobble()
 				});
 			}
 
-			// Near layer: small, brighter, faster — visible accents
 			const nearCount = Math.min(22, Math.floor((canvas.width * canvas.height) / 55000));
 			for (let i = 0; i < nearCount; i++) {
 				hexagons.push({
@@ -82,32 +81,57 @@
 					vy: (Math.random() - 0.5) * 0.3,
 					opacity: 0.15 + Math.random() * 0.1,
 					lineWidth: 1.25,
-					filled: Math.random() < 0.3,
-					color: pickColor()
+					hatched: Math.random() < 0.25,
+					color: pickColor(),
+					wobble: makeWobble()
 				});
 			}
 		}
 
-		function drawHexagon(ctx: CanvasRenderingContext2D, hex: Hexagon) {
-			ctx.save();
-			ctx.translate(hex.x, hex.y);
-			ctx.rotate(hex.rotation);
+		function hexPath(ctx: CanvasRenderingContext2D, size: number) {
 			ctx.beginPath();
 			for (let i = 0; i < 6; i++) {
 				const angle = (Math.PI / 3) * i;
-				const px = hex.size * Math.cos(angle);
-				const py = hex.size * Math.sin(angle);
+				const px = size * Math.cos(angle);
+				const py = size * Math.sin(angle);
 				if (i === 0) ctx.moveTo(px, py);
 				else ctx.lineTo(px, py);
 			}
 			ctx.closePath();
-			if (hex.filled) {
-				ctx.fillStyle = `rgba(${hex.color[0]}, ${hex.color[1]}, ${hex.color[2]}, ${hex.opacity * 0.4})`;
-				ctx.fill();
-			}
-			ctx.strokeStyle = `rgba(${hex.color[0]}, ${hex.color[1]}, ${hex.color[2]}, ${hex.opacity})`;
+		}
+
+		function drawHexagon(ctx: CanvasRenderingContext2D, hex: Hexagon) {
+			const [r, g, b] = hex.color;
+			ctx.save();
+			ctx.translate(hex.x, hex.y);
+			ctx.rotate(hex.rotation);
+
+			// clean hexagon outline
+			hexPath(ctx, hex.size);
+			ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${hex.opacity * 1.3})`;
 			ctx.lineWidth = hex.lineWidth;
+			ctx.lineCap = 'butt';
+			ctx.lineJoin = 'miter';
 			ctx.stroke();
+
+			// engraving-style vertical hatching inside, clipped to hexagon
+			if (hex.hatched) {
+				ctx.save();
+				hexPath(ctx, hex.size - hex.lineWidth);
+				ctx.clip();
+
+				ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${hex.opacity * 0.85})`;
+				ctx.lineWidth = hex.lineWidth * 0.55;
+				const step = Math.max(1.6, hex.size * 0.08);
+				for (let x = -hex.size; x <= hex.size; x += step) {
+					ctx.beginPath();
+					ctx.moveTo(x, -hex.size);
+					ctx.lineTo(x, hex.size);
+					ctx.stroke();
+				}
+				ctx.restore();
+			}
+
 			ctx.restore();
 		}
 
@@ -122,7 +146,6 @@
 					const minDist = a.size + b.size;
 
 					if (dist < minDist && dist > 0) {
-						// Push apart
 						const nx = dx / dist;
 						const ny = dy / dist;
 						const overlap = (minDist - dist) * 0.5;
@@ -131,7 +154,6 @@
 						b.x += nx * overlap;
 						b.y += ny * overlap;
 
-						// Swap velocity components along collision axis
 						const dvx = a.vx - b.vx;
 						const dvy = a.vy - b.vy;
 						const dot = dvx * nx + dvy * ny;
@@ -155,7 +177,6 @@
 				hex.y += hex.vy;
 				hex.rotation += hex.rotationSpeed;
 
-				// Wrap around edges
 				if (hex.x < -hex.size) hex.x = canvas.width + hex.size;
 				if (hex.x > canvas.width + hex.size) hex.x = -hex.size;
 				if (hex.y < -hex.size) hex.y = canvas.height + hex.size;
@@ -177,7 +198,6 @@
 		if (!prefersReducedMotion) {
 			animate();
 		} else {
-			// Draw once, static
 			for (const hex of hexagons) {
 				drawHexagon(ctx, hex);
 			}

@@ -127,7 +127,6 @@
 	}
 
 	.project-image {
-		border-radius: 8px;
 		overflow: hidden;
 		margin-bottom: var(--space-lg);
 	}
@@ -135,7 +134,6 @@
 	.project-image img {
 		width: 100%;
 		display: block;
-		border-radius: 8px;
 	}
 
 	h1 {

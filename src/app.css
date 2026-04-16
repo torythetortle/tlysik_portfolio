@@ -1,18 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
-	--color-bg: #0d0d0f;
-	--color-bg-subtle: #131316;
-	--color-text: #f0f0f0;
-	--color-text-muted: #cccccc;
+	--color-bg: #0a0a0c;
+	--color-bg-subtle: #141416;
+	--color-text: #f2ebe8;
+	--color-text-muted: #bcb2b0;
 	--color-text-bright: #ffffff;
-	--color-border: #2a2a2e;
-	--color-accent: #6ec6c8;
-	--color-accent-hover: #8dd8d9;
+	--color-border: #2a2326;
+	--color-accent: #f4b8c5;
+	--color-accent-hover: #f8ccd6;
+	--color-accent-secondary: #ecc0c9;
+	--color-accent-tertiary: #d47896;
 
-	--font-mono: 'IBM Plex Mono', monospace;
-	--font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+	--font-mono: 'Space Mono', 'IBM Plex Mono', monospace;
+	--font-body: 'Space Mono', 'IBM Plex Mono', monospace;
 	--font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+	--font-display: 'Space Mono', 'IBM Plex Mono', monospace;
 
 	--space-xs: 0.5rem;
 	--space-sm: 1rem;
@@ -53,6 +56,12 @@ h1, h2, h3, h4, h5, h6 {
 	color: var(--color-text-bright);
 }
 
+h1 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	letter-spacing: 0.01em;
+}
+
 p {
 	margin-top: 0;
 	margin-bottom: 1rem;
@@ -75,13 +84,13 @@ a:focus-visible {
 }
 
 ::selection {
-	background: var(--color-accent);
-	color: var(--color-bg);
+	background: #f4b8c5;
+	color: #1a0a10;
 }
 
 .container {
 	max-width: var(--max-width);
-	margin: 0;
+	margin: 0 auto;
 	padding: 0 var(--space-xl);
 }
 

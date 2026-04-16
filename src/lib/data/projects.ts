@@ -21,7 +21,7 @@ export const projects: Project[] = [
 		title: 'The Buildout: How AI data centers are reshaping America',
 		description:
 			'A personal visual investigation into how AI infrastructure is transforming American farmland and industrial sites into massive data center campuses that rival cities in power consumption.',
-		thumbnail: '/images/datacenters.webp',
+		thumbnail: '/images/datacenter.webp',
 		link: 'https://torythetortle.github.io/geo-data-centers/',
 		date: '2026-01-15',
 		tags: ['data visualization', 'mapping', 'Cartography', 'AI', 'environmental', 'Svelte'],

@@ -223,7 +223,6 @@
 		text-decoration: none;
 		color: inherit;
 		border: 1px solid var(--color-border);
-		border-radius: 8px;
 		overflow: hidden;
 		transition: border-color var(--transition-base), transform var(--transition-base);
 	}
