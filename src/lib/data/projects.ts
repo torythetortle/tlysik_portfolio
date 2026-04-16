@@ -16,6 +16,21 @@ export interface Project {
 
 export const projects: Project[] = [
 	{
+		slug: 'geo-data-centers',
+		outlet: 'Personal project',
+		title: 'The Buildout: How AI data centers are reshaping America',
+		description:
+			'A personal visual investigation into how AI infrastructure is transforming American farmland and industrial sites into massive data center campuses that rival cities in power consumption.',
+		thumbnail: '/images/datacenters.webp',
+		link: 'https://torythetortle.github.io/geo-data-centers/',
+		date: '2026-01-15',
+		tags: ['data visualization', 'mapping', 'Cartography', 'AI', 'environmental', 'Svelte'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Visual & Interactive'
+	},
+	{
 		slug: 'graphics-templates',
 		outlet: 'Personal project',
 		title: 'Graphics Templates: Accessible chart components for newsrooms',
