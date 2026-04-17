@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
+	let hintVisible = $state(true);
+	let hintX = $state(0);
+	let hintY = $state(0);
+
 	interface Hexagon {
 		x: number;
 		y: number;
@@ -49,6 +53,7 @@
 		let dragging: Hexagon | null = null;
 		let lastPointer: { x: number; y: number; t: number } | null = null;
 		let pointerVel: { vx: number; vy: number } = { vx: 0, vy: 0 };
+		let hintTarget: Hexagon | null = null;
 
 		function resize() {
 			canvas.width = window.innerWidth;
@@ -73,6 +78,14 @@
 					color: pickColor()
 				});
 			}
+
+			// pick a medium-large hex away from center for the "drag us" hint
+			const cx = canvas.width / 2;
+			const cy = canvas.height / 2;
+			const candidates = hexagons
+				.filter((h) => h.size > 35 && Math.hypot(h.x - cx, h.y - cy) > 250)
+				.sort((a, b) => b.size - a.size);
+			hintTarget = candidates[0] ?? hexagons[0];
 		}
 
 		function hexPath(size: number) {
@@ -199,6 +212,11 @@
 			}
 			if (dragging) drawHexagon(dragging);
 
+			if (hintVisible && hintTarget) {
+				hintX = hintTarget.x;
+				hintY = hintTarget.y - hintTarget.size - 14;
+			}
+
 			animationId = requestAnimationFrame(animate);
 		}
 
@@ -225,6 +243,7 @@
 				pointerVel = { vx: 0, vy: 0 };
 				canvas.setPointerCapture(e.pointerId);
 				canvas.style.cursor = 'grabbing';
+				hintVisible = false;
 			}
 		}
 
@@ -339,8 +358,13 @@
 				{/if}
 			{/each}
 		</nav>
-		<p class="hint">Drag the hexagons.</p>
 	</div>
+
+	{#if hintVisible}
+		<div class="drag-hint-wrap" style="transform: translate({hintX}px, {hintY}px);" aria-hidden="true">
+			<div class="drag-hint">drag us</div>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -430,11 +454,52 @@
 		flex-shrink: 0;
 	}
 
-	.hint {
+	.drag-hint-wrap {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 3;
+		pointer-events: none;
+		will-change: transform;
+	}
+
+	.drag-hint {
+		position: relative;
 		font-family: var(--font-mono);
-		font-size: 0.8125rem;
-		color: var(--color-text-muted);
-		margin: 0;
+		font-size: 0.75rem;
+		color: var(--color-accent);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-weight: 700;
+		background: rgba(8, 9, 11, 0.8);
+		padding: 4px 10px;
+		border-radius: 4px;
+		white-space: nowrap;
+		transform: translateX(-50%);
+		animation: drag-pulse 1.4s ease-in-out infinite;
+		transform-origin: center bottom;
+	}
+
+	.drag-hint::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		left: 50%;
+		transform: translateX(-50%) rotate(45deg);
+		width: 8px;
+		height: 8px;
+		background: rgba(8, 9, 11, 0.8);
+	}
+
+	@keyframes drag-pulse {
+		0%, 100% {
+			opacity: 0.75;
+			transform: translateX(-50%) scale(1);
+		}
+		50% {
+			opacity: 1;
+			transform: translateX(-50%) scale(1.08);
+		}
 	}
 
 	@media (max-width: 720px) {
