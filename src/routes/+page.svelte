@@ -1,59 +1,33 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	interface Cell {
-		col: number;
-		row: number;
+	interface Hexagon {
 		x: number;
 		y: number;
-		filled: boolean;
-		color: string;
-		texture: number;
+		size: number;
+		rotation: number;
+		rotationSpeed: number;
+		vx: number;
+		vy: number;
+		opacity: number;
+		lineWidth: number;
+		hatched: boolean;
+		color: [number, number, number];
 	}
 
-	const PALETTE = ['#7db490', '#5d9872', '#eddce9', '#dcc6d4', '#d88296'];
-	const CELL_SIZE = 36;
-	const TEXTURE_COUNT = 7;
+	const palette: [number, number, number][] = [
+		[125, 180, 144],
+		[93, 152, 114],
+		[237, 220, 233],
+		[220, 198, 212],
+		[216, 130, 150]
+	];
 
-	let cells = $state<Cell[]>([]);
-	let canvasWidth = $state(800);
-	let canvasHeight = $state(480);
-	let wrapperEl!: HTMLDivElement;
-
-	function buildHoneycomb(w: number, h: number) {
-		const hexW = CELL_SIZE * Math.sqrt(3);
-		const hexH = CELL_SIZE * 1.5;
-		const cols = Math.ceil(w / hexW) + 1;
-		const rows = Math.ceil(h / hexH) + 1;
-		const next: Cell[] = [];
-		for (let row = 0; row < rows; row++) {
-			for (let col = 0; col < cols; col++) {
-				const x = col * hexW + (row % 2 ? hexW / 2 : 0);
-				const y = row * hexH;
-				next.push({
-					col,
-					row,
-					x,
-					y,
-					filled: false,
-					color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-					texture: Math.floor(Math.random() * TEXTURE_COUNT)
-				});
-			}
-		}
-		cells = next;
+	function pickColor(): [number, number, number] {
+		return palette[Math.floor(Math.random() * palette.length)];
 	}
 
-	function toggleCell(i: number) {
-		cells[i].filled = !cells[i].filled;
-	}
-
-	function onCellKey(i: number, e: KeyboardEvent) {
-		if (e.key === 'Enter' || e.key === ' ') {
-			e.preventDefault();
-			toggleCell(i);
-		}
-	}
+	let canvas: HTMLCanvasElement;
 
 	function hexPoints(size: number): string {
 		const pts: string[] = [];
@@ -65,29 +39,251 @@
 	}
 
 	onMount(() => {
-		function updateSize() {
-			if (!wrapperEl) return;
-			canvasWidth = wrapperEl.clientWidth;
-			canvasHeight = wrapperEl.clientHeight;
-			buildHoneycomb(canvasWidth, canvasHeight);
+		const ctx = canvas.getContext('2d');
+		if (!ctx) return;
+
+		let animationId: number;
+		let hexagons: Hexagon[] = [];
+		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		let dragging: Hexagon | null = null;
+		let lastPointer: { x: number; y: number; t: number } | null = null;
+		let pointerVel: { vx: number; vy: number } = { vx: 0, vy: 0 };
+
+		function resize() {
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
 		}
 
-		updateSize();
-		const resizeObserver = new ResizeObserver(updateSize);
-		resizeObserver.observe(wrapperEl);
+		function createHexagons() {
+			hexagons = [];
+			const count = Math.min(60, Math.floor((canvas.width * canvas.height) / 22000));
+			for (let i = 0; i < count; i++) {
+				hexagons.push({
+					x: Math.random() * canvas.width,
+					y: Math.random() * canvas.height,
+					size: 22 + Math.random() * 40,
+					rotation: Math.random() * Math.PI * 2,
+					rotationSpeed: (Math.random() - 0.5) * 0.002,
+					vx: (Math.random() - 0.5) * 0.15,
+					vy: (Math.random() - 0.5) * 0.15,
+					opacity: 0.35 + Math.random() * 0.4,
+					lineWidth: 1.1 + Math.random() * 0.7,
+					hatched: Math.random() < 0.3,
+					color: pickColor()
+				});
+			}
+		}
+
+		function hexPath(size: number) {
+			ctx!.beginPath();
+			for (let i = 0; i < 6; i++) {
+				const angle = (Math.PI / 3) * i;
+				const px = size * Math.cos(angle);
+				const py = size * Math.sin(angle);
+				if (i === 0) ctx!.moveTo(px, py);
+				else ctx!.lineTo(px, py);
+			}
+			ctx!.closePath();
+		}
+
+		function drawHexagon(hex: Hexagon) {
+			const [r, g, b] = hex.color;
+			ctx!.save();
+			ctx!.translate(hex.x, hex.y);
+			ctx!.rotate(hex.rotation);
+
+			hexPath(hex.size);
+			ctx!.strokeStyle = `rgba(${r}, ${g}, ${b}, ${hex.opacity})`;
+			ctx!.lineWidth = hex.lineWidth;
+			ctx!.stroke();
+
+			if (hex.hatched) {
+				ctx!.save();
+				hexPath(hex.size - hex.lineWidth);
+				ctx!.clip();
+				ctx!.strokeStyle = `rgba(${r}, ${g}, ${b}, ${hex.opacity * 0.7})`;
+				ctx!.lineWidth = hex.lineWidth * 0.55;
+				const step = Math.max(1.6, hex.size * 0.09);
+				for (let x = -hex.size; x <= hex.size; x += step) {
+					ctx!.beginPath();
+					ctx!.moveTo(x, -hex.size);
+					ctx!.lineTo(x, hex.size);
+					ctx!.stroke();
+				}
+				ctx!.restore();
+			}
+
+			ctx!.restore();
+		}
+
+		function resolveCollisions() {
+			for (let i = 0; i < hexagons.length; i++) {
+				for (let j = i + 1; j < hexagons.length; j++) {
+					const a = hexagons[i];
+					const b = hexagons[j];
+					const dx = b.x - a.x;
+					const dy = b.y - a.y;
+					const dist = Math.sqrt(dx * dx + dy * dy);
+					const minDist = a.size + b.size;
+
+					if (dist < minDist && dist > 0) {
+						const nx = dx / dist;
+						const ny = dy / dist;
+						const overlap = (minDist - dist) * 0.5;
+
+						const aLocked = dragging === a;
+						const bLocked = dragging === b;
+						if (!aLocked) {
+							a.x -= nx * overlap;
+							a.y -= ny * overlap;
+						}
+						if (!bLocked) {
+							b.x += nx * overlap;
+							b.y += ny * overlap;
+						}
+
+						const dvx = a.vx - b.vx;
+						const dvy = a.vy - b.vy;
+						const dot = dvx * nx + dvy * ny;
+						if (dot > 0) {
+							if (!aLocked) {
+								a.vx -= dot * nx;
+								a.vy -= dot * ny;
+							}
+							if (!bLocked) {
+								b.vx += dot * nx;
+								b.vy += dot * ny;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		function animate() {
+			if (!ctx) return;
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			for (const hex of hexagons) {
+				if (hex === dragging) continue;
+				hex.x += hex.vx;
+				hex.y += hex.vy;
+				hex.rotation += hex.rotationSpeed;
+				hex.vx *= 0.995;
+				hex.vy *= 0.995;
+
+				if (hex.x < hex.size) {
+					hex.x = hex.size;
+					hex.vx = Math.abs(hex.vx) * 0.85;
+				}
+				if (hex.x > canvas.width - hex.size) {
+					hex.x = canvas.width - hex.size;
+					hex.vx = -Math.abs(hex.vx) * 0.85;
+				}
+				if (hex.y < hex.size) {
+					hex.y = hex.size;
+					hex.vy = Math.abs(hex.vy) * 0.85;
+				}
+				if (hex.y > canvas.height - hex.size) {
+					hex.y = canvas.height - hex.size;
+					hex.vy = -Math.abs(hex.vy) * 0.85;
+				}
+			}
+
+			resolveCollisions();
+
+			// draw non-dragging first, dragging on top
+			for (const hex of hexagons) {
+				if (hex !== dragging) drawHexagon(hex);
+			}
+			if (dragging) drawHexagon(dragging);
+
+			animationId = requestAnimationFrame(animate);
+		}
+
+		function hitTest(x: number, y: number): Hexagon | null {
+			for (let i = hexagons.length - 1; i >= 0; i--) {
+				const h = hexagons[i];
+				const dx = x - h.x;
+				const dy = y - h.y;
+				if (dx * dx + dy * dy < h.size * h.size) return h;
+			}
+			return null;
+		}
+
+		function onPointerDown(e: PointerEvent) {
+			const rect = canvas.getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const y = e.clientY - rect.top;
+			const hit = hitTest(x, y);
+			if (hit) {
+				dragging = hit;
+				hit.vx = 0;
+				hit.vy = 0;
+				lastPointer = { x, y, t: performance.now() };
+				pointerVel = { vx: 0, vy: 0 };
+				canvas.setPointerCapture(e.pointerId);
+				canvas.style.cursor = 'grabbing';
+			}
+		}
+
+		function onPointerMove(e: PointerEvent) {
+			const rect = canvas.getBoundingClientRect();
+			const x = e.clientX - rect.left;
+			const y = e.clientY - rect.top;
+
+			if (!dragging) {
+				canvas.style.cursor = hitTest(x, y) ? 'grab' : 'default';
+				return;
+			}
+
+			const now = performance.now();
+			if (lastPointer) {
+				const dt = Math.max(1, now - lastPointer.t);
+				pointerVel = {
+					vx: ((x - lastPointer.x) / dt) * 16,
+					vy: ((y - lastPointer.y) / dt) * 16
+				};
+			}
+			dragging.x = x;
+			dragging.y = y;
+			lastPointer = { x, y, t: now };
+		}
+
+		function onPointerUp(e: PointerEvent) {
+			if (!dragging) return;
+			dragging.vx = pointerVel.vx;
+			dragging.vy = pointerVel.vy;
+			dragging = null;
+			lastPointer = null;
+			canvas.releasePointerCapture(e.pointerId);
+			canvas.style.cursor = 'default';
+		}
+
+		resize();
+		createHexagons();
+		if (!prefersReducedMotion) animate();
+		else for (const h of hexagons) drawHexagon(h);
+
+		window.addEventListener('resize', () => {
+			resize();
+			createHexagons();
+		});
+		canvas.addEventListener('pointerdown', onPointerDown);
+		canvas.addEventListener('pointermove', onPointerMove);
+		canvas.addEventListener('pointerup', onPointerUp);
+		canvas.addEventListener('pointercancel', onPointerUp);
 
 		return () => {
-			resizeObserver.disconnect();
+			cancelAnimationFrame(animationId);
 		};
 	});
 </script>
 
 <svelte:head>
 	<title>Tory Lysik - Journalist</title>
-	<meta
-		name="description"
-		content="Portfolio of Tory Lysik. Data and graphics journalist."
-	/>
+	<meta name="description" content="Portfolio of Tory Lysik. Data and graphics journalist." />
 	<link rel="canonical" href="https://tlysik.com/" />
 
 	<meta property="og:type" content="website" />
@@ -116,123 +312,34 @@
 </svelte:head>
 
 <div class="home">
-	<div class="honeycomb-wrapper" bind:this={wrapperEl}>
-		<div class="center-label" aria-hidden="false">
-			<svg class="hex-glow" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
-				<defs>
-					<filter id="hex-blur" x="-20%" y="-20%" width="140%" height="140%">
-						<feGaussianBlur stdDeviation="10" />
-					</filter>
-				</defs>
-				<polygon
-					points="100,12 183,58 183,142 100,188 17,142 17,58"
-					fill="var(--color-bg)"
-					filter="url(#hex-blur)"
-				/>
-			</svg>
-			<h1 class="name">Tory Lysik</h1>
-			<p class="tagline">Data and graphics journalist</p>
-			<nav class="center-nav" aria-label="Primary">
-				{#each ['/about', '/portfolio', '/illustrations', '/resume', '/contact'] as path, idx}
-					<a href={path}>{['About', 'Portfolio', 'Illustrations', 'Resume', 'Contact'][idx]}</a>
-					{#if idx < 4}
-						<svg class="nav-hex" viewBox="-24 -24 48 48" width="22" height="22" aria-hidden="true">
-							<polygon points={hexPoints(22)} fill="currentColor" />
-						</svg>
-					{/if}
-				{/each}
-			</nav>
-			<p class="hint">Click the honeycomb.</p>
-		</div>
+	<canvas bind:this={canvas} class="hexagon-canvas"></canvas>
 
-		<svg class="honeycomb" viewBox="0 0 {canvasWidth} {canvasHeight}" preserveAspectRatio="xMidYMid slice">
+	<div class="center-label">
+		<svg class="hex-glow" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
 			<defs>
-				<clipPath id="hex-clip">
-					<polygon points={hexPoints(CELL_SIZE - 2)} />
-				</clipPath>
+				<filter id="hex-blur" x="-20%" y="-20%" width="140%" height="140%">
+					<feGaussianBlur stdDeviation="10" />
+				</filter>
 			</defs>
-
-			{#each cells as cell, i (cell.col + '-' + cell.row)}
-				<g transform="translate({cell.x} {cell.y})">
-					<polygon
-						points={hexPoints(CELL_SIZE - 1)}
-						fill={cell.filled ? cell.color : 'transparent'}
-						fill-opacity={cell.filled ? 0.2 : 0}
-						stroke={cell.filled ? cell.color : 'rgba(93, 152, 114, 0.4)'}
-						stroke-width={cell.filled ? 1.6 : 1.2}
-						class="cell"
-						onclick={() => toggleCell(i)}
-						onkeydown={(e) => onCellKey(i, e)}
-						role="button"
-						tabindex="-1"
-						aria-label="Honeycomb cell"
-					/>
-
-					{#if cell.filled}
-						<g clip-path="url(#hex-clip)" stroke={cell.color} fill={cell.color} stroke-linecap="round" stroke-linejoin="round">
-							{#if cell.texture === 0}
-								<image href="/images/sunflower.svg" x="-24" y="-24" width="48" height="48" style="filter: brightness(0) invert(1); opacity: 0.95;" />
-							{:else if cell.texture === 1}
-								<image href="/images/monstera.svg" x="-24" y="-24" width="48" height="48" style="filter: brightness(0) invert(1); opacity: 0.95;" />
-							{:else if cell.texture === 2}
-								<!-- sunflower rays -->
-								{#each Array(12) as _, r}
-									<line
-										x1="0"
-										y1="0"
-										x2={Math.cos((r / 12) * Math.PI * 2) * (CELL_SIZE - 6)}
-										y2={Math.sin((r / 12) * Math.PI * 2) * (CELL_SIZE - 6)}
-										stroke-width="1"
-										stroke-opacity="0.85"
-									/>
-								{/each}
-								<circle cx="0" cy="0" r="4" fill-opacity="0.9" stroke="none" />
-							{:else if cell.texture === 3}
-								<image href="/images/sun.svg" x="-24" y="-24" width="48" height="48" style="filter: brightness(0) invert(1); opacity: 0.95;" />
-							{:else if cell.texture === 4}
-								<!-- compass rose -->
-								<g stroke="none" fill={cell.color}>
-									<!-- outer ring -->
-									<circle cx="0" cy="0" r="22" fill="none" stroke={cell.color} stroke-width="1.4" />
-									<!-- main 4-point star (N-S-E-W) -->
-									<polygon points="0,-22 4,-4 0,0 -4,-4" fill-opacity="0.95" />
-									<polygon points="0,22 4,4 0,0 -4,4" fill-opacity="0.7" />
-									<polygon points="22,0 4,4 0,0 4,-4" fill-opacity="0.95" />
-									<polygon points="-22,0 -4,4 0,0 -4,-4" fill-opacity="0.7" />
-									<!-- diagonal shorter points -->
-									<polygon points="13,-13 3,-3 0,0 0,0" fill-opacity="0.55" />
-									<polygon points="-13,13 -3,3 0,0 0,0" fill-opacity="0.55" />
-									<polygon points="-13,-13 -3,-3 0,0 0,0" fill-opacity="0.55" />
-									<polygon points="13,13 3,3 0,0 0,0" fill-opacity="0.55" />
-									<!-- center dot -->
-									<circle cx="0" cy="0" r="2.2" />
-									<!-- N marker dot -->
-									<circle cx="0" cy="-26" r="1.4" fill-opacity="0.8" />
-								</g>
-							{:else if cell.texture === 5}
-								<image href="/images/bee-icon.svg" x="-24" y="-24" width="48" height="48" style="filter: brightness(0) invert(1); opacity: 0.95;" />
-							{:else}
-								<!-- mini honeycomb -->
-								{@const mini = 6}
-								{@const miniW = mini * Math.sqrt(3)}
-								{@const miniH = mini * 1.5}
-								<g fill="none" stroke-width="0.9" stroke-opacity="0.9">
-									{#each [-2, -1, 0, 1, 2] as row}
-										{#each [-3, -2, -1, 0, 1, 2, 3] as col}
-											<polygon
-												points={hexPoints(mini - 0.5)}
-												transform="translate({col * miniW + (row % 2 ? miniW / 2 : 0)} {row * miniH})"
-											/>
-										{/each}
-									{/each}
-								</g>
-							{/if}
-						</g>
-					{/if}
-				</g>
-			{/each}
-
+			<polygon
+				points="100,12 183,58 183,142 100,188 17,142 17,58"
+				fill="var(--color-bg)"
+				filter="url(#hex-blur)"
+			/>
 		</svg>
+		<h1 class="name">Tory Lysik</h1>
+		<p class="tagline">Data and graphics journalist</p>
+		<nav class="center-nav" aria-label="Primary">
+			{#each ['/about', '/portfolio', '/illustrations', '/resume', '/contact'] as path, idx}
+				<a href={path}>{['About', 'Portfolio', 'Illustrations', 'Resume', 'Contact'][idx]}</a>
+				{#if idx < 4}
+					<svg class="nav-hex" viewBox="-24 -24 48 48" width="22" height="22" aria-hidden="true">
+						<polygon points={hexPoints(22)} fill="currentColor" />
+					</svg>
+				{/if}
+			{/each}
+		</nav>
+		<p class="hint">Drag the hexagons.</p>
 	</div>
 </div>
 
@@ -240,15 +347,14 @@
 	.home {
 		position: fixed;
 		inset: 0;
-		display: flex;
-		flex-direction: column;
 	}
 
-	.honeycomb-wrapper {
-		flex: 1;
-		position: relative;
+	.hexagon-canvas {
+		position: absolute;
+		inset: 0;
 		width: 100%;
 		height: 100%;
+		touch-action: none;
 	}
 
 	.center-label {
@@ -304,15 +410,6 @@
 
 	.center-nav a {
 		white-space: nowrap;
-	}
-
-	.nav-hex {
-		color: var(--color-accent);
-		opacity: 0.85;
-		flex-shrink: 0;
-	}
-
-	.center-nav a {
 		font-family: var(--font-mono);
 		font-size: 1rem;
 		font-weight: 700;
@@ -327,38 +424,17 @@
 		color: var(--color-text-bright);
 	}
 
+	.nav-hex {
+		color: var(--color-accent);
+		opacity: 0.85;
+		flex-shrink: 0;
+	}
+
 	.hint {
 		font-family: var(--font-mono);
 		font-size: 0.8125rem;
 		color: var(--color-text-muted);
 		margin: 0;
-	}
-
-	.honeycomb {
-		width: 100%;
-		height: 100%;
-		display: block;
-	}
-
-	.cell {
-		cursor: pointer;
-		transition: stroke 0.2s ease, fill-opacity 0.3s ease;
-		outline: none;
-		-webkit-tap-highlight-color: transparent;
-	}
-
-	.cell:focus,
-	.cell:focus-visible {
-		outline: none;
-	}
-
-	.cell:hover {
-		stroke: var(--color-accent);
-		stroke-width: 1.8;
-	}
-
-	.honeycomb {
-		-webkit-tap-highlight-color: transparent;
 	}
 
 	@media (max-width: 720px) {
