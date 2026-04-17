@@ -1,22 +1,29 @@
 <script>
 	import '../app.css';
+	import { page } from '$app/state';
 	import Navigation from '$lib/components/Navigation.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import HexagonBackground from '$lib/components/HexagonBackground.svelte';
-	import Bee from '$lib/components/Bee.svelte';
 
 	let { children } = $props();
+
+	const isHome = $derived(page.url.pathname === '/');
 </script>
 
-<HexagonBackground />
-<div class="content-wrapper">
-	<Navigation />
+{#if !isHome}
+	<HexagonBackground />
+{/if}
+<div class="content-wrapper" class:full={isHome}>
+	{#if !isHome}
+		<Navigation />
+	{/if}
 	<main>
 		{@render children()}
 	</main>
-	<Footer />
+	{#if !isHome}
+		<Footer />
+	{/if}
 </div>
-<Bee />
 
 <style>
 	.content-wrapper {

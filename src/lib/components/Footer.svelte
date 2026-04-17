@@ -5,7 +5,7 @@
 <footer class="footer">
 	<div class="container">
 		<p>
-			Copyright &copy; Tory Lysik {currentYear}. Find me on
+			Copyright &copy; <strong>Tory Lysik</strong> {currentYear}. Find me on
 			<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>,
 			<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">Twitter</a>,
 			<a href="https://www.linkedin.com/in/tory-lysik/" target="_blank" rel="noopener noreferrer">LinkedIn</a>,

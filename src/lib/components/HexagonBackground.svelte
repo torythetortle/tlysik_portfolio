@@ -19,11 +19,11 @@
 	}
 
 	const palette: [number, number, number][] = [
-		[244, 184, 197], // cherry blossom pink
-		[236, 192, 201], // soft blush
-		[247, 220, 226], // pale petal
-		[212, 120, 150], // deeper rose
-		[247, 236, 232]  // warm cream
+		[125, 180, 144],  // brighter sage
+		[93, 152, 114],   // mid green
+		[237, 220, 233],  // pale lilac
+		[220, 198, 212],  // brighter mauve
+		[216, 130, 150]   // brighter wine
 	];
 
 	function pickColor(): [number, number, number] {

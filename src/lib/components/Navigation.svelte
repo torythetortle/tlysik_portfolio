@@ -2,11 +2,21 @@
 	import { page } from '$app/state';
 
 	const navLinks = [
-		{ name: 'Portfolio', url: '/portfolio' },
-		{ name: 'Resume', url: '/resume' },
-		{ name: 'Contact', url: '/contact' },
-		{ name: 'RSS', url: '/work' }
+		{ name: 'About', url: '/about', texture: 0 },
+		{ name: 'Portfolio', url: '/portfolio', texture: 2 },
+		{ name: 'Illustrations', url: '/illustrations', texture: 4 },
+		{ name: 'Resume', url: '/resume', texture: 1 },
+		{ name: 'Contact', url: '/contact', texture: 3 }
 	];
+
+	function hexPoints(size: number): string {
+		const pts: string[] = [];
+		for (let i = 0; i < 6; i++) {
+			const angle = (Math.PI / 3) * i - Math.PI / 2;
+			pts.push(`${size * Math.cos(angle)},${size * Math.sin(angle)}`);
+		}
+		return pts.join(' ');
+	}
 </script>
 
 <header class="header">
@@ -14,8 +24,13 @@
 		<nav class="nav" aria-label="Main navigation">
 			<a href="/" class="name">Tory Lysik</a>
 			<div class="links">
-				{#each navLinks as link}
+				{#each navLinks as link, idx}
 					<a href={link.url} class:active={page.url.pathname === link.url}>{link.name}</a>
+					{#if idx < navLinks.length - 1}
+						<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true">
+							<polygon points={hexPoints(22)} fill="currentColor" />
+						</svg>
+					{/if}
 				{/each}
 			</div>
 		</nav>
@@ -38,7 +53,7 @@
 	.name {
 		font-family: var(--font-display);
 		font-size: 3rem;
-		font-weight: 400;
+		font-weight: 700;
 		color: var(--color-text-bright);
 		text-decoration: none;
 		line-height: 1.2;
@@ -51,12 +66,19 @@
 
 	.links {
 		display: flex;
-		gap: var(--space-lg);
+		align-items: center;
+		gap: 1rem;
 		font-family: var(--font-mono);
 		font-size: 1.125rem;
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
+	}
+
+	.nav-hex {
+		color: var(--color-accent);
+		opacity: 0.85;
+		flex-shrink: 0;
 	}
 
 	.links a {
