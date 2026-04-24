@@ -67,32 +67,35 @@
 
 	.label {
 		font-family: var(--font-mono);
-		font-size: 0.75rem;
+		font-size: 0.875rem;
+		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		color: var(--color-accent);
 		min-width: 4.5rem;
 		flex-shrink: 0;
+		-webkit-text-stroke: 0.3px currentColor;
 	}
 
 	.contact-value {
 		font-family: var(--font-mono);
-		font-size: 0.9375rem;
-		color: var(--color-text-muted);
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--color-text-bright);
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-xs) var(--space-md);
 	}
 
 	.contact-value a {
-		color: var(--color-text-muted);
+		color: var(--color-text-bright);
 		text-decoration: none;
 		border-bottom: 1px solid var(--color-border);
 		transition: color var(--transition-base), border-color var(--transition-base);
 	}
 
 	.contact-value a:hover {
-		color: var(--color-text-bright);
+		color: var(--color-accent);
 		border-color: var(--color-accent);
 	}
 
@@ -100,18 +103,21 @@
 		display: flex;
 		gap: var(--space-md);
 		padding-top: var(--space-md);
+		flex-wrap: wrap;
 	}
 
 	.social-links a {
 		font-family: var(--font-mono);
-		font-size: 0.875rem;
-		color: var(--color-text-muted);
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--color-text-bright);
 		text-decoration: none;
 		transition: color var(--transition-base);
+		-webkit-text-stroke: 0.3px currentColor;
 	}
 
 	.social-links a:hover {
-		color: var(--color-text-bright);
+		color: var(--color-accent);
 	}
 
 	@media (max-width: 480px) {

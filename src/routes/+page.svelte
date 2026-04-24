@@ -428,11 +428,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		flex-wrap: nowrap;
-		gap: 0.75rem;
+		flex-wrap: wrap;
+		gap: 0.5rem 0.75rem;
 		margin: var(--space-md) 0;
 		pointer-events: auto;
-		white-space: nowrap;
 	}
 
 	.center-nav a {
@@ -520,9 +519,20 @@
 			min-width: 0;
 			width: 92vw;
 		}
+	}
+
+	@media (max-width: 480px) {
+		.name {
+			font-size: 1.75rem;
+		}
 		.center-nav {
-			flex-wrap: wrap;
-			white-space: normal;
+			gap: 0.5rem;
+		}
+		.center-nav a {
+			font-size: 0.8125rem;
+		}
+		.nav-hex {
+			display: none;
 		}
 	}
 </style>

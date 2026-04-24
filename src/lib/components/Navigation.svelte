@@ -53,11 +53,12 @@
 	.name {
 		font-family: var(--font-display);
 		font-size: 3rem;
-		font-weight: 900;
+		font-weight: 700;
 		color: var(--color-text-bright);
 		text-decoration: none;
 		line-height: 1.2;
 		letter-spacing: 0.02em;
+		-webkit-text-stroke: 0.4px currentColor;
 	}
 
 	.name:hover {
@@ -67,12 +68,15 @@
 	.links {
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.75rem 1rem;
 		font-family: var(--font-mono);
 		font-size: 1.125rem;
-		font-weight: 900;
+		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
+		-webkit-text-stroke: 0.3px currentColor;
 	}
 
 	.nav-hex {
@@ -85,6 +89,7 @@
 		color: var(--color-text-muted);
 		text-decoration: none;
 		padding: 0.25rem 0;
+		-webkit-text-stroke: 0;
 	}
 
 	.links a:hover {
@@ -93,25 +98,33 @@
 
 	.links a.active {
 		color: var(--color-accent);
-		font-weight: 700;
 	}
 
-	@media (max-width: 480px) {
+	@media (max-width: 640px) {
 		.header {
 			padding: var(--space-lg) 0 var(--space-sm);
 		}
 
 		.name {
-			font-size: 1.75rem;
+			font-size: 2rem;
 		}
 
 		.links {
-			gap: 0.75rem;
-			flex-wrap: wrap;
+			font-size: 0.875rem;
+			gap: 0.5rem 0.75rem;
 		}
 
-		.links a {
-			padding: 0.375rem 0;
+		.nav-hex {
+			display: none;
+		}
+	}
+
+	@media (max-width: 400px) {
+		.name {
+			font-size: 1.625rem;
+		}
+
+		.links {
 			font-size: 0.8125rem;
 		}
 	}
