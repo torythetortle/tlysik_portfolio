@@ -413,7 +413,7 @@ export const projects: Project[] = [
 		title: '500 million people depend on reefs for survival. The next El Ni\u00f1o could kill that coral off completely',
 		description:
 			"One of Axios's first social-first comic strip-style stories, blending data journalism with hand-painted visual elements. I secured early access to a study showing that coral bleaching severity was significantly underreported compared to reality, and worked with the research to translate complex climate science into an accessible visual format. Visual elements were hand-painted, scanned, and edited in Adobe Illustrator to create an engaging, shareable story format that reached audiences beyond traditional news consumers.",
-		thumbnail: '',
+		thumbnail: '/images/coral.webp',
 		link: 'https://www.axios.com/2023/07/01/el-nino-coral-reefs-bleaching',
 		date: '2023-07-01',
 		tags: ['environmental', 'adobe illustrator', 'data visualization'],

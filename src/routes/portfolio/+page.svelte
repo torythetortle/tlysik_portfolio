@@ -93,8 +93,6 @@
 								</a>
 								<span class="project-outlet">{project.outlet} · {formatDate(project.date)}</span>
 
-								<p class="project-description">{project.description}</p>
-
 								{#if project.additionalLinks?.length}
 									<p class="project-meta project-links">
 										<a href={project.link} target="_blank" rel="noopener noreferrer">Part 1</a>
@@ -195,14 +193,6 @@
 		font-family: var(--font-mono);
 		font-size: 0.75rem;
 		color: var(--color-text-muted);
-	}
-
-	.project-description {
-		font-size: 0.875rem;
-		line-height: 1.6;
-		color: var(--color-text);
-		margin-top: var(--space-xs);
-		margin-bottom: var(--space-xs);
 	}
 
 	.project-meta {

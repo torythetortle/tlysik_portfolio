@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { projects as allProjects, type Project } from '$lib/data/projects';
 
 	let hintVisible = $state(true);
 	let hintX = $state(0);
 	let hintY = $state(0);
+	let stickyVisible = $state(false);
+	let canvas: HTMLCanvasElement;
 
 	interface Hexagon {
 		x: number;
@@ -34,7 +37,29 @@
 		return palette[Math.floor(Math.random() * palette.length)];
 	}
 
-	let canvas: HTMLCanvasElement;
+	const featuredProjects = [...allProjects]
+		.filter((p) => p.featured)
+		.sort((a, b) => b.date.localeCompare(a.date));
+
+	let columnCount = $state(3);
+
+	const columns = $derived.by(() => {
+		const cols: Project[][] = Array.from({ length: columnCount }, () => []);
+		featuredProjects.forEach((project, i) => {
+			cols[i % columnCount].push(project);
+		});
+		return cols;
+	});
+
+	const monthNames = [
+		'January', 'February', 'March', 'April', 'May', 'June',
+		'July', 'August', 'September', 'October', 'November', 'December'
+	];
+
+	function formatDate(dateStr: string): string {
+		const [year, month] = dateStr.split('-').map(Number);
+		return `${monthNames[month - 1]} ${year}`;
+	}
 
 	function hexPoints(size: number): string {
 		const pts: string[] = [];
@@ -82,7 +107,6 @@
 				});
 			}
 
-			// pick a medium-large hex away from center for the "drag us" hint
 			const cx = canvas.width / 2;
 			const cy = canvas.height / 2;
 			const candidates = hexagons
@@ -108,12 +132,10 @@
 			ctx!.save();
 			ctx!.translate(hex.x, hex.y);
 			ctx!.rotate(hex.rotation);
-
 			hexPath(hex.size);
 			ctx!.strokeStyle = `rgba(${r}, ${g}, ${b}, ${hex.opacity})`;
 			ctx!.lineWidth = hex.lineWidth;
 			ctx!.stroke();
-
 			if (hex.hatched) {
 				ctx!.save();
 				hexPath(hex.size - hex.lineWidth);
@@ -129,7 +151,6 @@
 				}
 				ctx!.restore();
 			}
-
 			ctx!.restore();
 		}
 
@@ -142,35 +163,20 @@
 					const dy = b.y - a.y;
 					const dist = Math.sqrt(dx * dx + dy * dy);
 					const minDist = a.size + b.size;
-
 					if (dist < minDist && dist > 0) {
 						const nx = dx / dist;
 						const ny = dy / dist;
 						const overlap = (minDist - dist) * 0.5;
-
 						const aLocked = dragging === a;
 						const bLocked = dragging === b;
-						if (!aLocked) {
-							a.x -= nx * overlap;
-							a.y -= ny * overlap;
-						}
-						if (!bLocked) {
-							b.x += nx * overlap;
-							b.y += ny * overlap;
-						}
-
+						if (!aLocked) { a.x -= nx * overlap; a.y -= ny * overlap; }
+						if (!bLocked) { b.x += nx * overlap; b.y += ny * overlap; }
 						const dvx = a.vx - b.vx;
 						const dvy = a.vy - b.vy;
 						const dot = dvx * nx + dvy * ny;
 						if (dot > 0) {
-							if (!aLocked) {
-								a.vx -= dot * nx;
-								a.vy -= dot * ny;
-							}
-							if (!bLocked) {
-								b.vx += dot * nx;
-								b.vy += dot * ny;
-							}
+							if (!aLocked) { a.vx -= dot * nx; a.vy -= dot * ny; }
+							if (!bLocked) { b.vx += dot * nx; b.vy += dot * ny; }
 						}
 					}
 				}
@@ -180,7 +186,6 @@
 		function animate() {
 			if (!ctx) return;
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
-
 			for (const hex of hexagons) {
 				if (hex === dragging) continue;
 				hex.x += hex.vx;
@@ -188,38 +193,18 @@
 				hex.rotation += hex.rotationSpeed;
 				hex.vx *= 0.995;
 				hex.vy *= 0.995;
-
-				if (hex.x < hex.size) {
-					hex.x = hex.size;
-					hex.vx = Math.abs(hex.vx) * 0.85;
-				}
-				if (hex.x > canvas.width - hex.size) {
-					hex.x = canvas.width - hex.size;
-					hex.vx = -Math.abs(hex.vx) * 0.85;
-				}
-				if (hex.y < hex.size) {
-					hex.y = hex.size;
-					hex.vy = Math.abs(hex.vy) * 0.85;
-				}
-				if (hex.y > canvas.height - hex.size) {
-					hex.y = canvas.height - hex.size;
-					hex.vy = -Math.abs(hex.vy) * 0.85;
-				}
+				if (hex.x < hex.size) { hex.x = hex.size; hex.vx = Math.abs(hex.vx) * 0.85; }
+				if (hex.x > canvas.width - hex.size) { hex.x = canvas.width - hex.size; hex.vx = -Math.abs(hex.vx) * 0.85; }
+				if (hex.y < hex.size) { hex.y = hex.size; hex.vy = Math.abs(hex.vy) * 0.85; }
+				if (hex.y > canvas.height - hex.size) { hex.y = canvas.height - hex.size; hex.vy = -Math.abs(hex.vy) * 0.85; }
 			}
-
 			resolveCollisions();
-
-			// draw non-dragging first, dragging on top
-			for (const hex of hexagons) {
-				if (hex !== dragging) drawHexagon(hex);
-			}
+			for (const hex of hexagons) { if (hex !== dragging) drawHexagon(hex); }
 			if (dragging) drawHexagon(dragging);
-
 			if (hintVisible && hintTarget) {
 				hintX = hintTarget.x;
 				hintY = hintTarget.y - hintTarget.size - 14;
 			}
-
 			animationId = requestAnimationFrame(animate);
 		}
 
@@ -254,19 +239,14 @@
 			const rect = canvas.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;
-
 			if (!dragging) {
 				canvas.style.cursor = hitTest(x, y) ? 'grab' : 'default';
 				return;
 			}
-
 			const now = performance.now();
 			if (lastPointer) {
 				const dt = Math.max(1, now - lastPointer.t);
-				pointerVel = {
-					vx: ((x - lastPointer.x) / dt) * 16,
-					vy: ((y - lastPointer.y) / dt) * 16
-				};
+				pointerVel = { vx: ((x - lastPointer.x) / dt) * 16, vy: ((y - lastPointer.y) / dt) * 16 };
 			}
 			dragging.x = x;
 			dragging.y = y;
@@ -288,17 +268,37 @@
 		if (!prefersReducedMotion) animate();
 		else for (const h of hexagons) drawHexagon(h);
 
-		window.addEventListener('resize', () => {
-			resize();
-			createHexagons();
-		});
+		window.addEventListener('resize', () => { resize(); createHexagons(); });
 		canvas.addEventListener('pointerdown', onPointerDown);
 		canvas.addEventListener('pointermove', onPointerMove);
 		canvas.addEventListener('pointerup', onPointerUp);
 		canvas.addEventListener('pointercancel', onPointerUp);
 
+		// column count for portfolio grid
+		const desktopQuery = window.matchMedia('(min-width: 1025px)');
+		const tabletQuery = window.matchMedia('(min-width: 641px) and (max-width: 1024px)');
+		function updateColumns() {
+			if (desktopQuery.matches) columnCount = 3;
+			else if (tabletQuery.matches) columnCount = 2;
+			else columnCount = 1;
+		}
+		updateColumns();
+		desktopQuery.addEventListener('change', updateColumns);
+		tabletQuery.addEventListener('change', updateColumns);
+
+		// sticky nav: show after hero leaves viewport
+		const heroEl = document.querySelector('.hero');
+		const observer = new IntersectionObserver(
+			([entry]) => { stickyVisible = !entry.isIntersecting; },
+			{ threshold: 0 }
+		);
+		if (heroEl) observer.observe(heroEl);
+
 		return () => {
 			cancelAnimationFrame(animationId);
+			desktopQuery.removeEventListener('change', updateColumns);
+			tabletQuery.removeEventListener('change', updateColumns);
+			observer.disconnect();
 		};
 	});
 </script>
@@ -307,19 +307,16 @@
 	<title>Tory Lysik - Journalist</title>
 	<meta name="description" content="Portfolio of Tory Lysik. Data and graphics journalist." />
 	<link rel="canonical" href="https://tlysik.com/" />
-
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://tlysik.com/" />
 	<meta property="og:title" content="Tory Lysik - Journalist" />
 	<meta property="og:description" content="Data and graphics journalist." />
 	<meta property="og:image" content="https://tlysik.com/images/headshot.webp" />
 	<meta property="og:site_name" content="Tory Lysik" />
-
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Tory Lysik - Journalist" />
 	<meta name="twitter:description" content="Data and graphics journalist." />
 	<meta name="twitter:image" content="https://tlysik.com/images/headshot.webp" />
-
 	{@html `<script type="application/ld+json">${JSON.stringify({
 		'@context': 'https://schema.org',
 		'@type': 'Person',
@@ -333,67 +330,292 @@
 	})}</script>`}
 </svelte:head>
 
-<div class="home">
-	<canvas bind:this={canvas} class="hexagon-canvas"></canvas>
+<!-- fixed canvas background -->
+<canvas bind:this={canvas} class="hexagon-canvas" aria-hidden="true"></canvas>
 
-	<div class="center-label">
-		<svg class="hex-glow" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
-			<defs>
-				<filter id="hex-blur" x="-20%" y="-20%" width="140%" height="140%">
-					<feGaussianBlur stdDeviation="10" />
-				</filter>
-			</defs>
-			<polygon
-				points="100,12 183,58 183,142 100,188 17,142 17,58"
-				fill="var(--color-bg)"
-				filter="url(#hex-blur)"
-			/>
-		</svg>
-		<h1 class="name">Tory Lysik</h1>
-		<p class="tagline">Data and graphics journalist</p>
-		<nav class="center-nav" aria-label="Primary">
-			{#each ['/about', '/portfolio', '/illustrations', '/resume', '/contact'] as path, idx}
-				<a href={path}>{['About', 'Portfolio', 'Illustrations', 'Resume', 'Contact'][idx]}</a>
-				{#if idx < 4}
-					<svg class="nav-hex" viewBox="-24 -24 48 48" width="22" height="22" aria-hidden="true">
-						<polygon points={hexPoints(22)} fill="currentColor" />
-					</svg>
-				{/if}
-			{/each}
-		</nav>
-	</div>
-
-	{#if hintVisible}
-		<div class="drag-hint-wrap" style="transform: translate({hintX}px, {hintY}px);" aria-hidden="true">
-			<div class="drag-hint">drag us</div>
+<!-- sticky nav (appears after scrolling past hero) -->
+{#if stickyVisible}
+	<header class="sticky-nav" aria-label="Site navigation">
+		<div class="sticky-inner">
+			<a href="#hero" class="sticky-name">Tory Lysik</a>
+			<nav class="sticky-links">
+				<a href="#about">About</a>
+				<svg viewBox="-24 -24 48 48" width="14" height="14" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<a href="#portfolio">Portfolio</a>
+				<svg viewBox="-24 -24 48 48" width="14" height="14" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<a href="/illustrations">Illustrations</a>
+				<svg viewBox="-24 -24 48 48" width="14" height="14" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<a href="/resume">Resume</a>
+				<svg viewBox="-24 -24 48 48" width="14" height="14" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<a href="#contact">Contact</a>
+			</nav>
 		</div>
-	{/if}
+	</header>
+{/if}
+
+<!-- drag hint (positioned in viewport space) -->
+{#if hintVisible && !stickyVisible}
+	<div class="drag-hint-wrap" style="transform: translate({hintX}px, {hintY}px);" aria-hidden="true">
+		<div class="drag-hint">drag us</div>
+	</div>
+{/if}
+
+<div class="home">
+	<!-- HERO -->
+	<section class="hero" id="hero">
+		<div class="hero-content">
+			<svg class="hex-glow" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
+				<defs>
+					<filter id="hex-blur" x="-20%" y="-20%" width="140%" height="140%">
+						<feGaussianBlur stdDeviation="12" />
+					</filter>
+				</defs>
+				<polygon points="100,12 183,58 183,142 100,188 17,142 17,58" fill="var(--color-bg)" filter="url(#hex-blur)" />
+			</svg>
+			<h1 class="name">Tory Lysik</h1>
+			<p class="tagline">Data and graphics journalist</p>
+			<nav class="hero-nav" aria-label="Primary">
+				<a href="#about">About</a>
+				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<a href="#portfolio">Portfolio</a>
+				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<a href="/illustrations">Illustrations</a>
+				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<a href="/resume">Resume</a>
+				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<a href="#contact">Contact</a>
+			</nav>
+		</div>
+		<div class="scroll-cue" aria-hidden="true">scroll ↓</div>
+	</section>
+
+	<!-- ABOUT -->
+	<section id="about" class="content-section">
+		<div class="container">
+			<h2 class="section-heading">About</h2>
+			<div class="bio">
+				<p>I'm a data and graphics journalist and web developer based in New York City.</p>
+				<p>
+					Currently, I am a reporter at the Tow Center for Digital Journalism. I am passionate about using data and graphics to uncover the stories that impact lives and build a better world. I love speaking with real human beings, making order from chaos, and figuring out seemingly unsolvable problems. I also care deeply about accessibility — taking insanely complex topics and critical information and making it clear and understandable.
+				</p>
+				<p>
+					My career has sometimes followed a bit of a zigzag path. I've worked at outlets including <a href="https://www.axios.com/results?q=tory%20lysik&sort=2" target="_blank" rel="noopener noreferrer">Axios</a>, <a href="https://www.vox.com/" target="_blank" rel="noopener noreferrer">Vox</a>, <a href="https://www.themarshallproject.org/" target="_blank" rel="noopener noreferrer">The Marshall Project</a>, the <a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Associated Press</a>, and others. My work spans from local and national shoeleather reporting to interactive graphics and tools. The work I've been a part of has received numerous awards, and has been cited in congressional testimony and federal legislation.
+				</p>
+				<p>
+					I love what I do. Whether it's diving down rabbit holes in legal documents, filing the perfect FOIA request, or building detailed maps to surface human rights issues, I thrive in the meticulous, detail-heavy work that makes complex stories click — on tight deadlines or over months.
+				</p>
+				<p>In my free time, I am usually escaping the concrete jungle of NYC for the mountains or trying to become fluent in a fifth language.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- PORTFOLIO -->
+	<section id="portfolio" class="content-section">
+		<div class="container wide">
+			<div class="section-header">
+				<h2 class="section-heading">Portfolio</h2>
+				<a href="/portfolio" class="view-all">View all →</a>
+			</div>
+			<div class="grid">
+				{#each columns as columnProjects}
+					<div class="column">
+						{#each columnProjects as project}
+							<article class="project">
+								{#if project.thumbnail}
+									<a href="/portfolio/{project.slug}" class="project-thumbnail">
+										<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
+									</a>
+								{/if}
+								<div class="project-content">
+									<a href="/portfolio/{project.slug}" class="project-title">{project.title}</a>
+									<span class="project-outlet">{project.outlet} · {formatDate(project.date)}</span>
+									{#if project.tags.length > 0}
+										<p class="project-tags">{project.tags.join(' / ')}</p>
+									{/if}
+								</div>
+							</article>
+						{/each}
+					</div>
+				{/each}
+			</div>
+		</div>
+	</section>
+
+	<!-- CONTACT -->
+	<section id="contact" class="content-section">
+		<div class="container">
+			<h2 class="section-heading">Contact</h2>
+			<p class="contact-intro">Feel free to reach out by email or on Signal.</p>
+			<div class="contact-list">
+				<div class="contact-row">
+					<span class="label">Email</span>
+					<div class="contact-value">
+						<a href="mailto:lysiktory@gmail.com">lysiktory@gmail.com</a>
+						<a href="mailto:TL3291@columbia.edu">TL3291@columbia.edu</a>
+					</div>
+				</div>
+				<div class="contact-row">
+					<span class="label">Signal</span>
+					<span class="contact-value">TBLysik.85</span>
+				</div>
+			</div>
+			<div class="social-links">
+				<a href="https://github.com/torythetortle" target="_blank" rel="noopener noreferrer">GitHub</a>
+				<a href="https://www.linkedin.com/in/tory-lysik/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+				<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">X</a>
+				<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+			</div>
+		</div>
+	</section>
 </div>
 
 <style>
-	.home {
-		position: fixed;
-		inset: 0;
-	}
-
+	/* --- canvas --- */
 	.hexagon-canvas {
-		position: absolute;
+		position: fixed;
 		inset: 0;
 		width: 100%;
 		height: 100%;
-		touch-action: none;
+		z-index: 0;
+		pointer-events: auto;
 	}
 
-	.center-label {
+	/* --- drag hint --- */
+	.drag-hint-wrap {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 10;
+		pointer-events: none;
+		will-change: transform;
+	}
+
+	.drag-hint {
+		position: relative;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--color-accent);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-weight: 700;
+		background: rgba(245, 245, 245, 0.88);
+		border: 1px solid var(--color-border);
+		padding: 4px 10px;
+		border-radius: 4px;
+		white-space: nowrap;
+		transform: translateX(-50%);
+		animation: drag-pulse 1.4s ease-in-out infinite;
+		transform-origin: center bottom;
+	}
+
+	.drag-hint::after {
+		content: '';
 		position: absolute;
-		top: 50%;
+		bottom: -5px;
 		left: 50%;
-		transform: translate(-50%, -50%);
-		z-index: 2;
+		transform: translateX(-50%) rotate(45deg);
+		width: 8px;
+		height: 8px;
+		background: rgba(245, 245, 245, 0.88);
+		border-right: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	@keyframes drag-pulse {
+		0%, 100% { opacity: 0.75; transform: translateX(-50%) scale(1); }
+		50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+	}
+
+	/* --- sticky nav --- */
+	.sticky-nav {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: 100;
+		background: rgba(255, 255, 255, 0.95);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid var(--color-border);
+		animation: slide-down 0.2s ease;
+	}
+
+	@keyframes slide-down {
+		from { transform: translateY(-100%); opacity: 0; }
+		to { transform: translateY(0); opacity: 1; }
+	}
+
+	.sticky-inner {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0.75rem var(--space-xl);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-lg);
+	}
+
+	.sticky-name {
+		font-family: var(--font-display);
+		font-size: 1.125rem;
+		font-weight: 700;
+		color: var(--color-text-bright);
+		text-decoration: none;
+		white-space: nowrap;
+		-webkit-text-stroke: 0.3px currentColor;
+	}
+
+	.sticky-links {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+	}
+
+	.sticky-links a {
+		color: var(--color-text-muted);
+		text-decoration: none;
+		transition: color var(--transition-base);
+	}
+
+	.sticky-links a:hover {
+		color: var(--color-accent);
+	}
+
+	.sticky-links svg {
+		color: var(--color-accent);
+		opacity: 0.7;
+		flex-shrink: 0;
+	}
+
+	/* --- home wrapper --- */
+	.home {
+		position: relative;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	/* --- hero --- */
+	.hero {
+		height: 100svh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		pointer-events: none;
+	}
+
+	.hero-content {
 		text-align: center;
 		padding: var(--space-xl) var(--space-2xl);
 		pointer-events: none;
-		min-width: 680px;
+		position: relative;
 	}
 
 	.hex-glow {
@@ -413,6 +635,7 @@
 		margin: 0 0 0.75rem;
 		letter-spacing: 0.02em;
 		line-height: 1.1;
+		-webkit-text-stroke: 0.4px currentColor;
 	}
 
 	.tagline {
@@ -424,7 +647,7 @@
 		letter-spacing: 0.08em;
 	}
 
-	.center-nav {
+	.hero-nav {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -434,8 +657,7 @@
 		pointer-events: auto;
 	}
 
-	.center-nav a {
-		white-space: nowrap;
+	.hero-nav a {
 		font-family: var(--font-mono);
 		font-size: 1rem;
 		font-weight: 700;
@@ -446,7 +668,7 @@
 		transition: color var(--transition-base);
 	}
 
-	.center-nav a:hover {
+	.hero-nav a:hover {
 		color: var(--color-text-bright);
 	}
 
@@ -456,83 +678,264 @@
 		flex-shrink: 0;
 	}
 
-	.drag-hint-wrap {
+	.scroll-cue {
 		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: 3;
-		pointer-events: none;
-		will-change: transform;
-	}
-
-	.drag-hint {
-		position: relative;
+		bottom: 2rem;
 		font-family: var(--font-mono);
 		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--color-text-muted);
+		animation: fade-bob 2.5s ease-in-out infinite;
+		pointer-events: none;
+	}
+
+	@keyframes fade-bob {
+		0%, 100% { opacity: 0.5; transform: translateY(0); }
+		50% { opacity: 1; transform: translateY(4px); }
+	}
+
+	/* --- content sections --- */
+	.content-section {
+		background: rgba(255, 255, 255, 0.97);
+		position: relative;
+		padding: var(--space-2xl) 0;
+		pointer-events: auto;
+	}
+
+	.content-section + .content-section {
+		border-top: 1px solid var(--color-border);
+	}
+
+	.section-heading {
+		font-family: var(--font-display);
+		font-size: 1.75rem;
+		font-weight: 700;
+		color: var(--color-text-bright);
+		margin-bottom: var(--space-xl);
+		-webkit-text-stroke: 0.3px currentColor;
+	}
+
+	/* --- about --- */
+	.bio p {
+		font-size: 1.0625rem;
+		line-height: 1.8;
+		color: var(--color-text);
+	}
+
+	.bio p:last-child {
+		margin-bottom: 0;
+	}
+
+	.bio a {
+		font-weight: 700;
 		color: var(--color-accent);
+	}
+
+	/* --- portfolio --- */
+	.section-header {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		margin-bottom: var(--space-xl);
+	}
+
+	.section-header .section-heading {
+		margin-bottom: 0;
+	}
+
+	.view-all {
+		font-family: var(--font-mono);
+		font-size: 0.875rem;
+		font-weight: 700;
+		color: var(--color-accent);
+		text-decoration: none;
+		transition: color var(--transition-base);
+	}
+
+	.view-all:hover {
+		color: var(--color-accent-hover);
+	}
+
+	.container.wide {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 var(--space-xl);
+	}
+
+	.grid {
+		display: flex;
+		gap: var(--space-xl);
+		align-items: flex-start;
+	}
+
+	.column {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+		min-width: 0;
+	}
+
+	.project {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.project-thumbnail {
+		display: block;
+		overflow: hidden;
+		margin-bottom: var(--space-sm);
+	}
+
+	.project-thumbnail img {
+		width: 100%;
+		aspect-ratio: 16 / 10;
+		object-fit: cover;
+		display: block;
+		opacity: 0.88;
+		transition: opacity var(--transition-base);
+	}
+
+	.project-thumbnail:hover img {
+		opacity: 1;
+	}
+
+	.project-title {
+		font-family: var(--font-body);
+		font-size: 1.0625rem;
+		font-weight: 700;
+		color: var(--color-text-bright);
+		line-height: 1.4;
+		text-decoration: none;
+		display: block;
+		margin-bottom: 4px;
+		transition: color var(--transition-base);
+	}
+
+	.project-title:hover {
+		color: var(--color-accent);
+	}
+
+	.project-outlet {
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--color-text-muted);
+		display: block;
+		margin-bottom: var(--space-xs);
+	}
+
+	.project-tags {
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		color: var(--color-text-muted);
+		margin: 0;
+		letter-spacing: 0.02em;
+	}
+
+	/* --- contact --- */
+	.contact-intro {
+		font-size: 1rem;
+		color: var(--color-text);
+		margin-bottom: var(--space-xl);
+	}
+
+	.contact-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		margin-bottom: var(--space-xl);
+	}
+
+	.contact-row {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-lg);
+	}
+
+	.label {
+		font-family: var(--font-mono);
+		font-size: 0.875rem;
+		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
+		color: var(--color-accent);
+		min-width: 4.5rem;
+		flex-shrink: 0;
+		-webkit-text-stroke: 0.3px currentColor;
+	}
+
+	.contact-value {
+		font-family: var(--font-mono);
+		font-size: 1rem;
 		font-weight: 700;
-		background: rgba(245, 242, 238, 0.88);
-		border: 1px solid var(--color-border);
-		padding: 4px 10px;
-		border-radius: 4px;
-		white-space: nowrap;
-		transform: translateX(-50%);
-		animation: drag-pulse 1.4s ease-in-out infinite;
-		transform-origin: center bottom;
+		color: var(--color-text-bright);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-xs) var(--space-md);
 	}
 
-	.drag-hint::after {
-		content: '';
-		position: absolute;
-		bottom: -5px;
-		left: 50%;
-		transform: translateX(-50%) rotate(45deg);
-		width: 8px;
-		height: 8px;
-		background: rgba(245, 242, 238, 0.88);
-		border-right: 1px solid var(--color-border);
+	.contact-value a {
+		color: var(--color-text-bright);
+		text-decoration: none;
 		border-bottom: 1px solid var(--color-border);
+		transition: color var(--transition-base), border-color var(--transition-base);
 	}
 
-	@keyframes drag-pulse {
-		0%, 100% {
-			opacity: 0.75;
-			transform: translateX(-50%) scale(1);
-		}
-		50% {
-			opacity: 1;
-			transform: translateX(-50%) scale(1.08);
-		}
+	.contact-value a:hover {
+		color: var(--color-accent);
+		border-color: var(--color-accent);
+	}
+
+	.social-links {
+		display: flex;
+		gap: var(--space-md);
+		flex-wrap: wrap;
+	}
+
+	.social-links a {
+		font-family: var(--font-mono);
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--color-text-bright);
+		text-decoration: none;
+		transition: color var(--transition-base);
+		-webkit-text-stroke: 0.3px currentColor;
+	}
+
+	.social-links a:hover {
+		color: var(--color-accent);
+	}
+
+	/* --- responsive --- */
+	@media (max-width: 1024px) {
+		.grid { gap: var(--space-lg); }
 	}
 
 	@media (max-width: 720px) {
-		.name {
-			font-size: 2.25rem;
-		}
-		.tagline {
-			font-size: 0.875rem;
-		}
-		.center-label {
-			padding: var(--space-lg) var(--space-md);
-			min-width: 0;
-			width: 92vw;
-		}
+		.name { font-size: 2.25rem; }
+		.tagline { font-size: 0.875rem; }
+		.hero-content { padding: var(--space-lg) var(--space-md); }
+	}
+
+	@media (max-width: 640px) {
+		.grid { flex-direction: column; }
+		.sticky-inner { padding: 0.625rem var(--space-md); }
+		.sticky-links svg { display: none; }
+		.sticky-links { gap: 0.5rem; font-size: 0.75rem; }
+		.container.wide { padding: 0 var(--space-md); }
 	}
 
 	@media (max-width: 480px) {
-		.name {
-			font-size: 1.75rem;
-		}
-		.center-nav {
-			gap: 0.5rem;
-		}
-		.center-nav a {
-			font-size: 0.8125rem;
-		}
-		.nav-hex {
-			display: none;
-		}
+		.name { font-size: 1.75rem; }
+		.hero-nav { gap: 0.5rem; }
+		.hero-nav a { font-size: 0.8125rem; }
+		.nav-hex { display: none; }
+		.contact-row { flex-direction: column; gap: var(--space-xs); }
+		.sticky-links { display: none; }
+		.container.wide { padding: 0 var(--space-sm); }
+		.section-header { flex-direction: column; gap: var(--space-xs); align-items: flex-start; }
+		.social-links { gap: var(--space-sm); }
+		.bio p { font-size: 1rem; line-height: 1.7; }
 	}
 </style>
