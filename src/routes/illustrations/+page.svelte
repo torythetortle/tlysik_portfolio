@@ -252,16 +252,16 @@
 		touch-action: none;
 		user-select: none;
 		transition: filter 0.2s ease;
-		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
 	}
 
 	.piece:hover {
-		filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.6));
+		filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.28));
 	}
 
 	.piece.dragging {
 		cursor: grabbing;
-		filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.7));
+		filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.38));
 	}
 
 	.piece img {

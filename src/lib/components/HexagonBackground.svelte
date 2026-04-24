@@ -19,11 +19,14 @@
 	}
 
 	const palette: [number, number, number][] = [
-		[125, 180, 144],  // brighter sage
-		[93, 152, 114],   // mid green
-		[237, 220, 233],  // pale lilac
-		[220, 198, 212],  // brighter mauve
-		[216, 130, 150]   // brighter wine
+		[92, 191, 166],   // #5cbfa6
+		[107, 210, 148],  // #6bd294
+		[102, 225, 110],  // #66e16e
+		[37, 161, 142],   // #25a18e
+		[0, 165, 207],    // #00a5cf
+		[23, 158, 186],   // #179eba
+		[35, 110, 164],   // #236ea4
+		[46, 151, 165]    // #2e97a5
 	];
 
 	function pickColor(): [number, number, number] {
@@ -61,7 +64,7 @@
 					rotationSpeed: (Math.random() - 0.5) * 0.001,
 					vx: (Math.random() - 0.5) * 0.1,
 					vy: (Math.random() - 0.5) * 0.1,
-					opacity: 0.14 + Math.random() * 0.08,
+					opacity: 0.22 + Math.random() * 0.12,
 					lineWidth: 1,
 					hatched: Math.random() < 0.35,
 					color: pickColor(),
@@ -79,7 +82,7 @@
 					rotationSpeed: (Math.random() - 0.5) * 0.003,
 					vx: (Math.random() - 0.5) * 0.3,
 					vy: (Math.random() - 0.5) * 0.3,
-					opacity: 0.15 + Math.random() * 0.1,
+					opacity: 0.22 + Math.random() * 0.13,
 					lineWidth: 1.25,
 					hatched: Math.random() < 0.25,
 					color: pickColor(),

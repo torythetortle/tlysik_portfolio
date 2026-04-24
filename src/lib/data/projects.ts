@@ -53,7 +53,7 @@ export const projects: Project[] = [
 			'A personal project visualizing the flow of political campaign donations, tracking where money comes from and where it goes across elections.',
 		thumbnail: '/images/cashflow.webp',
 		link: 'https://torythetortle.github.io/political-cash-flows/',
-		date: '2026-04-01',
+		date: '2025-01-01',
 		tags: ['data visualization', 'politics', 'finance', 'JavaScript', 'interactive design'],
 		collaborators: [],
 		awards: '',
@@ -171,7 +171,7 @@ export const projects: Project[] = [
 		title: 'In Denver a controversial bill caused overdose deaths to rise while emergency calls fell',
 		description:
 			'Used R for statistical analysis and geospatial mapping to visualize neighborhood-level overdose patterns across Denver, revealing a 27% drop in emergency calls while deaths climbed. State lawmakers cited our findings in proposed amendments to the legislation. Data was gathered via FOIA requests, and maps were created using GIS and ArcGIS.',
-		thumbnail: '/images/denveroverdose.webp',
+		thumbnail: '/images/denvover.webp',
 		link: 'https://www.axios.com/local/denver/2024/02/09/emergency-overdose-calls-deaths-rise-fentanyl-polis',
 		date: '2024-02-09',
 		tags: ['QGIS', 'ArcGIS', 'Python', 'UI', 'R', 'Mapbox', 'APIs', 'Geocoding', 'FOIA'],
@@ -252,14 +252,14 @@ export const projects: Project[] = [
 		outlet: 'Axios',
 		title: "Biden's travel schedule is lighter than almost all other U.S. presidents",
 		description:
-			'Built a comprehensive database of each president\'s campaign travel by synthesizing multiple data sources including publicly available flight logs, Freedom of Information Act requests, and White House schedules. Collaborated with U.S. Naval Academy professor Brendan Doherty\u2014author of "The Rise of the President\'s Permanent Campaign"\u2014to cross-reference and verify the dataset against academic research standards.\n\nThe data collection required establishing consistent methodology for what constituted "campaign travel" versus official duties, excluding trips to Maryland, D.C., Virginia, and home cities unless election events occurred. Created an interactive visualization in Svelte showing Biden held 90 domestic events through June 30\u2014outpacing Trump\'s pandemic-limited 50 events in the same 2020 period, but trailing Obama\'s 2012 pace. Used ai2html to produce accessible static versions edited in Adobe Illustrator for broader distribution.',
-		thumbnail: '/images/biden.webp',
+			'Built a comprehensive database of each president\'s campaign travel by synthesizing publicly available flight logs, FOIA requests, and scraping White House schedules. Interviewed people including U.S. Naval Academy professor Brendan Doherty to cross-reference and verify the dataset against academic research standards.',
+		thumbnail: '/images/preztravel.webp',
 		link: 'https://www.axios.com/2024/07/07/biden-light-election-year-travel-schedule-2024',
 		date: '2024-07-07',
-		tags: ['adobe illustrator', 'svelte', 'data reporting', 'politics', 'finance/budget analysis'],
+		tags: ['Adobe Illustrator', 'ai2html', 'JavaScript', 'web scraping', 'data reporting', 'politics'],
 		collaborators: ['Hans Nichols'],
 		awards: '',
-		featured: false,
+		featured: true,
 		category: 'Data & Analysis'
 	},
 	{
@@ -353,13 +353,13 @@ export const projects: Project[] = [
 		title: 'Drought just hit a 3-year low. Here is how that is a bad thing in four maps.',
 		description:
 			'Reported and visualized U.S. drought data for a social-first story showing that only 35% of the lower 48 states experienced drought leading up to Earth Day 2023\u2014the lowest in three years\u2014while contextualizing the ongoing crisis in the Colorado River Basin. Built the drought map in R with data analysis in Python, prioritizing color accessibility and design for colorblind readers to ensure the data was immediately understandable across platforms.',
-		thumbnail: '/images/drought.webp',
+		thumbnail: '/images/drought_april.webp',
 		link: 'https://www.axios.com/2023/04/22/drought-winter-colorado-river',
 		date: '2023-04-22',
-		tags: ['environmental', 'mapping', 'svelte', 'R', 'data visualization'],
+		tags: ['mapping', 'GIS', 'MapShaper', 'R', 'ai2html', 'Adobe Illustrator', 'web scraping', 'data analysis', 'environmental'],
 		collaborators: [],
 		awards: '',
-		featured: false,
+		featured: true,
 		category: 'Data & Analysis'
 	},
 	{
@@ -368,13 +368,13 @@ export const projects: Project[] = [
 		title: 'How GOP candidates treated Biden and Trump at the first debate',
 		description:
 			"Led Axios's live coverage of the first 2024 Republican presidential debate, providing real-time text updates, fact-checking, and sentiment analysis of candidates' statements. Pre-built a custom Python sentiment analysis model using Hugging Face to track the emotional tone of candidates' responses throughout the debate, allowing readers to see not just what was said, but how it was delivered.\nThe coverage required simultaneously monitoring the debate, verifying claims against established facts with source links, and integrating automated sentiment scoring\u2014all under live deadline pressure. The multi-layered approach gave readers unprecedented insight into both the substance and tone of the contentious Milwaukee debate.",
-		thumbnail: '',
+		thumbnail: '/images/debate.webp',
 		link: 'https://www.axios.com/2023/08/24/gop-debate-attacks-trump-biden',
 		date: '2023-08-24',
-		tags: ['politics', 'data reporting', 'D3', 'finance/budget analysis'],
+		tags: ['breaking news', 'quick turnaround', 'Svelte', 'Python', 'text analysis', 'politics', 'data reporting'],
 		collaborators: ['Simran Parawani', 'Shauneen Miranda'],
 		awards: '',
-		featured: false,
+		featured: true,
 		category: 'Data & Analysis'
 	},
 	{
@@ -534,13 +534,88 @@ export const projects: Project[] = [
 		title: "Coal's influence on energy generation is fading fast",
 		description:
 			'Analyzed and visualized data on coal plant closures across the United States, showing how coal\u2019s share of energy generation has declined rapidly as utilities shift toward natural gas and renewables. The piece contextualized the economic and environmental implications of the ongoing energy transition.',
-		thumbnail: '/images/coal.webp',
+		thumbnail: '/images/coal_plants.webp',
 		link: 'https://www.axios.com/2024/02/21/coal-plants-shutdown',
 		date: '2024-02-21',
-		tags: ['data visualization', 'environmental', 'data reporting'],
+		tags: ['small multiple', 'Svelte', 'Python', 'data visualization', 'environmental'],
 		collaborators: [],
 		awards: '',
-		featured: false,
+		featured: true,
+		category: 'Data & Analysis'
+	},
+	{
+		slug: 'fireworks-consumption',
+		outlet: 'Axios',
+		title: 'Americans are still setting off record amounts of fireworks',
+		description:
+			'Quick-turn data visualization on U.S. firework consumption trends, showing the dramatic rise in consumer fireworks use since 2020. Built using Adobe Illustrator and ai2html for fast, accessible deployment across platforms.',
+		thumbnail: '/images/fireworks.webp',
+		link: 'https://www.axios.com/2024/07/04/firework-consumption-us',
+		date: '2024-07-04',
+		tags: ['quick turnaround', 'Adobe Illustrator', 'ai2html', 'JavaScript', 'data visualization'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Data & Analysis'
+	},
+	{
+		slug: 'harris-poll-nonpartisan',
+		outlet: 'Axios',
+		title: 'The most nonpartisan companies, ranked by Americans',
+		description:
+			'Visualized results from the Axios Harris Poll 100, which surveys Americans on corporate reputation and perceived partisanship. Analyzed polling microdata in Python to surface rankings and build an interactive Svelte display of the results.',
+		thumbnail: '/images/harris_poll.webp',
+		link: 'https://www.axios.com/2024/05/25/nonpartisan-companies-axios-harris-100',
+		date: '2024-05-25',
+		tags: ['polling data', 'Python', 'Svelte', 'data visualization', 'data analysis'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Data & Analysis'
+	},
+	{
+		slug: 'fortune-500-ceo-coverage',
+		outlet: 'Axios',
+		title: 'Which Fortune 100 CEOs get the most — and least — media attention',
+		description:
+			'Analyzed media coverage patterns for Fortune 100 CEOs using PDF extraction and Python-based text analysis to quantify how much coverage each executive receives. Built an interactive Svelte visualization with custom Adobe Illustrator components and ai2html for broad distribution.',
+		thumbnail: '/images/fortune500.webp',
+		link: 'https://www.axios.com/2024/02/01/ceos-fortune-100-media-coverage',
+		date: '2024-02-01',
+		tags: ['Svelte', 'Adobe Illustrator', 'Python', 'ai2html', 'PDF analysis', 'data analysis'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Data & Analysis'
+	},
+	{
+		slug: 'arkansas-ghost-towns',
+		outlet: 'Axios',
+		title: "Arkansas's ghost towns, mapped",
+		description:
+			'Mapped dozens of Arkansas ghost towns for a local data story, building the interactive map with Adobe Illustrator, ai2html, and JavaScript. Researched and verified locations through historical records and geographic data sources.',
+		thumbnail: '/images/ghosttowns.webp',
+		link: 'https://www.axios.com/local/nw-arkansas/2024/01/02/arkansas-ghost-towns-mapped',
+		date: '2024-01-02',
+		tags: ['Adobe Illustrator', 'ai2html', 'JavaScript', 'Python', 'mapping', 'local reporting'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Visual & Interactive'
+	},
+	{
+		slug: 'olympics-swim-colleges',
+		outlet: 'Axios',
+		title: 'Which colleges are sending the most swimmers to the Olympics',
+		description:
+			'Scraped and analyzed data on U.S. Olympic swim team qualifiers to map which colleges and universities produce the most Olympic-level swimmers. Built the interactive visualization in Svelte with JavaScript and custom data processing.',
+		thumbnail: '/images/swimming.webp',
+		link: 'https://www.axios.com/2024/07/20/usa-summer-olympics-swim-college-university',
+		date: '2024-07-20',
+		tags: ['Svelte', 'JavaScript', 'web scraping', 'data analysis', 'data visualization'],
+		collaborators: [],
+		awards: '',
+		featured: true,
 		category: 'Data & Analysis'
 	},
 ];

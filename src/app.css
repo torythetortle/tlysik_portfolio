@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
-	--color-bg: #08090b;
-	--color-bg-subtle: #111316;
-	--color-text: #ffffff;
-	--color-text-muted: #dcc6d4;
-	--color-text-bright: #ffffff;
-	--color-border: #2a3237;
-	--color-accent: #5d9872;
-	--color-accent-hover: #7eb590;
-	--color-accent-secondary: #eddce9;
-	--color-accent-tertiary: #a65265;
+	--color-bg: #ffffff;
+	--color-bg-subtle: #f0f0f0;
+	--color-text: #1f1f1f;
+	--color-text-muted: #444444;
+	--color-text-bright: #0a0a0a;
+	--color-border: #d0c9c0;
+	--color-accent: #00a5cf;
+	--color-accent-hover: #179eba;
+	--color-accent-secondary: #5cbfa6;
+	--color-accent-tertiary: #25a18e;
 
 	--font-mono: 'Space Mono', 'IBM Plex Mono', monospace;
 	--font-body: 'Space Mono', 'IBM Plex Mono', monospace;
@@ -89,7 +89,7 @@ a:focus-visible {
 }
 
 ::selection {
-	background: #a65265;
+	background: #00a5cf;
 	color: #ffffff;
 }
 

@@ -150,7 +150,7 @@
 		gap: var(--space-xs) var(--space-md);
 		font-family: var(--font-mono);
 		font-size: 0.8125rem;
-		color: var(--color-text-muted);
+		color: var(--color-text-bright);
 		margin-bottom: var(--space-lg);
 	}
 

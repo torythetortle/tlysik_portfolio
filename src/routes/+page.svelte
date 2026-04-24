@@ -20,11 +20,14 @@
 	}
 
 	const palette: [number, number, number][] = [
-		[125, 180, 144],
-		[93, 152, 114],
-		[237, 220, 233],
-		[220, 198, 212],
-		[216, 130, 150]
+		[92, 191, 166],   // #5cbfa6
+		[107, 210, 148],  // #6bd294
+		[102, 225, 110],  // #66e16e
+		[37, 161, 142],   // #25a18e
+		[0, 165, 207],    // #00a5cf
+		[23, 158, 186],   // #179eba
+		[35, 110, 164],   // #236ea4
+		[46, 151, 165]    // #2e97a5
 	];
 
 	function pickColor(): [number, number, number] {
@@ -72,7 +75,7 @@
 					rotationSpeed: (Math.random() - 0.5) * 0.002,
 					vx: (Math.random() - 0.5) * 0.15,
 					vy: (Math.random() - 0.5) * 0.15,
-					opacity: 0.35 + Math.random() * 0.4,
+					opacity: 0.25 + Math.random() * 0.28,
 					lineWidth: 1.1 + Math.random() * 0.7,
 					hatched: Math.random() < 0.3,
 					color: pickColor()
@@ -471,7 +474,8 @@
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		font-weight: 700;
-		background: rgba(8, 9, 11, 0.8);
+		background: rgba(245, 242, 238, 0.88);
+		border: 1px solid var(--color-border);
 		padding: 4px 10px;
 		border-radius: 4px;
 		white-space: nowrap;
@@ -483,12 +487,14 @@
 	.drag-hint::after {
 		content: '';
 		position: absolute;
-		bottom: -4px;
+		bottom: -5px;
 		left: 50%;
 		transform: translateX(-50%) rotate(45deg);
 		width: 8px;
 		height: 8px;
-		background: rgba(8, 9, 11, 0.8);
+		background: rgba(245, 242, 238, 0.88);
+		border-right: 1px solid var(--color-border);
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	@keyframes drag-pulse {

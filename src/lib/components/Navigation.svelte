@@ -53,7 +53,7 @@
 	.name {
 		font-family: var(--font-display);
 		font-size: 3rem;
-		font-weight: 700;
+		font-weight: 900;
 		color: var(--color-text-bright);
 		text-decoration: none;
 		line-height: 1.2;
@@ -70,7 +70,7 @@
 		gap: 1rem;
 		font-family: var(--font-mono);
 		font-size: 1.125rem;
-		font-weight: 700;
+		font-weight: 900;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 	}
