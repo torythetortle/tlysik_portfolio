@@ -419,7 +419,7 @@ export const projects: Project[] = [
 		tags: ['environmental', 'adobe illustrator', 'data visualization'],
 		collaborators: ['Erin Davis'],
 		awards: '',
-		featured: false,
+		featured: true,
 		category: 'Visual & Interactive'
 	},
 	{

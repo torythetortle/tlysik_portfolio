@@ -113,7 +113,9 @@
 		font-size: 0.875rem;
 		color: var(--color-text-muted);
 		text-decoration: none;
-		display: inline-block;
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
 		margin-bottom: var(--space-xl);
 		transition: color var(--transition-base);
 	}
@@ -181,7 +183,10 @@
 		font-size: 0.875rem;
 		color: var(--color-bg);
 		background: var(--color-accent);
-		padding: 0.5rem 1.25rem;
+		padding: 0.75rem 1.25rem;
+		min-height: 48px;
+		display: inline-flex;
+		align-items: center;
 		border-radius: 4px;
 		text-decoration: none;
 		transition: background var(--transition-base);
@@ -196,7 +201,10 @@
 		font-family: var(--font-mono);
 		font-size: 0.875rem;
 		color: var(--color-text-muted);
-		padding: 0.5rem 1.25rem;
+		padding: 0.75rem 1.25rem;
+		min-height: 48px;
+		display: inline-flex;
+		align-items: center;
 		border: 1px solid var(--color-border);
 		border-radius: 4px;
 		text-decoration: none;
@@ -249,12 +257,15 @@
 	}
 
 	@media (max-width: 640px) {
-		h1 {
-			font-size: 1.375rem;
-		}
+		h1 { font-size: 1.375rem; }
+		.project-description p { font-size: 1rem; }
+		.project-links { flex-direction: column; }
+		.primary-link, .secondary-link { text-align: center; }
+	}
 
-		.project-description p {
-			font-size: 1rem;
-		}
+	@media (max-width: 480px) {
+		h1 { font-size: 1.25rem; }
+		.project-meta-row { font-size: 0.75rem; gap: var(--space-xs); }
+		.tags { gap: 0.25rem; }
 	}
 </style>

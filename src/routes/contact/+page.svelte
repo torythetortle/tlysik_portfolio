@@ -92,6 +92,10 @@
 		text-decoration: none;
 		border-bottom: 1px solid var(--color-border);
 		transition: color var(--transition-base), border-color var(--transition-base);
+		word-break: break-all;
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
 	}
 
 	.contact-value a:hover {
@@ -114,6 +118,9 @@
 		text-decoration: none;
 		transition: color var(--transition-base);
 		-webkit-text-stroke: 0.3px currentColor;
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
 	}
 
 	.social-links a:hover {

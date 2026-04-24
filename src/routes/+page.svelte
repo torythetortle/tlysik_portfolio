@@ -331,7 +331,7 @@
 </svelte:head>
 
 <!-- fixed canvas background -->
-<canvas bind:this={canvas} class="hexagon-canvas" aria-hidden="true"></canvas>
+<canvas bind:this={canvas} class="hexagon-canvas" style="pointer-events: {stickyVisible ? 'none' : 'auto'}" aria-hidden="true"></canvas>
 
 <!-- sticky nav (appears after scrolling past hero) -->
 {#if stickyVisible}
@@ -477,7 +477,7 @@
 		width: 100%;
 		height: 100%;
 		z-index: 0;
-		pointer-events: auto;
+		touch-action: pan-y;
 	}
 
 	/* --- drag hint --- */
@@ -547,11 +547,12 @@
 	.sticky-inner {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 0.75rem var(--space-xl);
+		padding: 0 var(--space-xl);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-lg);
+		min-height: 52px;
 	}
 
 	.sticky-name {
@@ -581,6 +582,9 @@
 		color: var(--color-text-muted);
 		text-decoration: none;
 		transition: color var(--transition-base);
+		min-height: 44px;
+		display: flex;
+		align-items: center;
 	}
 
 	.sticky-links a:hover {
@@ -666,6 +670,9 @@
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		transition: color var(--transition-base);
+		min-height: 44px;
+		display: flex;
+		align-items: center;
 	}
 
 	.hero-nav a:hover {
@@ -685,7 +692,8 @@
 		font-size: 0.75rem;
 		text-transform: uppercase;
 		letter-spacing: 0.12em;
-		color: var(--color-text-muted);
+		color: var(--color-text-bright);
+		font-weight: 700;
 		animation: fade-bob 2.5s ease-in-out infinite;
 		pointer-events: none;
 	}
@@ -809,7 +817,7 @@
 		line-height: 1.4;
 		text-decoration: none;
 		display: block;
-		margin-bottom: 4px;
+		padding: 0.375rem 0 0.25rem;
 		transition: color var(--transition-base);
 	}
 
@@ -880,6 +888,10 @@
 		text-decoration: none;
 		border-bottom: 1px solid var(--color-border);
 		transition: color var(--transition-base), border-color var(--transition-base);
+		word-break: break-all;
+		min-height: 44px;
+		display: flex;
+		align-items: center;
 	}
 
 	.contact-value a:hover {
@@ -932,10 +944,14 @@
 		.hero-nav a { font-size: 0.8125rem; }
 		.nav-hex { display: none; }
 		.contact-row { flex-direction: column; gap: var(--space-xs); }
-		.sticky-links { display: none; }
+		.sticky-links { gap: 0.5rem; font-size: 0.7rem; }
+		.sticky-links svg { display: none; }
+		.sticky-inner { padding: 0.5rem var(--space-sm); gap: var(--space-sm); }
+		.sticky-name { font-size: 0.9rem; }
 		.container.wide { padding: 0 var(--space-sm); }
 		.section-header { flex-direction: column; gap: var(--space-xs); align-items: flex-start; }
 		.social-links { gap: var(--space-sm); }
 		.bio p { font-size: 1rem; line-height: 1.7; }
+		.section-heading { font-size: 1.375rem; }
 	}
 </style>

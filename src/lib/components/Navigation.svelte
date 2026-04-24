@@ -88,7 +88,10 @@
 	.links a {
 		color: var(--color-text-muted);
 		text-decoration: none;
-		padding: 0.25rem 0;
+		padding: 0.625rem 0.25rem;
+		min-height: 44px;
+		display: flex;
+		align-items: center;
 		-webkit-text-stroke: 0;
 	}
 
