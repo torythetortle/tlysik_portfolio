@@ -7,8 +7,8 @@
 	--color-text-muted: #444444;
 	--color-text-bright: #0a0a0a;
 	--color-border: #d0c9c0;
-	--color-accent: #00a5cf;
-	--color-accent-hover: #179eba;
+	--color-accent: #006fa0;
+	--color-accent-hover: #0088bb;
 	--color-accent-secondary: #5cbfa6;
 	--color-accent-tertiary: #25a18e;
 
@@ -92,7 +92,7 @@ a:focus-visible {
 }
 
 ::selection {
-	background: #00a5cf;
+	background: #006fa0;
 	color: #ffffff;
 }
 

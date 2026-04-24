@@ -385,6 +385,15 @@
 				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
 				<a href="#contact">Contact</a>
 			</nav>
+			<div class="hero-socials">
+				<a href="https://github.com/torythetortle" target="_blank" rel="noopener noreferrer">GitHub</a>
+				<span class="social-dot" aria-hidden="true">·</span>
+				<a href="https://www.linkedin.com/in/tory-lysik/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+				<span class="social-dot" aria-hidden="true">·</span>
+				<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">X</a>
+				<span class="social-dot" aria-hidden="true">·</span>
+				<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+			</div>
 		</div>
 		<div class="scroll-cue" aria-hidden="true">scroll ↓</div>
 	</section>
@@ -683,6 +692,40 @@
 		color: var(--color-accent);
 		opacity: 0.85;
 		flex-shrink: 0;
+	}
+
+	.hero-socials {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 0.375rem 0.75rem;
+		margin-top: var(--space-sm);
+		pointer-events: auto;
+	}
+
+	.hero-socials a {
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		font-weight: 700;
+		color: var(--color-text-muted);
+		text-decoration: none;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		transition: color var(--transition-base);
+		min-height: 44px;
+		display: flex;
+		align-items: center;
+	}
+
+	.hero-socials a:hover {
+		color: var(--color-accent);
+	}
+
+	.social-dot {
+		color: var(--color-border);
+		font-size: 1rem;
+		line-height: 1;
 	}
 
 	.scroll-cue {
