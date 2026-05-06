@@ -8,6 +8,12 @@ export interface Illustration {
 
 export const illustrations: Illustration[] = [
 	{
+		file: 'building_colo.webp',
+		title: 'Tow Center / CJR — database social image',
+		description: 'A social image I made for a database at the Tow Center for Digital Journalism / Columbia Journalism Review.',
+		tags: ['Illustrator', 'mixed media', 'hand drawn']
+	},
+	{
 		file: 'nicar-pink-pigeons.webp',
 		title: 'NICAR Pink Pigeons',
 		description: 'A sticker I drew for my newsletter, made for the NICAR journalism conference.',
