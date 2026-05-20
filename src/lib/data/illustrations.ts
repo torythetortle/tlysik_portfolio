@@ -8,6 +8,13 @@ export interface Illustration {
 
 export const illustrations: Illustration[] = [
 	{
+		file: 'road_code.webp',
+		title: 'Recovered Factory — 287g agreements illustration',
+		description: 'Illustration for Recovered Factory newsletter focused on 287g agreements and how they affect traffic stops in Missouri.',
+		tags: ['digital art', 'Adobe Illustrator', 'hand drawn'],
+		link: 'https://recoveredfactory.net'
+	},
+	{
 		file: 'building_colo.webp',
 		title: 'Tow Center / CJR — database social image',
 		description: 'A social image I made for a database at the Tow Center for Digital Journalism / Columbia Journalism Review.',
