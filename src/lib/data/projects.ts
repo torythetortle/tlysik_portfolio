@@ -16,6 +16,37 @@ export interface Project {
 
 export const projects: Project[] = [
 	{
+		slug: 'scraper-factory',
+		outlet: 'Tow Center for Digital Journalism',
+		title: 'Scraper Factory',
+		description:
+			'As FOIA requests go unanswered and government data disappears, reporters increasingly must collect their own. So, I co-created Scraper Factory: an AI-automated code generator that lets journalists build fleets of Python scrapers in minutes. Scraper Factory automates the first-draft scraper-writing process using AI, then runs those scrapers on a recurring schedule with no continued reliance on LLMs. I taught sessions on the tool at the 2025 Computation + Journalism conference and NICAR 2026.',
+		thumbnail: '/images/scraperfactory.webp',
+		link: 'https://www.cjr.org/tow_center/scraper-factories.php',
+		additionalLinks: [{ label: 'GitHub', url: 'https://github.com/TowCenter/scraper-factory' }],
+		date: '2026-04-01',
+		tags: ['web scraping', 'Python', 'AI', 'teaching'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Research'
+	},
+	{
+		slug: '287g-watch',
+		outlet: 'Recovered Factory',
+		title: '287(g) Watch',
+		description:
+			'I led the creation, reporting, and design of this project — a live-updating, interactive database and map tracking ICE\'s 287(g) local law enforcement partnerships. Built for Recovered Factory, the project documents when agencies signed on and left the program, categorizes each agreement type, and links to source MOAs and FOIA resources. I also used the database to report collaboratively with local reporters in cities including Cleveland, Ohio; Jackson, Mississippi; and cities in Texas.',
+		thumbnail: '/images/287g.webp',
+		link: 'https://287g.recoveredfactory.net/en',
+		date: '2026-05-01',
+		tags: ['Svelte', 'data visualization', 'mapping', 'investigative', 'AI', 'Python', 'R Studio', 'interviews'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Investigations'
+	},
+	{
 		slug: 'geo-data-centers',
 		outlet: 'Personal project',
 		title: 'The Buildout: How AI data centers are reshaping America',
