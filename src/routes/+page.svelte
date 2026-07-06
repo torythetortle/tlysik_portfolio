@@ -403,17 +403,14 @@
 		<div class="container">
 			<h2 class="section-heading">About</h2>
 			<div class="bio">
-				<p>I'm a data and graphics journalist and web developer based in New York City.</p>
+				<p>I'm a <strong>data and graphics journalist</strong> and web developer based in <strong>New York City</strong>, currently working as a reporter at the <strong>Tow Center for Digital Journalism</strong> at Columbia University.</p>
 				<p>
-					Currently, I am a reporter at the Tow Center for Digital Journalism. I am passionate about using data and graphics to uncover the stories that impact lives and build a better world. I love speaking with real human beings, making order from chaos, and figuring out seemingly unsolvable problems. I also care deeply about accessibility — taking insanely complex topics and critical information and making it clear and understandable.
+					I've worked at <a href="https://www.axios.com/results?q=tory%20lysik&sort=2" target="_blank" rel="noopener noreferrer">Axios</a>, <a href="https://www.vox.com/" target="_blank" rel="noopener noreferrer">Vox</a>, <a href="https://www.themarshallproject.org/" target="_blank" rel="noopener noreferrer">The Marshall Project</a>, the <a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Associated Press</a>, and others — spanning local shoeleather reporting to <strong>interactive graphics and data tools</strong>. My work has received numerous awards and has been cited in <strong>congressional testimony and federal legislation</strong>.
 				</p>
 				<p>
-					My career has sometimes followed a bit of a zigzag path. I've worked at outlets including <a href="https://www.axios.com/results?q=tory%20lysik&sort=2" target="_blank" rel="noopener noreferrer">Axios</a>, <a href="https://www.vox.com/" target="_blank" rel="noopener noreferrer">Vox</a>, <a href="https://www.themarshallproject.org/" target="_blank" rel="noopener noreferrer">The Marshall Project</a>, the <a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Associated Press</a>, and others. My work spans from local and national shoeleather reporting to interactive graphics and tools. The work I've been a part of has received numerous awards, and has been cited in congressional testimony and federal legislation.
+					I care deeply about <strong>accessibility</strong> — making complex, critical information clear and understandable. Whether diving into legal documents, filing FOIA requests, or building maps to surface human rights issues, I thrive in the meticulous, detail-heavy work that makes complex stories click.
 				</p>
-				<p>
-					I love what I do. Whether it's diving down rabbit holes in legal documents, filing the perfect FOIA request, or building detailed maps to surface human rights issues, I thrive in the meticulous, detail-heavy work that makes complex stories click — on tight deadlines or over months.
-				</p>
-				<p>In my free time, I am usually escaping the concrete jungle of NYC for the mountains or trying to become fluent in a fifth language.</p>
+				<p>In my free time, I'm usually escaping NYC for the mountains or working on becoming fluent in a fifth language.</p>
 			</div>
 		</div>
 	</section>
@@ -454,7 +451,6 @@
 	<section id="contact" class="content-section">
 		<div class="container">
 			<h2 class="section-heading">Contact</h2>
-			<p class="contact-intro">Feel free to reach out by email or on Signal.</p>
 			<div class="contact-list">
 				<div class="contact-row">
 					<span class="label">Email</span>
@@ -750,7 +746,7 @@
 	.content-section {
 		background: rgba(255, 255, 255, 0.97);
 		position: relative;
-		padding: var(--space-2xl) 0;
+		padding: var(--space-xl) 0;
 		pointer-events: auto;
 	}
 
@@ -760,26 +756,31 @@
 
 	.section-heading {
 		font-family: var(--font-display);
-		font-size: 1.75rem;
+		font-size: 1.5rem;
 		font-weight: 700;
 		color: var(--color-text-bright);
-		margin-bottom: var(--space-xl);
+		margin-bottom: var(--space-lg);
 		-webkit-text-stroke: 0.3px currentColor;
 	}
 
 	/* --- about --- */
 	.bio p {
 		font-size: 1.0625rem;
-		line-height: 1.8;
+		line-height: 1.7;
 		color: var(--color-text);
+		margin-bottom: 0.75rem;
 	}
 
 	.bio p:last-child {
 		margin-bottom: 0;
 	}
 
-	.bio a {
+	.bio strong {
 		font-weight: 700;
+		color: var(--color-text-bright);
+	}
+
+	.bio a {
 		color: var(--color-accent);
 	}
 
@@ -788,7 +789,7 @@
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
-		margin-bottom: var(--space-xl);
+		margin-bottom: var(--space-lg);
 	}
 
 	.section-header .section-heading {
@@ -885,12 +886,6 @@
 	}
 
 	/* --- contact --- */
-	.contact-intro {
-		font-size: 1rem;
-		color: var(--color-text);
-		margin-bottom: var(--space-xl);
-	}
-
 	.contact-list {
 		display: flex;
 		flex-direction: column;
