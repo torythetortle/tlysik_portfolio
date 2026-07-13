@@ -765,6 +765,7 @@
 
 	/* --- about --- */
 	.bio p {
+		font-family: var(--font-condensed);
 		font-size: 1.0625rem;
 		line-height: 1.7;
 		color: var(--color-text);

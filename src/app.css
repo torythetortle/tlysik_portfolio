@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 :root {
 	--color-bg: #ffffff;
@@ -13,7 +13,8 @@
 	--color-accent-tertiary: #25a18e;
 
 	--font-mono: 'Space Mono', 'IBM Plex Mono', monospace;
-	--font-body: 'Space Mono', 'IBM Plex Mono', monospace;
+	--font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+	--font-condensed: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif;
 	--font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 	--font-display: 'Space Mono', 'IBM Plex Mono', monospace;
 

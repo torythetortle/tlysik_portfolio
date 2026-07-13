@@ -243,7 +243,7 @@
 	}
 
 	.description {
-		font-family: var(--font-sans);
+		font-family: var(--font-condensed);
 		font-size: 0.8rem;
 		color: var(--color-muted);
 		line-height: 1.5;

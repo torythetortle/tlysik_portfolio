@@ -165,6 +165,7 @@
 	}
 
 	.project-description p {
+		font-family: var(--font-condensed);
 		font-size: 1.0625rem;
 		line-height: 1.8;
 		color: var(--color-text);
