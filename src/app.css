@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;700&family=IBM+Plex+Sans:wght@400;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
 	--color-bg: #ffffff;
-	--color-bg-subtle: #f0f0f0;
+	--color-bg-subtle: #f5f0f0;
 	--color-text: #1f1f1f;
 	--color-text-muted: #444444;
 	--color-text-bright: #0a0a0a;
-	--color-border: #d0c9c0;
-	--color-accent: #006fa0;
-	--color-accent-hover: #0088bb;
-	--color-accent-secondary: #5cbfa6;
-	--color-accent-tertiary: #25a18e;
+	--color-border: #d4c8c8;
+	--color-accent: #8c0034;
+	--color-accent-hover: #b0003f;
+	--color-accent-secondary: #d4607a;
+	--color-accent-tertiary: #b04060;
 
 	--font-mono: 'Space Mono', 'IBM Plex Mono', monospace;
 	--font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -93,7 +93,7 @@ a:focus-visible {
 }
 
 ::selection {
-	background: #006fa0;
+	background: #660027;
 	color: #ffffff;
 }
 

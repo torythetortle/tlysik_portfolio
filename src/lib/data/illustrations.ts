@@ -28,42 +28,42 @@ export const illustrations: Illustration[] = [
 		link: 'https://recoveredfactory.net/en/nicar-pink-pigeons'
 	},
 	{
-		file: 'usecase-1.jpg',
+		file: 'usecase-1.webp',
 		title: 'Use Case Magazine — illustration',
 		description: 'Part of a series of illustrations made for Use Case Magazine, an international crypto publication.',
 		tags: ['Adobe Illustrator', 'Procreate', 'hand drawn', 'print design', 'printed media'],
 		link: '/portfolio/use-case-crypto-magazine'
 	},
 	{
-		file: 'usecase-2.jpg',
+		file: 'usecase-2.webp',
 		title: 'Use Case Magazine — illustration',
 		description: 'Part of a series of illustrations made for Use Case Magazine, an international crypto publication.',
 		tags: ['Adobe Illustrator', 'Procreate', 'hand drawn', 'print design', 'printed media'],
 		link: '/portfolio/use-case-crypto-magazine'
 	},
 	{
-		file: 'usecase-3.jpg',
+		file: 'usecase-3.webp',
 		title: 'Use Case Magazine — illustration',
 		description: 'Part of a series of illustrations made for Use Case Magazine, an international crypto publication.',
 		tags: ['Adobe Illustrator', 'Procreate', 'hand drawn', 'print design', 'printed media'],
 		link: '/portfolio/use-case-crypto-magazine'
 	},
 	{
-		file: 'usecase-4.jpg',
+		file: 'usecase-4.webp',
 		title: 'Use Case Magazine — illustration',
 		description: 'Part of a series of illustrations made for Use Case Magazine, an international crypto publication.',
 		tags: ['Adobe Illustrator', 'Procreate', 'hand drawn', 'print design', 'printed media'],
 		link: '/portfolio/use-case-crypto-magazine'
 	},
 	{
-		file: 'usecase-5.jpg',
+		file: 'usecase-5.webp',
 		title: 'Use Case Magazine — illustration',
 		description: 'Part of a series of illustrations made for Use Case Magazine, an international crypto publication.',
 		tags: ['Adobe Illustrator', 'Procreate', 'hand drawn', 'print design', 'printed media'],
 		link: '/portfolio/use-case-crypto-magazine'
 	},
 	{
-		file: 'usecase-6.jpg',
+		file: 'usecase-6.webp',
 		title: 'Use Case Magazine — illustration',
 		description: 'Part of a series of illustrations made for Use Case Magazine, an international crypto publication.',
 		tags: ['Adobe Illustrator', 'Procreate', 'hand drawn', 'print design', 'printed media'],

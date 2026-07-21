@@ -19,14 +19,14 @@
 	}
 
 	const palette: [number, number, number][] = [
-		[92, 191, 166],   // #5cbfa6
-		[107, 210, 148],  // #6bd294
-		[102, 225, 110],  // #66e16e
-		[37, 161, 142],   // #25a18e
-		[0, 165, 207],    // #00a5cf
-		[23, 158, 186],   // #179eba
-		[35, 110, 164],   // #236ea4
-		[46, 151, 165]    // #2e97a5
+		[140, 0, 52],     // #8c0034 - burgundy
+		[176, 0, 63],     // #b0003f - crimson
+		[210, 30, 80],    // #d21e50 - vivid rose
+		[212, 96, 122],   // #d4607a - rose
+		[176, 64, 96],    // #b04060 - mauve
+		[230, 120, 150],  // #e67896 - blush
+		[156, 20, 60],    // #9c143c - deep rose
+		[192, 50, 90]     // #c03258 - mid rose
 	];
 
 	function pickColor(): [number, number, number] {
@@ -138,41 +138,16 @@
 			ctx.restore();
 		}
 
-		function resolveCollisions() {
-			for (let i = 0; i < hexagons.length; i++) {
-				for (let j = i + 1; j < hexagons.length; j++) {
-					const a = hexagons[i];
-					const b = hexagons[j];
-					const dx = b.x - a.x;
-					const dy = b.y - a.y;
-					const dist = Math.sqrt(dx * dx + dy * dy);
-					const minDist = a.size + b.size;
+		let lastTime = 0;
+		const TARGET_FPS = 30;
+		const FRAME_MS = 1000 / TARGET_FPS;
 
-					if (dist < minDist && dist > 0) {
-						const nx = dx / dist;
-						const ny = dy / dist;
-						const overlap = (minDist - dist) * 0.5;
-						a.x -= nx * overlap;
-						a.y -= ny * overlap;
-						b.x += nx * overlap;
-						b.y += ny * overlap;
-
-						const dvx = a.vx - b.vx;
-						const dvy = a.vy - b.vy;
-						const dot = dvx * nx + dvy * ny;
-						if (dot > 0) {
-							a.vx -= dot * nx;
-							a.vy -= dot * ny;
-							b.vx += dot * nx;
-							b.vy += dot * ny;
-						}
-					}
-				}
-			}
-		}
-
-		function animate() {
+		function animate(time: number) {
 			if (!ctx) return;
+			animationId = requestAnimationFrame(animate);
+			if (time - lastTime < FRAME_MS) return;
+			lastTime = time;
+
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 			for (const hex of hexagons) {
@@ -184,22 +159,16 @@
 				if (hex.x > canvas.width + hex.size) hex.x = -hex.size;
 				if (hex.y < -hex.size) hex.y = canvas.height + hex.size;
 				if (hex.y > canvas.height + hex.size) hex.y = -hex.size;
-			}
 
-			resolveCollisions();
-
-			for (const hex of hexagons) {
 				drawHexagon(ctx, hex);
 			}
-
-			animationId = requestAnimationFrame(animate);
 		}
 
 		resize();
 		createHexagons();
 
 		if (!prefersReducedMotion) {
-			animate();
+			animationId = requestAnimationFrame(animate);
 		} else {
 			for (const hex of hexagons) {
 				drawHexagon(ctx, hex);
