@@ -2,39 +2,54 @@
 	import { onMount } from 'svelte';
 	import { projects as allProjects, type Project } from '$lib/data/projects';
 
-	let hintVisible = $state(true);
-	let hintX = $state(0);
-	let hintY = $state(0);
 	let stickyVisible = $state(false);
-	let canvas: HTMLCanvasElement;
 
-	interface Hexagon {
+	interface SeedItem {
+		file: string;
 		x: number;
 		y: number;
+		vx: number;
+		vy: number;
 		size: number;
 		rotation: number;
 		rotationSpeed: number;
-		vx: number;
-		vy: number;
-		opacity: number;
-		lineWidth: number;
-		hatched: boolean;
-		color: [number, number, number];
 	}
 
-	const palette: [number, number, number][] = [
-		[140, 0, 52],     // #8c0034 - burgundy
-		[176, 0, 63],     // #b0003f - crimson
-		[210, 30, 80],    // #d21e50 - vivid rose
-		[212, 96, 122],   // #d4607a - rose
-		[176, 64, 96],    // #b04060 - mauve
-		[230, 120, 150],  // #e67896 - blush
-		[156, 20, 60],    // #9c143c - deep rose
-		[192, 50, 90]     // #c03258 - mid rose
-	];
+	let seeds = $state<SeedItem[]>([]);
+	let seedEls: HTMLImageElement[] = [];
+	let draggingSeed = $state<number | null>(null);
+	let dragOffsetX = 0;
+	let dragOffsetY = 0;
+	let showDragHint = $state(true);
 
-	function pickColor(): [number, number, number] {
-		return palette[Math.floor(Math.random() * palette.length)];
+	function onSeedPointerDown(e: PointerEvent, i: number) {
+		dragOffsetX = e.clientX - seeds[i].x;
+		dragOffsetY = e.clientY - seeds[i].y;
+		seeds[i].vx = 0;
+		seeds[i].vy = 0;
+		draggingSeed = i;
+		showDragHint = false;
+		(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+		e.preventDefault();
+	}
+
+	function onSeedPointerMove(e: PointerEvent, i: number) {
+		if (draggingSeed !== i) return;
+		seeds[i].x = e.clientX - dragOffsetX;
+		seeds[i].y = e.clientY - dragOffsetY;
+		const el = seedEls[i];
+		if (el) {
+			el.style.left = seeds[i].x + 'px';
+			el.style.top = seeds[i].y + 'px';
+		}
+	}
+
+	function onSeedPointerUp(e: PointerEvent, i: number) {
+		if (draggingSeed !== i) return;
+		seeds[i].vx = (Math.random() - 0.5) * 0.2;
+		seeds[i].vy = (Math.random() - 0.5) * 0.2;
+		(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+		draggingSeed = null;
 	}
 
 	const featuredProjects = [...allProjects]
@@ -71,208 +86,92 @@
 	}
 
 	onMount(() => {
-		const ctx = canvas.getContext('2d');
-		if (!ctx) return;
+		const W = () => window.innerWidth;
+		const H = () => window.innerHeight;
 
-		let animationId: number;
-		let hexagons: Hexagon[] = [];
-		const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		seeds = Array.from({ length: 14 }, (_, i) => ({
+			file: `/dandis/seed${(i % 4) + 1}.svg`,
+			x: 60 + Math.random() * (W() - 120),
+			y: 60 + Math.random() * (H() * 0.75),
+			vx: (Math.random() - 0.5) * 0.15,
+			vy: (Math.random() - 0.5) * 0.15,
+			size: 26 + Math.random() * 16,
+			rotation: Math.random() * 360,
+			rotationSpeed: (Math.random() - 0.5) * 0.15
+		}));
 
-		let dragging: Hexagon | null = null;
-		let lastPointer: { x: number; y: number; t: number } | null = null;
-		let pointerVel: { vx: number; vy: number } = { vx: 0, vy: 0 };
-		let hintTarget: Hexagon | null = null;
+		// physics loop — direct DOM writes to avoid Svelte scheduler jank
+		let animId: number;
 
-		function resize() {
-			canvas.width = window.innerWidth;
-			canvas.height = window.innerHeight;
-		}
+		function tick() {
+			animId = requestAnimationFrame(tick);
 
-		function createHexagons() {
-			hexagons = [];
-			const count = Math.min(60, Math.floor((canvas.width * canvas.height) / 22000));
-			for (let i = 0; i < count; i++) {
-				hexagons.push({
-					x: Math.random() * canvas.width,
-					y: Math.random() * canvas.height,
-					size: 22 + Math.random() * 40,
-					rotation: Math.random() * Math.PI * 2,
-					rotationSpeed: (Math.random() - 0.5) * 0.002,
-					vx: (Math.random() - 0.5) * 0.15,
-					vy: (Math.random() - 0.5) * 0.15,
-					opacity: 0.25 + Math.random() * 0.28,
-					lineWidth: 1.1 + Math.random() * 0.7,
-					hatched: Math.random() < 0.3,
-					color: pickColor()
-				});
+			const W = window.innerWidth;
+			const H = window.innerHeight;
+
+			for (let i = 0; i < seeds.length; i++) {
+				if (draggingSeed === i) continue;
+				seeds[i].x += seeds[i].vx;
+				seeds[i].y += seeds[i].vy;
+				seeds[i].rotation += seeds[i].rotationSpeed;
+
+				const s = seeds[i].size;
+				if (seeds[i].x < -s * 2) seeds[i].x = W + s;
+				else if (seeds[i].x > W + s) seeds[i].x = -s * 2;
+				if (seeds[i].y < -s * 2) seeds[i].y = H + s;
+				else if (seeds[i].y > H + s) seeds[i].y = -s * 2;
 			}
 
-			const cx = canvas.width / 2;
-			const cy = canvas.height / 2;
-			const candidates = hexagons
-				.filter((h) => h.size > 35 && Math.hypot(h.x - cx, h.y - cy) > 250)
-				.sort((a, b) => b.size - a.size);
-			hintTarget = candidates[0] ?? hexagons[0];
-		}
-
-		function hexPath(size: number) {
-			ctx!.beginPath();
-			for (let i = 0; i < 6; i++) {
-				const angle = (Math.PI / 3) * i;
-				const px = size * Math.cos(angle);
-				const py = size * Math.sin(angle);
-				if (i === 0) ctx!.moveTo(px, py);
-				else ctx!.lineTo(px, py);
-			}
-			ctx!.closePath();
-		}
-
-		function drawHexagon(hex: Hexagon) {
-			const [r, g, b] = hex.color;
-			ctx!.save();
-			ctx!.translate(hex.x, hex.y);
-			ctx!.rotate(hex.rotation);
-			hexPath(hex.size);
-			ctx!.strokeStyle = `rgba(${r}, ${g}, ${b}, ${hex.opacity})`;
-			ctx!.lineWidth = hex.lineWidth;
-			ctx!.stroke();
-			if (hex.hatched) {
-				ctx!.save();
-				hexPath(hex.size - hex.lineWidth);
-				ctx!.clip();
-				ctx!.strokeStyle = `rgba(${r}, ${g}, ${b}, ${hex.opacity * 0.7})`;
-				ctx!.lineWidth = hex.lineWidth * 0.55;
-				const step = Math.max(1.6, hex.size * 0.09);
-				for (let x = -hex.size; x <= hex.size; x += step) {
-					ctx!.beginPath();
-					ctx!.moveTo(x, -hex.size);
-					ctx!.lineTo(x, hex.size);
-					ctx!.stroke();
-				}
-				ctx!.restore();
-			}
-			ctx!.restore();
-		}
-
-		function resolveCollisions() {
-			for (let i = 0; i < hexagons.length; i++) {
-				for (let j = i + 1; j < hexagons.length; j++) {
-					const a = hexagons[i];
-					const b = hexagons[j];
-					const dx = b.x - a.x;
-					const dy = b.y - a.y;
+			// collision — center-to-center distance, velocity exchange
+			for (let i = 0; i < seeds.length; i++) {
+				for (let j = i + 1; j < seeds.length; j++) {
+					const cx_i = seeds[i].x + seeds[i].size * 0.5;
+					const cy_i = seeds[i].y + seeds[i].size * 0.9;
+					const cx_j = seeds[j].x + seeds[j].size * 0.5;
+					const cy_j = seeds[j].y + seeds[j].size * 0.9;
+					const dx = cx_j - cx_i;
+					const dy = cy_j - cy_i;
 					const dist = Math.sqrt(dx * dx + dy * dy);
-					const minDist = a.size + b.size;
-					if (dist < minDist && dist > 0) {
+					const minDist = (seeds[i].size + seeds[j].size) * 0.65;
+					if (dist < minDist && dist > 0.01) {
 						const nx = dx / dist;
 						const ny = dy / dist;
 						const overlap = (minDist - dist) * 0.5;
-						const aLocked = dragging === a;
-						const bLocked = dragging === b;
-						if (!aLocked) { a.x -= nx * overlap; a.y -= ny * overlap; }
-						if (!bLocked) { b.x += nx * overlap; b.y += ny * overlap; }
-						const dvx = a.vx - b.vx;
-						const dvy = a.vy - b.vy;
-						const dot = dvx * nx + dvy * ny;
-						if (dot > 0) {
-							if (!aLocked) { a.vx -= dot * nx; a.vy -= dot * ny; }
-							if (!bLocked) { b.vx += dot * nx; b.vy += dot * ny; }
+						if (draggingSeed !== i) { seeds[i].x -= nx * overlap; seeds[i].y -= ny * overlap; }
+						if (draggingSeed !== j) { seeds[j].x += nx * overlap; seeds[j].y += ny * overlap; }
+						const dvx = seeds[j].vx - seeds[i].vx;
+						const dvy = seeds[j].vy - seeds[i].vy;
+						const dvn = dvx * nx + dvy * ny;
+						if (dvn < 0) {
+							const impulse = dvn * 0.75;
+							if (draggingSeed !== i) { seeds[i].vx += nx * impulse; seeds[i].vy += ny * impulse; }
+							if (draggingSeed !== j) { seeds[j].vx -= nx * impulse; seeds[j].vy -= ny * impulse; }
 						}
 					}
 				}
 			}
-		}
 
-		function animate() {
-			if (!ctx) return;
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			for (const hex of hexagons) {
-				if (hex === dragging) continue;
-				hex.x += hex.vx;
-				hex.y += hex.vy;
-				hex.rotation += hex.rotationSpeed;
-				hex.vx *= 0.995;
-				hex.vy *= 0.995;
-				if (hex.x < hex.size) { hex.x = hex.size; hex.vx = Math.abs(hex.vx) * 0.85; }
-				if (hex.x > canvas.width - hex.size) { hex.x = canvas.width - hex.size; hex.vx = -Math.abs(hex.vx) * 0.85; }
-				if (hex.y < hex.size) { hex.y = hex.size; hex.vy = Math.abs(hex.vy) * 0.85; }
-				if (hex.y > canvas.height - hex.size) { hex.y = canvas.height - hex.size; hex.vy = -Math.abs(hex.vy) * 0.85; }
+			// cap speed
+			for (let i = 0; i < seeds.length; i++) {
+				if (draggingSeed === i) continue;
+				const speed = Math.sqrt(seeds[i].vx ** 2 + seeds[i].vy ** 2);
+				if (speed > 0.75) {
+					seeds[i].vx = (seeds[i].vx / speed) * 0.75;
+					seeds[i].vy = (seeds[i].vy / speed) * 0.75;
+				}
 			}
-			resolveCollisions();
-			for (const hex of hexagons) { if (hex !== dragging) drawHexagon(hex); }
-			if (dragging) drawHexagon(dragging);
-			if (hintVisible && hintTarget) {
-				hintX = hintTarget.x;
-				hintY = hintTarget.y - hintTarget.size - 14;
-			}
-			animationId = requestAnimationFrame(animate);
-		}
 
-		function hitTest(x: number, y: number): Hexagon | null {
-			for (let i = hexagons.length - 1; i >= 0; i--) {
-				const h = hexagons[i];
-				const dx = x - h.x;
-				const dy = y - h.y;
-				if (dx * dx + dy * dy < h.size * h.size) return h;
-			}
-			return null;
-		}
-
-		function onPointerDown(e: PointerEvent) {
-			const rect = canvas.getBoundingClientRect();
-			const x = e.clientX - rect.left;
-			const y = e.clientY - rect.top;
-			const hit = hitTest(x, y);
-			if (hit) {
-				dragging = hit;
-				hit.vx = 0;
-				hit.vy = 0;
-				lastPointer = { x, y, t: performance.now() };
-				pointerVel = { vx: 0, vy: 0 };
-				canvas.setPointerCapture(e.pointerId);
-				canvas.style.cursor = 'grabbing';
-				hintVisible = false;
+			// write to DOM directly — faster than going through Svelte's scheduler
+			for (let i = 0; i < seeds.length; i++) {
+				const el = seedEls[i];
+				if (!el || draggingSeed === i) continue;
+				el.style.left = seeds[i].x + 'px';
+				el.style.top = seeds[i].y + 'px';
+				el.style.transform = `rotate(${seeds[i].rotation}deg)`;
 			}
 		}
 
-		function onPointerMove(e: PointerEvent) {
-			const rect = canvas.getBoundingClientRect();
-			const x = e.clientX - rect.left;
-			const y = e.clientY - rect.top;
-			if (!dragging) {
-				canvas.style.cursor = hitTest(x, y) ? 'grab' : 'default';
-				return;
-			}
-			const now = performance.now();
-			if (lastPointer) {
-				const dt = Math.max(1, now - lastPointer.t);
-				pointerVel = { vx: ((x - lastPointer.x) / dt) * 16, vy: ((y - lastPointer.y) / dt) * 16 };
-			}
-			dragging.x = x;
-			dragging.y = y;
-			lastPointer = { x, y, t: now };
-		}
-
-		function onPointerUp(e: PointerEvent) {
-			if (!dragging) return;
-			dragging.vx = pointerVel.vx;
-			dragging.vy = pointerVel.vy;
-			dragging = null;
-			lastPointer = null;
-			canvas.releasePointerCapture(e.pointerId);
-			canvas.style.cursor = 'default';
-		}
-
-		resize();
-		createHexagons();
-		if (!prefersReducedMotion) animate();
-		else for (const h of hexagons) drawHexagon(h);
-
-		window.addEventListener('resize', () => { resize(); createHexagons(); });
-		canvas.addEventListener('pointerdown', onPointerDown);
-		canvas.addEventListener('pointermove', onPointerMove);
-		canvas.addEventListener('pointerup', onPointerUp);
-		canvas.addEventListener('pointercancel', onPointerUp);
+		animId = requestAnimationFrame(tick);
 
 		// column count for portfolio grid
 		const desktopQuery = window.matchMedia('(min-width: 1025px)');
@@ -295,7 +194,7 @@
 		if (heroEl) observer.observe(heroEl);
 
 		return () => {
-			cancelAnimationFrame(animationId);
+			cancelAnimationFrame(animId);
 			desktopQuery.removeEventListener('change', updateColumns);
 			tabletQuery.removeEventListener('change', updateColumns);
 			observer.disconnect();
@@ -330,8 +229,35 @@
 	})}</script>`}
 </svelte:head>
 
-<!-- fixed canvas background -->
-<canvas bind:this={canvas} class="hexagon-canvas" style="pointer-events: {stickyVisible ? 'none' : 'auto'}" aria-hidden="true"></canvas>
+<!-- floating seeds + static flowers -->
+<div class="scene" aria-hidden="true">
+	{#each seeds as seed, i}
+		<img
+			bind:this={seedEls[i]}
+			src={seed.file}
+			alt=""
+			class="seed"
+			class:dragging={draggingSeed === i}
+			style="left:{seed.x}px;top:{seed.y}px;width:{seed.size}px;transform:rotate({seed.rotation}deg);"
+			onpointerdown={(e) => onSeedPointerDown(e, i)}
+			onpointermove={(e) => onSeedPointerMove(e, i)}
+			onpointerup={(e) => onSeedPointerUp(e, i)}
+			onpointercancel={(e) => onSeedPointerUp(e, i)}
+			draggable="false"
+		/>
+	{/each}
+	<img src="/dandis/flower1.svg" alt="" class="flower flower-left" />
+	<img src="/dandis/flower2.svg" alt="" class="flower flower-right" />
+	{#if showDragHint}
+		<div class="drag-hint" aria-hidden="true">
+			<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+				<path d="M8 28 Q8 8 28 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+				<polyline points="22,4 28,8 24,14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+			</svg>
+			<span>move me</span>
+		</div>
+	{/if}
+</div>
 
 <!-- sticky nav (appears after scrolling past hero) -->
 {#if stickyVisible}
@@ -353,13 +279,6 @@
 	</header>
 {/if}
 
-<!-- drag hint (positioned in viewport space) -->
-{#if hintVisible && !stickyVisible}
-	<div class="drag-hint-wrap" style="transform: translate({hintX}px, {hintY}px);" aria-hidden="true">
-		<div class="drag-hint">drag us</div>
-	</div>
-{/if}
-
 <div class="home">
 	<!-- HERO -->
 	<section class="hero" id="hero">
@@ -367,7 +286,7 @@
 			<svg class="hex-glow" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
 				<defs>
 					<filter id="hex-blur" x="-20%" y="-20%" width="140%" height="140%">
-						<feGaussianBlur stdDeviation="12" />
+						<feGaussianBlur stdDeviation="3" />
 					</filter>
 				</defs>
 				<polygon points="100,12 183,58 183,142 100,188 17,142 17,58" fill="var(--color-bg)" filter="url(#hex-blur)" />
@@ -475,60 +394,68 @@
 </div>
 
 <style>
-	/* --- canvas --- */
-	.hexagon-canvas {
+	/* --- scene (seeds + flowers) --- */
+	.scene {
 		position: fixed;
 		inset: 0;
-		width: 100%;
-		height: 100%;
 		z-index: 0;
-		touch-action: pan-y;
+		pointer-events: none;
+		overflow: hidden;
 	}
 
-	/* --- drag hint --- */
-	.drag-hint-wrap {
-		position: fixed;
-		top: 0;
-		left: 0;
+	.seed {
+		position: absolute;
+		height: auto;
+		opacity: 0.75;
+		pointer-events: auto;
+		cursor: grab;
+		user-select: none;
+		touch-action: none;
+	}
+
+	.seed.dragging {
+		cursor: grabbing;
 		z-index: 10;
-		pointer-events: none;
-		will-change: transform;
 	}
 
 	.drag-hint {
-		position: relative;
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		color: var(--color-accent);
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		font-weight: 700;
-		background: rgba(245, 245, 245, 0.88);
-		border: 1px solid var(--color-border);
-		padding: 4px 10px;
-		border-radius: 4px;
-		white-space: nowrap;
-		transform: translateX(-50%);
-		animation: drag-pulse 1.4s ease-in-out infinite;
-		transform-origin: center bottom;
-	}
-
-	.drag-hint::after {
-		content: '';
 		position: absolute;
-		bottom: -5px;
-		left: 50%;
-		transform: translateX(-50%) rotate(45deg);
-		width: 8px;
-		height: 8px;
-		background: rgba(245, 245, 245, 0.88);
-		border-right: 1px solid var(--color-border);
-		border-bottom: 1px solid var(--color-border);
+		top: 18%;
+		left: 6%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 4px;
+		color: var(--color-accent);
+		opacity: 0.7;
+		font-family: var(--font-mono);
+		font-size: 0.65rem;
+		letter-spacing: 0.08em;
+		pointer-events: none;
+		animation: hint-bob 2.5s ease-in-out infinite;
 	}
 
-	@keyframes drag-pulse {
-		0%, 100% { opacity: 0.75; transform: translateX(-50%) scale(1); }
-		50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+	@keyframes hint-bob {
+		0%, 100% { transform: translateY(0); }
+		50%       { transform: translateY(-5px); }
+	}
+
+	.flower {
+		position: absolute;
+		bottom: 0;
+		height: auto;
+		opacity: 0.95;
+		pointer-events: none;
+	}
+
+	.flower-left {
+		left: 4%;
+		width: 280px;
+	}
+
+	.flower-right {
+		right: 8%;
+		width: 100px;
 	}
 
 	/* --- sticky nav --- */
