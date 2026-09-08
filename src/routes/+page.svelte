@@ -322,7 +322,7 @@
 		<div class="container">
 			<h2 class="section-heading">About</h2>
 			<div class="bio">
-				<p>I'm a <strong>data and graphics journalist</strong> and web developer based in <strong>New York City</strong>, currently working as a reporter at the <strong>Tow Center for Digital Journalism</strong> at Columbia University.</p>
+				<p>I'm a <strong>computational and graphics journalist</strong> based in <strong>New York City</strong>. I most recently worked as a reporter at the <strong>Tow Center for Digital Journalism</strong> at Columbia University.</p>
 				<p>
 					I've worked at <a href="https://www.axios.com/results?q=tory%20lysik&sort=2" target="_blank" rel="noopener noreferrer">Axios</a>, <a href="https://www.vox.com/" target="_blank" rel="noopener noreferrer">Vox</a>, <a href="https://www.themarshallproject.org/" target="_blank" rel="noopener noreferrer">The Marshall Project</a>, the <a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Associated Press</a>, and others — spanning local shoeleather reporting to <strong>interactive graphics and data tools</strong>. My work has received numerous awards and has been cited in <strong>congressional testimony and federal legislation</strong>.
 				</p>
