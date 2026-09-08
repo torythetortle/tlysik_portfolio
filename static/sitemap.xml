@@ -11,6 +11,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://tlysik.com/illustrations</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://tlysik.com/resume</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -19,6 +24,41 @@
     <loc>https://tlysik.com/contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/polymarket-ai-fabrications</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/charlotte-local-news-map</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/scraper-factory</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/287g-watch</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/geo-data-centers</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/graphics-templates</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/political-cash-flows</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tlysik.com/portfolio/nyc-nurse-strike</loc>
@@ -146,7 +186,57 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://tlysik.com/portfolio/twin-births-decline</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/shark-attacks-overfishing</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/global-population-8-billion</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/earthquake-new-york-city</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/ev-charging-deserts</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tlysik.com/portfolio/coal-plants-shutdown</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/fireworks-consumption</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/harris-poll-nonpartisan</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/fortune-500-ceo-coverage</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/arkansas-ghost-towns</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tlysik.com/portfolio/olympics-swim-colleges</loc>
     <changefreq>yearly</changefreq>
     <priority>0.8</priority>
   </url>

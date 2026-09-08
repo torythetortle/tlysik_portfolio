@@ -43,7 +43,7 @@
 				<div class="entry">
 					<div class="entry-left">
 						<span class="org">Axios</span>
-						<span class="title">Data Visualization Journalist (laid off in team-wide layoff)</span>
+						<span class="title">Data Visualization Journalist</span>
 					</div>
 					<span class="date">Aug 2022–Aug 2024</span>
 				</div>

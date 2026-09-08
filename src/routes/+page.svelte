@@ -375,7 +375,6 @@
 					<span class="label">Email</span>
 					<div class="contact-value">
 						<a href="mailto:lysiktory@gmail.com">lysiktory@gmail.com</a>
-						<a href="mailto:TL3291@columbia.edu">TL3291@columbia.edu</a>
 					</div>
 				</div>
 				<div class="contact-row">
