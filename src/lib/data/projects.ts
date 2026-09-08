@@ -16,6 +16,39 @@ export interface Project {
 
 export const projects: Project[] = [
 	{
+		slug: 'polymarket-ai-fabrications',
+		outlet: 'Columbia Journalism Review',
+		title: "Polymarket's AI is feeding users fabricated information",
+		description:
+			'Analyzed 65,000+ entries across 152 Polymarket prediction markets and found its AI-generated news timelines were riddled with fabricated events and fake citations, including 353 URLs falsely attributed to the Associated Press.',
+		thumbnail: '/images/polymarket.webp',
+		link: 'https://www.cjr.org/tow_center/polymarkets-ai-is-feeding-users-fabricated-information.php',
+		date: '2026-08-01',
+		tags: ['AI', 'LLMs', 'python', 'disinformation', 'algorithmic accountability', 'research'],
+		collaborators: ['Dhrumil Mehta'],
+		awards: '',
+		featured: true,
+		category: 'Research'
+	},
+	{
+		slug: 'charlotte-local-news-map',
+		outlet: 'Tow Center for Digital Journalism',
+		title: "Mapping local news coverage in Charlotte",
+		description:
+			"Built the interactive graphics and census-tract-level mapping tool for a Tow Center study mapping 66 news providers against 18,234 articles, revealing stark local news coverage disparities tied to race across Charlotte.",
+		thumbnail: '/images/charlotte.webp',
+		link: 'https://tow.cjr.org/charlotte-2026/',
+		additionalLinks: [
+			{ label: 'Article', url: 'https://www.cjr.org/tow_center/mapping-local-news-in-charlotte.php' }
+		],
+		date: '2026-05-01',
+		tags: ['AI', 'LLMs', 'mapping', 'Cartography', 'data visualization', 'geospatial', 'Svelte', 'semantic analysis'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Visual & Interactive'
+	},
+	{
 		slug: 'scraper-factory',
 		outlet: 'Tow Center for Digital Journalism',
 		title: 'Scraper Factory',
