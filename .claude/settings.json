@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "Bash(pkill -f \"remote-debugging-port=9333\")",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --window-size=1400,700 --screenshot=/tmp/hero_v2.png http://localhost:5173/)",
+      "Bash(pkill -f \"remote-debugging-port=9334\")"
+    ]
+  }
+}

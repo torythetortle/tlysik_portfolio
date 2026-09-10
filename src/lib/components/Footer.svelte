@@ -4,6 +4,10 @@
 
 <footer class="footer">
 	<div class="container">
+		<div class="footer-seeds" aria-hidden="true">
+			<img src="/dandis/seed4.svg" alt="" class="footer-seed" />
+			<img src="/dandis/seed2.svg" alt="" class="footer-seed" />
+		</div>
 		<p>
 			Copyright &copy; <strong>Tory Lysik</strong> {currentYear}. Find me on
 			<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>,
@@ -19,6 +23,28 @@
 		padding: var(--space-2xl) 0 var(--space-lg);
 		border-top: 1px solid var(--color-border);
 		margin-top: var(--space-2xl);
+	}
+
+	.footer-seeds {
+		display: flex;
+		align-items: flex-end;
+		gap: 0.5rem;
+		margin-bottom: var(--space-sm);
+	}
+
+	.footer-seed {
+		height: auto;
+		opacity: 0.6;
+	}
+
+	.footer-seed:first-child {
+		width: 22px;
+		transform: rotate(-12deg);
+	}
+
+	.footer-seed:last-child {
+		width: 16px;
+		transform: rotate(15deg);
 	}
 
 	p {

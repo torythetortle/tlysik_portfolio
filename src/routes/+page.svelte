@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { projects as allProjects, type Project } from '$lib/data/projects';
+	import { projects as allProjects } from '$lib/data/projects';
 
 	let stickyVisible = $state(false);
+	const currentYear = new Date().getFullYear();
 
 	interface SeedItem {
 		file: string;
@@ -17,54 +18,10 @@
 
 	let seeds = $state<SeedItem[]>([]);
 	let seedEls: HTMLImageElement[] = [];
-	let draggingSeed = $state<number | null>(null);
-	let dragOffsetX = 0;
-	let dragOffsetY = 0;
-	let showDragHint = $state(true);
-
-	function onSeedPointerDown(e: PointerEvent, i: number) {
-		dragOffsetX = e.clientX - seeds[i].x;
-		dragOffsetY = e.clientY - seeds[i].y;
-		seeds[i].vx = 0;
-		seeds[i].vy = 0;
-		draggingSeed = i;
-		showDragHint = false;
-		(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-		e.preventDefault();
-	}
-
-	function onSeedPointerMove(e: PointerEvent, i: number) {
-		if (draggingSeed !== i) return;
-		seeds[i].x = e.clientX - dragOffsetX;
-		seeds[i].y = e.clientY - dragOffsetY;
-		const el = seedEls[i];
-		if (el) {
-			el.style.left = seeds[i].x + 'px';
-			el.style.top = seeds[i].y + 'px';
-		}
-	}
-
-	function onSeedPointerUp(e: PointerEvent, i: number) {
-		if (draggingSeed !== i) return;
-		seeds[i].vx = (Math.random() - 0.5) * 0.2;
-		seeds[i].vy = (Math.random() - 0.5) * 0.2;
-		(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-		draggingSeed = null;
-	}
 
 	const featuredProjects = [...allProjects]
 		.filter((p) => p.featured)
 		.sort((a, b) => b.date.localeCompare(a.date));
-
-	let columnCount = $state(3);
-
-	const columns = $derived.by(() => {
-		const cols: Project[][] = Array.from({ length: columnCount }, () => []);
-		featuredProjects.forEach((project, i) => {
-			cols[i % columnCount].push(project);
-		});
-		return cols;
-	});
 
 	const monthNames = [
 		'January', 'February', 'March', 'April', 'May', 'June',
@@ -74,15 +31,6 @@
 	function formatDate(dateStr: string): string {
 		const [year, month] = dateStr.split('-').map(Number);
 		return `${monthNames[month - 1]} ${year}`;
-	}
-
-	function hexPoints(size: number): string {
-		const pts: string[] = [];
-		for (let i = 0; i < 6; i++) {
-			const angle = (Math.PI / 3) * i - Math.PI / 2;
-			pts.push(`${size * Math.cos(angle)},${size * Math.sin(angle)}`);
-		}
-		return pts.join(' ');
 	}
 
 	onMount(() => {
@@ -110,7 +58,6 @@
 			const H = window.innerHeight;
 
 			for (let i = 0; i < seeds.length; i++) {
-				if (draggingSeed === i) continue;
 				seeds[i].x += seeds[i].vx;
 				seeds[i].y += seeds[i].vy;
 				seeds[i].rotation += seeds[i].rotationSpeed;
@@ -137,15 +84,15 @@
 						const nx = dx / dist;
 						const ny = dy / dist;
 						const overlap = (minDist - dist) * 0.5;
-						if (draggingSeed !== i) { seeds[i].x -= nx * overlap; seeds[i].y -= ny * overlap; }
-						if (draggingSeed !== j) { seeds[j].x += nx * overlap; seeds[j].y += ny * overlap; }
+						seeds[i].x -= nx * overlap; seeds[i].y -= ny * overlap;
+						seeds[j].x += nx * overlap; seeds[j].y += ny * overlap;
 						const dvx = seeds[j].vx - seeds[i].vx;
 						const dvy = seeds[j].vy - seeds[i].vy;
 						const dvn = dvx * nx + dvy * ny;
 						if (dvn < 0) {
 							const impulse = dvn * 0.75;
-							if (draggingSeed !== i) { seeds[i].vx += nx * impulse; seeds[i].vy += ny * impulse; }
-							if (draggingSeed !== j) { seeds[j].vx -= nx * impulse; seeds[j].vy -= ny * impulse; }
+							seeds[i].vx += nx * impulse; seeds[i].vy += ny * impulse;
+							seeds[j].vx -= nx * impulse; seeds[j].vy -= ny * impulse;
 						}
 					}
 				}
@@ -153,7 +100,6 @@
 
 			// cap speed
 			for (let i = 0; i < seeds.length; i++) {
-				if (draggingSeed === i) continue;
 				const speed = Math.sqrt(seeds[i].vx ** 2 + seeds[i].vy ** 2);
 				if (speed > 0.75) {
 					seeds[i].vx = (seeds[i].vx / speed) * 0.75;
@@ -164,7 +110,7 @@
 			// write to DOM directly — faster than going through Svelte's scheduler
 			for (let i = 0; i < seeds.length; i++) {
 				const el = seedEls[i];
-				if (!el || draggingSeed === i) continue;
+				if (!el) continue;
 				el.style.left = seeds[i].x + 'px';
 				el.style.top = seeds[i].y + 'px';
 				el.style.transform = `rotate(${seeds[i].rotation}deg)`;
@@ -172,18 +118,6 @@
 		}
 
 		animId = requestAnimationFrame(tick);
-
-		// column count for portfolio grid
-		const desktopQuery = window.matchMedia('(min-width: 1025px)');
-		const tabletQuery = window.matchMedia('(min-width: 641px) and (max-width: 1024px)');
-		function updateColumns() {
-			if (desktopQuery.matches) columnCount = 3;
-			else if (tabletQuery.matches) columnCount = 2;
-			else columnCount = 1;
-		}
-		updateColumns();
-		desktopQuery.addEventListener('change', updateColumns);
-		tabletQuery.addEventListener('change', updateColumns);
 
 		// sticky nav: show after hero leaves viewport
 		const heroEl = document.querySelector('.hero');
@@ -195,8 +129,6 @@
 
 		return () => {
 			cancelAnimationFrame(animId);
-			desktopQuery.removeEventListener('change', updateColumns);
-			tabletQuery.removeEventListener('change', updateColumns);
 			observer.disconnect();
 		};
 	});
@@ -237,26 +169,12 @@
 			src={seed.file}
 			alt=""
 			class="seed"
-			class:dragging={draggingSeed === i}
 			style="left:{seed.x}px;top:{seed.y}px;width:{seed.size}px;transform:rotate({seed.rotation}deg);"
-			onpointerdown={(e) => onSeedPointerDown(e, i)}
-			onpointermove={(e) => onSeedPointerMove(e, i)}
-			onpointerup={(e) => onSeedPointerUp(e, i)}
-			onpointercancel={(e) => onSeedPointerUp(e, i)}
 			draggable="false"
 		/>
 	{/each}
 	<img src="/dandis/flower1.svg" alt="" class="flower flower-left" />
 	<img src="/dandis/flower2.svg" alt="" class="flower flower-right" />
-	{#if showDragHint}
-		<div class="drag-hint" aria-hidden="true">
-			<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-				<path d="M8 28 Q8 8 28 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-				<polyline points="22,4 28,8 24,14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-			</svg>
-			<span>move me</span>
-		</div>
-	{/if}
 </div>
 
 <!-- sticky nav (appears after scrolling past hero) -->
@@ -265,14 +183,12 @@
 		<div class="sticky-inner">
 			<a href="#hero" class="sticky-name">Tory Lysik</a>
 			<nav class="sticky-links">
+				<a href="#portfolio">Select Work</a>
+				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="#about">About</a>
-				<svg viewBox="-24 -24 48 48" width="14" height="14" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
-				<a href="#portfolio">Portfolio</a>
-				<svg viewBox="-24 -24 48 48" width="14" height="14" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="/illustrations">Illustrations</a>
-				<svg viewBox="-24 -24 48 48" width="14" height="14" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
-				<a href="/resume">Resume</a>
-				<svg viewBox="-24 -24 48 48" width="14" height="14" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="#contact">Contact</a>
 			</nav>
 		</div>
@@ -292,16 +208,14 @@
 				<polygon points="100,12 183,58 183,142 100,188 17,142 17,58" fill="var(--color-bg)" filter="url(#hex-blur)" />
 			</svg>
 			<h1 class="name">Tory Lysik</h1>
-			<p class="tagline">Data and graphics journalist</p>
+			<p class="tagline">Computational journalist</p>
 			<nav class="hero-nav" aria-label="Primary">
+				<a href="#portfolio">Select Work</a>
+				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="#about">About</a>
-				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
-				<a href="#portfolio">Portfolio</a>
-				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="/illustrations">Illustrations</a>
-				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
-				<a href="/resume">Resume</a>
-				<svg class="nav-hex" viewBox="-24 -24 48 48" width="20" height="20" aria-hidden="true"><polygon points={hexPoints(22)} fill="currentColor" /></svg>
+				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="#contact">Contact</a>
 			</nav>
 			<div class="hero-socials">
@@ -314,7 +228,29 @@
 				<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
 			</div>
 		</div>
-		<div class="scroll-cue" aria-hidden="true">scroll ↓</div>
+	</section>
+
+	<!-- PORTFOLIO -->
+	<section id="portfolio" class="content-section">
+		<div class="container wide">
+			<h2 class="section-heading">Select Work</h2>
+			<div class="project-grid">
+				{#each featuredProjects as project}
+					<article class="project">
+						{#if project.thumbnail}
+							<a href="/portfolio/{project.slug}" class="project-thumbnail">
+								<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
+							</a>
+						{/if}
+						<div class="project-content">
+							<span class="project-meta">{project.category} · {formatDate(project.date)}</span>
+							<a href="/portfolio/{project.slug}" class="project-title">{project.title}</a>
+							<span class="project-outlet">{project.outlet}</span>
+						</div>
+					</article>
+				{/each}
+			</div>
+		</div>
 	</section>
 
 	<!-- ABOUT -->
@@ -330,66 +266,35 @@
 					I care deeply about <strong>accessibility</strong> — making complex, critical information clear and understandable. Whether diving into legal documents, filing FOIA requests, or building maps to surface human rights issues, I thrive in the meticulous, detail-heavy work that makes complex stories click.
 				</p>
 				<p>In my free time, I'm usually escaping NYC for the mountains or working on becoming fluent in a fifth language.</p>
+				<div class="skills-row">
+					<span class="label">Tools</span>
+					<span class="skills-value">Python · R · SQL · JavaScript/TypeScript · Svelte · D3 · React · Mapbox · QGIS · Adobe Illustrator · LLM-assisted reporting · FOIA/public records</span>
+				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- PORTFOLIO -->
-	<section id="portfolio" class="content-section">
-		<div class="container wide">
-			<div class="section-header">
-				<h2 class="section-heading">Portfolio</h2>
-				<a href="/portfolio" class="view-all">View all →</a>
-			</div>
-			<div class="grid">
-				{#each columns as columnProjects}
-					<div class="column">
-						{#each columnProjects as project}
-							<article class="project">
-								{#if project.thumbnail}
-									<a href="/portfolio/{project.slug}" class="project-thumbnail">
-										<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
-									</a>
-								{/if}
-								<div class="project-content">
-									<a href="/portfolio/{project.slug}" class="project-title">{project.title}</a>
-									<span class="project-outlet">{project.outlet} · {formatDate(project.date)}</span>
-									{#if project.tags.length > 0}
-										<p class="project-tags">{project.tags.join(' / ')}</p>
-									{/if}
-								</div>
-							</article>
-						{/each}
-					</div>
-				{/each}
-			</div>
-		</div>
-	</section>
-
-	<!-- CONTACT -->
-	<section id="contact" class="content-section">
+	<!-- CONTACT / FOOTER -->
+	<footer id="contact" class="site-footer">
+		<img src="/dandis/flower1.svg" alt="" class="footer-flower footer-flower-left" />
+		<img src="/dandis/flower2.svg" alt="" class="footer-flower footer-flower-right" />
 		<div class="container">
-			<h2 class="section-heading">Contact</h2>
-			<div class="contact-list">
-				<div class="contact-row">
-					<span class="label">Email</span>
-					<div class="contact-value">
-						<a href="mailto:lysiktory@gmail.com">lysiktory@gmail.com</a>
-					</div>
-				</div>
-				<div class="contact-row">
-					<span class="label">Signal</span>
-					<span class="contact-value">TBLysik.85</span>
-				</div>
-			</div>
-			<div class="social-links">
+			<div class="footer-contact">
+				<a href="mailto:lysiktory@gmail.com">lysiktory@gmail.com</a>
+				<span class="dot">·</span>
+				<span>Signal: TBLysik.85</span>
+				<span class="dot">·</span>
 				<a href="https://github.com/torythetortle" target="_blank" rel="noopener noreferrer">GitHub</a>
+				<span class="dot">·</span>
 				<a href="https://www.linkedin.com/in/tory-lysik/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+				<span class="dot">·</span>
 				<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">X</a>
+				<span class="dot">·</span>
 				<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
 			</div>
+			<p class="footer-copyright">Copyright &copy; <strong>Tory Lysik</strong> {currentYear}</p>
 		</div>
-	</section>
+	</footer>
 </div>
 
 <style>
@@ -406,37 +311,8 @@
 		position: absolute;
 		height: auto;
 		opacity: 0.75;
-		pointer-events: auto;
-		cursor: grab;
-		user-select: none;
-		touch-action: none;
-	}
-
-	.seed.dragging {
-		cursor: grabbing;
-		z-index: 10;
-	}
-
-	.drag-hint {
-		position: absolute;
-		top: 18%;
-		left: 6%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 4px;
-		color: var(--color-accent);
-		opacity: 0.7;
-		font-family: var(--font-mono);
-		font-size: 0.65rem;
-		letter-spacing: 0.08em;
 		pointer-events: none;
-		animation: hint-bob 2.5s ease-in-out infinite;
-	}
-
-	@keyframes hint-bob {
-		0%, 100% { transform: translateY(0); }
-		50%       { transform: translateY(-5px); }
+		user-select: none;
 	}
 
 	.flower {
@@ -481,7 +357,8 @@
 		padding: 0 var(--space-xl);
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: center;
+		flex-wrap: wrap;
 		gap: var(--space-lg);
 		min-height: 52px;
 	}
@@ -522,7 +399,7 @@
 		color: var(--color-accent);
 	}
 
-	.sticky-links svg {
+	.nav-dot {
 		color: var(--color-accent);
 		opacity: 0.7;
 		flex-shrink: 0;
@@ -537,18 +414,18 @@
 
 	/* --- hero --- */
 	.hero {
-		height: 100svh;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		position: relative;
 		pointer-events: none;
+		padding: var(--space-2xl) 0 var(--space-xl);
 	}
 
 	.hero-content {
 		text-align: center;
-		padding: var(--space-xl) var(--space-2xl);
+		padding: 0 var(--space-2xl);
 		pointer-events: none;
 		position: relative;
 	}
@@ -575,11 +452,11 @@
 
 	.tagline {
 		font-family: var(--font-mono);
-		font-size: 1rem;
+		font-size: 1.0625rem;
+		font-weight: 700;
 		color: var(--color-accent);
 		margin: 0 0 0.5rem;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.02em;
 	}
 
 	.hero-nav {
@@ -594,12 +471,12 @@
 
 	.hero-nav a {
 		font-family: var(--font-mono);
-		font-size: 1rem;
+		font-size: 0.8125rem;
 		font-weight: 700;
 		color: var(--color-text-muted);
 		text-decoration: none;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.06em;
 		transition: color var(--transition-base);
 		min-height: 44px;
 		display: flex;
@@ -608,12 +485,6 @@
 
 	.hero-nav a:hover {
 		color: var(--color-text-bright);
-	}
-
-	.nav-hex {
-		color: var(--color-accent);
-		opacity: 0.85;
-		flex-shrink: 0;
 	}
 
 	.hero-socials {
@@ -629,11 +500,10 @@
 	.hero-socials a {
 		font-family: var(--font-mono);
 		font-size: 0.8125rem;
-		font-weight: 700;
+		font-weight: 400;
 		color: var(--color-text-muted);
 		text-decoration: none;
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
+		letter-spacing: 0.01em;
 		transition: color var(--transition-base);
 		min-height: 44px;
 		display: flex;
@@ -645,27 +515,9 @@
 	}
 
 	.social-dot {
-		color: var(--color-border);
+		color: var(--color-accent);
 		font-size: 1rem;
 		line-height: 1;
-	}
-
-	.scroll-cue {
-		position: absolute;
-		bottom: 2rem;
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		text-transform: uppercase;
-		letter-spacing: 0.12em;
-		color: var(--color-text-bright);
-		font-weight: 700;
-		animation: fade-bob 2.5s ease-in-out infinite;
-		pointer-events: none;
-	}
-
-	@keyframes fade-bob {
-		0%, 100% { opacity: 0.5; transform: translateY(0); }
-		50% { opacity: 1; transform: translateY(4px); }
 	}
 
 	/* --- content sections --- */
@@ -686,7 +538,6 @@
 		font-weight: 700;
 		color: var(--color-text-bright);
 		margin-bottom: var(--space-lg);
-		-webkit-text-stroke: 0.3px currentColor;
 	}
 
 	/* --- about --- */
@@ -711,30 +562,23 @@
 		color: var(--color-accent);
 	}
 
-	/* --- portfolio --- */
-	.section-header {
+	.skills-row {
 		display: flex;
 		align-items: baseline;
-		justify-content: space-between;
-		margin-bottom: var(--space-lg);
+		gap: var(--space-lg);
+		margin-top: var(--space-md);
+		padding-top: var(--space-md);
+		border-top: 1px solid var(--color-border);
 	}
 
-	.section-header .section-heading {
-		margin-bottom: 0;
-	}
-
-	.view-all {
+	.skills-value {
 		font-family: var(--font-mono);
-		font-size: 0.875rem;
-		font-weight: 700;
-		color: var(--color-accent);
-		text-decoration: none;
-		transition: color var(--transition-base);
+		font-size: 0.8125rem;
+		color: var(--color-text-muted);
+		line-height: 1.6;
 	}
 
-	.view-all:hover {
-		color: var(--color-accent-hover);
-	}
+	/* --- portfolio --- */
 
 	.container.wide {
 		max-width: 1200px;
@@ -742,34 +586,34 @@
 		padding: 0 var(--space-xl);
 	}
 
-	.grid {
-		display: flex;
-		gap: var(--space-xl);
-		align-items: flex-start;
-	}
-
-	.column {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xl);
-		min-width: 0;
+	.project-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: var(--space-lg) var(--space-md);
 	}
 
 	.project {
 		display: flex;
 		flex-direction: column;
+		background: var(--color-bg-subtle);
+		border: 1px solid var(--color-border);
+		overflow: hidden;
+		transition: border-color var(--transition-base);
+	}
+
+	.project:hover {
+		border-color: var(--color-accent);
 	}
 
 	.project-thumbnail {
 		display: block;
 		overflow: hidden;
-		margin-bottom: var(--space-sm);
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.project-thumbnail img {
 		width: 100%;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 4 / 3;
 		object-fit: cover;
 		display: block;
 		opacity: 0.88;
@@ -780,6 +624,22 @@
 		opacity: 1;
 	}
 
+	.project-content {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		padding: var(--space-sm);
+	}
+
+	.project-meta {
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		color: var(--color-accent);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
 	.project-title {
 		font-family: var(--font-body);
 		font-size: 1.0625rem;
@@ -788,7 +648,7 @@
 		line-height: 1.4;
 		text-decoration: none;
 		display: block;
-		padding: 0.375rem 0 0.25rem;
+		padding: 0.375rem 0 0.5rem;
 		transition: color var(--transition-base);
 	}
 
@@ -798,34 +658,16 @@
 
 	.project-outlet {
 		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		color: var(--color-text-muted);
-		display: block;
-		margin-bottom: var(--space-xs);
-	}
-
-	.project-tags {
-		font-family: var(--font-mono);
 		font-size: 0.6875rem;
 		color: var(--color-text-muted);
-		margin: 0;
-		letter-spacing: 0.02em;
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		margin-top: auto;
+		padding-top: 0.5rem;
+		border-top: 1px solid var(--color-border);
 	}
 
-	/* --- contact --- */
-	.contact-list {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
-		margin-bottom: var(--space-xl);
-	}
-
-	.contact-row {
-		display: flex;
-		align-items: baseline;
-		gap: var(--space-lg);
-	}
-
+	/* --- footer / contact --- */
 	.label {
 		font-family: var(--font-mono);
 		font-size: 0.875rem;
@@ -838,67 +680,85 @@
 		-webkit-text-stroke: 0.3px currentColor;
 	}
 
-	.contact-value {
-		font-family: var(--font-mono);
-		font-size: 1rem;
-		font-weight: 700;
-		color: var(--color-text-bright);
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-xs) var(--space-md);
+	.site-footer {
+		background: rgba(255, 255, 255, 0.97);
+		position: relative;
+		padding: var(--space-lg) 0 var(--space-xl);
+		border-top: 1px solid var(--color-border);
+		pointer-events: auto;
+		overflow: hidden;
+		text-align: center;
 	}
 
-	.contact-value a {
-		color: var(--color-text-bright);
-		text-decoration: none;
-		border-bottom: 1px solid var(--color-border);
-		transition: color var(--transition-base), border-color var(--transition-base);
-		word-break: break-all;
-		min-height: 44px;
+	.footer-flower {
+		position: absolute;
+		bottom: 0;
+		height: auto;
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	.footer-flower-left {
+		left: 2%;
+		width: 90px;
+	}
+
+	.footer-flower-right {
+		right: 4%;
+		width: 34px;
+	}
+
+	.footer-contact {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-	}
-
-	.contact-value a:hover {
-		color: var(--color-accent);
-		border-color: var(--color-accent);
-	}
-
-	.social-links {
-		display: flex;
-		gap: var(--space-md);
-		flex-wrap: wrap;
-	}
-
-	.social-links a {
+		justify-content: center;
+		gap: 0.5rem;
 		font-family: var(--font-mono);
-		font-size: 1rem;
+		font-size: 0.8125rem;
 		font-weight: 700;
+		margin-bottom: var(--space-sm);
+	}
+
+	.footer-contact a {
 		color: var(--color-text-bright);
 		text-decoration: none;
 		transition: color var(--transition-base);
-		-webkit-text-stroke: 0.3px currentColor;
 	}
 
-	.social-links a:hover {
+	.footer-contact a:hover {
 		color: var(--color-accent);
+	}
+
+	.footer-contact .dot {
+		color: var(--color-accent);
+	}
+
+	.footer-copyright {
+		font-family: var(--font-mono);
+		font-size: 0.8125rem;
+		color: var(--color-text-muted);
+		margin: 0;
 	}
 
 	/* --- responsive --- */
 	@media (max-width: 1024px) {
-		.grid { gap: var(--space-lg); }
+		.project-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); }
+	}
+
+	@media (max-width: 800px) {
+		.project-grid { grid-template-columns: repeat(2, 1fr); }
 	}
 
 	@media (max-width: 720px) {
 		.name { font-size: 2.25rem; }
 		.tagline { font-size: 0.875rem; }
-		.hero-content { padding: var(--space-lg) var(--space-md); }
+		.hero-content { padding: 0 var(--space-md); }
 	}
 
 	@media (max-width: 640px) {
-		.grid { flex-direction: column; }
+		.project-grid { grid-template-columns: 1fr; }
 		.sticky-inner { padding: 0.625rem var(--space-md); }
-		.sticky-links svg { display: none; }
 		.sticky-links { gap: 0.5rem; font-size: 0.75rem; }
 		.container.wide { padding: 0 var(--space-md); }
 	}
@@ -907,15 +767,12 @@
 		.name { font-size: 1.75rem; }
 		.hero-nav { gap: 0.5rem; }
 		.hero-nav a { font-size: 0.8125rem; }
-		.nav-hex { display: none; }
-		.contact-row { flex-direction: column; gap: var(--space-xs); }
+		.skills-row { flex-direction: column; gap: var(--space-xs); }
 		.sticky-links { gap: 0.5rem; font-size: 0.7rem; }
-		.sticky-links svg { display: none; }
 		.sticky-inner { padding: 0.5rem var(--space-sm); gap: var(--space-sm); }
 		.sticky-name { font-size: 0.9rem; }
 		.container.wide { padding: 0 var(--space-sm); }
-		.section-header { flex-direction: column; gap: var(--space-xs); align-items: flex-start; }
-		.social-links { gap: var(--space-sm); }
+		.footer-contact { gap: 0.375rem 0.625rem; }
 		.bio p { font-size: 1rem; line-height: 1.7; }
 		.section-heading { font-size: 1.375rem; }
 	}

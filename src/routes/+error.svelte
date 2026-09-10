@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 
 	const message = page.status === 404
-		? "This page doesn't exist — or it moved."
+		? "This page got redacted. Or it never existed — or it moved."
 		: (page.error?.message || 'Something went wrong.');
 </script>
 
@@ -11,18 +11,12 @@
 </svelte:head>
 
 <div class="error-page">
+	<div class="scattered-seeds" aria-hidden="true">
+		<img src="/dandis/seed1.svg" alt="" class="stray-seed seed-a" />
+		<img src="/dandis/seed3.svg" alt="" class="stray-seed seed-b" />
+		<img src="/dandis/seed2.svg" alt="" class="stray-seed seed-c" />
+	</div>
 	<div class="container">
-		<div class="hex-row" aria-hidden="true">
-			<svg viewBox="-24 -24 48 48" width="36" height="36">
-				<polygon points="0,-22 19.05,-11 19.05,11 0,22 -19.05,11 -19.05,-11" fill="#00a5cf" />
-			</svg>
-			<svg viewBox="-24 -24 48 48" width="36" height="36">
-				<polygon points="0,-22 19.05,-11 19.05,11 0,22 -19.05,11 -19.05,-11" fill="#25a18e" />
-			</svg>
-			<svg viewBox="-24 -24 48 48" width="36" height="36">
-				<polygon points="0,-22 19.05,-11 19.05,11 0,22 -19.05,11 -19.05,-11" fill="#5cbfa6" />
-			</svg>
-		</div>
 		<span class="error-code">{page.status}</span>
 		<p class="error-message">{message}</p>
 		<a href="/" class="back-link">&larr; Back to home</a>
@@ -31,15 +25,49 @@
 
 <style>
 	.error-page {
+		position: relative;
 		padding-top: var(--space-2xl);
 		padding-bottom: var(--space-2xl);
+		overflow: hidden;
 	}
 
-	.hex-row {
-		display: flex;
-		gap: 0.5rem;
-		align-items: center;
-		margin-bottom: var(--space-md);
+	.scattered-seeds {
+		position: absolute;
+		inset: 0;
+		pointer-events: none;
+	}
+
+	.stray-seed {
+		position: absolute;
+		height: auto;
+		opacity: 0.6;
+	}
+
+	.seed-a {
+		top: 8%;
+		left: 6%;
+		width: 46px;
+		transform: rotate(-18deg);
+	}
+
+	.seed-b {
+		top: 62%;
+		left: 88%;
+		width: 34px;
+		transform: rotate(30deg);
+	}
+
+	.seed-c {
+		top: 28%;
+		left: 78%;
+		width: 26px;
+		transform: rotate(-8deg);
+	}
+
+	@media (max-width: 640px) {
+		.stray-seed {
+			display: none;
+		}
 	}
 
 	.error-code {

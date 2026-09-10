@@ -38,7 +38,7 @@
 
 <div class="page">
 	<div class="container">
-		<a href="/portfolio" class="back-link">&larr; All projects</a>
+		<a href="/#portfolio" class="back-link">&larr; All projects</a>
 
 		<article class="project-detail">
 			{#if project.thumbnail}

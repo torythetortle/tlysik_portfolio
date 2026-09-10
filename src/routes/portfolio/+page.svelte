@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import type { Project } from '$lib/data/projects';
 
 	let { data } = $props();
@@ -17,40 +16,10 @@
 	const featuredProjects = [...data.projects]
 		.filter((p: Project) => p.featured)
 		.sort((a: Project, b: Project) => b.date.localeCompare(a.date));
-
-	let columnCount = $state(3);
-
-	const columns = $derived.by(() => {
-		const cols: Project[][] = Array.from({ length: columnCount }, () => []);
-		featuredProjects.forEach((project, i) => {
-			cols[i % columnCount].push(project);
-		});
-		return cols;
-	});
-
-	onMount(() => {
-		const desktopQuery = window.matchMedia('(min-width: 1025px)');
-		const tabletQuery = window.matchMedia('(min-width: 641px) and (max-width: 1024px)');
-
-		function updateColumns() {
-			if (desktopQuery.matches) columnCount = 3;
-			else if (tabletQuery.matches) columnCount = 2;
-			else columnCount = 1;
-		}
-
-		updateColumns();
-		desktopQuery.addEventListener('change', updateColumns);
-		tabletQuery.addEventListener('change', updateColumns);
-
-		return () => {
-			desktopQuery.removeEventListener('change', updateColumns);
-			tabletQuery.removeEventListener('change', updateColumns);
-		};
-	});
 </script>
 
 <svelte:head>
-	<title>Portfolio - Tory Lysik</title>
+	<title>Select Work - Tory Lysik</title>
 	<meta
 		name="description"
 		content="Selected data journalism, investigations, and visual storytelling by Tory Lysik."
@@ -59,64 +28,32 @@
 
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content="https://tlysik.com/portfolio" />
-	<meta property="og:title" content="Portfolio - Tory Lysik" />
+	<meta property="og:title" content="Select Work - Tory Lysik" />
 	<meta property="og:description" content="Selected data journalism, investigations, and visual storytelling by Tory Lysik." />
 	<meta property="og:image" content="https://tlysik.com/images/headshot.webp" />
 
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Portfolio - Tory Lysik" />
+	<meta name="twitter:title" content="Select Work - Tory Lysik" />
 	<meta name="twitter:description" content="Selected data journalism, investigations, and visual storytelling by Tory Lysik." />
 	<meta name="twitter:image" content="https://tlysik.com/images/headshot.webp" />
 </svelte:head>
 
 <div class="page">
 	<div class="container">
-		<div class="grid">
-			{#each columns as columnProjects}
-				<div class="column">
-					{#each columnProjects as project}
-						<article class="project">
-							{#if project.thumbnail}
-								<a
-									href="/portfolio/{project.slug}"
-									class="project-thumbnail"
-								>
-									<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
-								</a>
-							{/if}
-							<div class="project-content">
-								<a
-									href="/portfolio/{project.slug}"
-									class="project-title"
-								>
-									{project.title}
-								</a>
-								<span class="project-outlet">{project.outlet} · {formatDate(project.date)}</span>
-
-								{#if project.additionalLinks?.length}
-									<p class="project-meta project-links">
-										<a href={project.link} target="_blank" rel="noopener noreferrer">Part 1</a>
-										{#each project.additionalLinks as extra}
-											· <a href={extra.url} target="_blank" rel="noopener noreferrer">{extra.label}</a>
-										{/each}
-									</p>
-								{/if}
-
-								{#if project.awards}
-									<p class="project-meta project-award">
-										{project.awards}
-									</p>
-								{/if}
-
-								{#if project.tags.length > 0}
-									<p class="project-meta project-tags">
-										{project.tags.join(' / ')}
-									</p>
-								{/if}
-							</div>
-						</article>
-					{/each}
-				</div>
+		<div class="project-grid">
+			{#each featuredProjects as project}
+				<article class="project">
+					{#if project.thumbnail}
+						<a href="/portfolio/{project.slug}" class="project-thumbnail">
+							<img src={project.thumbnail} alt="{project.title} — {project.outlet}" loading="lazy" />
+						</a>
+					{/if}
+					<div class="project-content">
+						<span class="project-meta">{project.category} · {formatDate(project.date)}</span>
+						<a href="/portfolio/{project.slug}" class="project-title">{project.title}</a>
+						<span class="project-outlet">{project.outlet}</span>
+					</div>
+				</article>
 			{/each}
 		</div>
 	</div>
@@ -132,37 +69,37 @@
 		max-width: 1200px;
 	}
 
-	.grid {
-		display: flex;
-		gap: var(--space-xl);
-		align-items: flex-start;
-	}
-
-	.column {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xl);
-		min-width: 0;
+	.project-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: var(--space-lg) var(--space-md);
 	}
 
 	.project {
 		display: flex;
 		flex-direction: column;
+		background: var(--color-bg-subtle);
+		border: 1px solid var(--color-border);
+		overflow: hidden;
+		transition: border-color var(--transition-base);
+	}
+
+	.project:hover {
+		border-color: var(--color-accent);
 	}
 
 	.project-thumbnail {
 		display: block;
 		overflow: hidden;
-		margin-bottom: var(--space-sm);
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.project-thumbnail img {
 		width: 100%;
-		aspect-ratio: 16 / 10;
+		aspect-ratio: 4 / 3;
 		object-fit: cover;
 		display: block;
-		opacity: 0.85;
+		opacity: 0.88;
 		transition: opacity var(--transition-base);
 	}
 
@@ -171,18 +108,31 @@
 	}
 
 	.project-content {
+		display: flex;
+		flex-direction: column;
 		flex: 1;
+		padding: var(--space-sm);
+	}
+
+	.project-meta {
+		font-family: var(--font-mono);
+		font-size: 0.6875rem;
+		font-weight: 700;
+		color: var(--color-accent);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 
 	.project-title {
 		font-family: var(--font-body);
 		font-size: 1.0625rem;
-		font-weight: 600;
+		font-weight: 700;
 		color: var(--color-text-bright);
 		line-height: 1.4;
 		text-decoration: none;
 		display: block;
-		margin-bottom: 4px;
+		padding: 0.375rem 0 0.5rem;
+		transition: color var(--transition-base);
 	}
 
 	.project-title:hover {
@@ -191,62 +141,31 @@
 
 	.project-outlet {
 		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		color: var(--color-text-muted);
-	}
-
-	.project-meta {
-		font-family: var(--font-mono);
-		font-size: 0.75rem;
-		color: var(--color-text-muted);
-		margin-bottom: 0.25rem;
-	}
-
-	.project-award {
-		color: var(--color-accent);
-	}
-
-	.project-tags {
 		font-size: 0.6875rem;
-		letter-spacing: 0.02em;
-	}
-
-	.project-links a {
-		color: var(--color-accent);
-		text-decoration: underline;
-	}
-
-	.project-links a:hover {
-		color: var(--color-accent-hover);
+		color: var(--color-text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.03em;
+		margin-top: auto;
+		padding-top: 0.5rem;
+		border-top: 1px solid var(--color-border);
 	}
 
 	@media (max-width: 1024px) {
-		.grid {
+		.project-grid {
+			grid-template-columns: repeat(3, 1fr);
 			gap: var(--space-lg);
+		}
+	}
+
+	@media (max-width: 800px) {
+		.project-grid {
+			grid-template-columns: repeat(2, 1fr);
 		}
 	}
 
 	@media (max-width: 640px) {
-		.grid {
-			flex-direction: column;
-		}
-
-		.project-title {
-			font-size: 1rem;
-		}
-
-		.project-outlet {
-			font-size: 0.8rem;
-		}
-
-		.project-tags {
-			font-size: 0.75rem;
-		}
-	}
-
-	@media (max-width: 480px) {
-		.grid {
-			gap: var(--space-lg);
+		.project-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>

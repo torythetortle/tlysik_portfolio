@@ -11,7 +11,7 @@ export interface Project {
 	collaborators: string[];
 	awards: string;
 	featured: boolean;
-	category: 'Investigations' | 'Data & Analysis' | 'Visual & Interactive' | 'Research';
+	category: 'Investigations' | 'Data & Analysis' | 'Visual & Interactive' | 'Feature';
 }
 
 export const projects: Project[] = [
@@ -28,7 +28,7 @@ export const projects: Project[] = [
 		collaborators: ['Dhrumil Mehta'],
 		awards: '',
 		featured: true,
-		category: 'Research'
+		category: 'Feature'
 	},
 	{
 		slug: 'charlotte-local-news-map',
@@ -62,7 +62,7 @@ export const projects: Project[] = [
 		collaborators: [],
 		awards: '',
 		featured: true,
-		category: 'Research'
+		category: 'Feature'
 	},
 	{
 		slug: '287g-watch',
@@ -152,7 +152,7 @@ export const projects: Project[] = [
 		collaborators: [],
 		awards: '',
 		featured: true,
-		category: 'Research'
+		category: 'Feature'
 	},
 	{
 		slug: 'use-case-crypto-magazine',
@@ -409,7 +409,7 @@ export const projects: Project[] = [
 		collaborators: [],
 		awards: '',
 		featured: true,
-		category: 'Research'
+		category: 'Feature'
 	},
 	{
 		slug: 'drought-conditions-annual-bad',
@@ -515,7 +515,7 @@ export const projects: Project[] = [
 		collaborators: [],
 		awards: '',
 		featured: true,
-		category: 'Research'
+		category: 'Feature'
 	},
 	{
 		slug: 'twin-births-decline',

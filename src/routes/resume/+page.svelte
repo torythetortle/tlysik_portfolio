@@ -17,8 +17,8 @@
 
 <div class="page">
 	<div class="container">
-		<a href="/resume.pdf" class="resume-download" target="_blank" rel="noopener noreferrer">
-			Download full resume (PDF) &darr;
+		<a href="mailto:lysiktory@gmail.com?subject=Resume%20request" class="resume-download">
+			Full resume (PDF) available on request &rarr;
 		</a>
 
 		<section class="resume-section">
