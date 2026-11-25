@@ -16,6 +16,21 @@ export interface Project {
 
 export const projects: Project[] = [
 	{
+		slug: '287g-watch-mcp',
+		outlet: 'Recovered Factory',
+		title: '287(g) Watch MCP server',
+		description:
+			"After expanding the 287(g) Watch database, I built a Model Context Protocol (MCP) server for it from scratch. It lets journalists ask questions of the data, find sources, and do in-depth research on ICE's 287(g) agreements.",
+		thumbnail: '/images/287g-mcp.webp',
+		link: 'https://recoveredfactory.net/en/287g-watch-mcp',
+		date: '2026-11-24',
+		tags: ['AI', 'investigative reporting', 'data visualization', 'Svelte'],
+		collaborators: [],
+		awards: '',
+		featured: true,
+		category: 'Investigations'
+	},
+	{
 		slug: 'polymarket-ai-fabrications',
 		outlet: 'Columbia Journalism Review',
 		title: "Polymarket's AI is feeding users fabricated information",

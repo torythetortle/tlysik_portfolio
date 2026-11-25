@@ -8,6 +8,13 @@ export interface Illustration {
 
 export const illustrations: Illustration[] = [
 	{
+		file: '287g-mcp.webp',
+		title: 'Recovered Factory — 287(g) Watch MCP illustration',
+		description: 'Collage illustration for the Recovered Factory post launching the 287(g) Watch MCP server.',
+		tags: ['digital art', 'collage', 'mixed media'],
+		link: '/portfolio/287g-watch-mcp'
+	},
+	{
 		file: 'road_code.webp',
 		title: 'Recovered Factory — 287g agreements illustration',
 		description: 'Illustration for Recovered Factory newsletter focused on 287g agreements and how they affect traffic stops in Missouri.',
