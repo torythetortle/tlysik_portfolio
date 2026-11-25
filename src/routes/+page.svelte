@@ -243,10 +243,6 @@
 					I care deeply about <strong>accessibility</strong> — making complex, critical information clear and understandable. Whether diving into legal documents, filing FOIA requests, or building maps to surface human rights issues, I thrive in the meticulous, detail-heavy work that makes complex stories click.
 				</p>
 				<p>In my free time, I'm usually escaping NYC for the mountains or working on becoming fluent in a fifth language.</p>
-				<div class="skills-row">
-					<span class="label">Tools</span>
-					<span class="skills-value">Python · R · SQL · JavaScript/TypeScript · Svelte · D3 · React · Mapbox · QGIS · Adobe Illustrator · LLM-assisted reporting · FOIA/public records</span>
-				</div>
 			</div>
 		</div>
 	</section>
@@ -279,18 +275,29 @@
 		<img src="/dandis/flower1.svg" alt="" class="footer-flower footer-flower-left" />
 		<img src="/dandis/flower2.svg" alt="" class="footer-flower footer-flower-right" />
 		<div class="container">
-			<div class="footer-contact">
-				<a href="mailto:lysiktory@gmail.com">lysiktory@gmail.com</a>
-				<span class="dot">·</span>
-				<span>Signal: TBLysik.85</span>
-				<span class="dot">·</span>
-				<a href="https://github.com/torythetortle" target="_blank" rel="noopener noreferrer">GitHub</a>
-				<span class="dot">·</span>
-				<a href="https://www.linkedin.com/in/tory-lysik/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-				<span class="dot">·</span>
-				<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">X</a>
-				<span class="dot">·</span>
-				<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+			<h2 class="section-heading">Contact</h2>
+			<p class="contact-intro">Feel free to reach out by email or on Signal.</p>
+			<div class="contact-list">
+				<div class="contact-row">
+					<span class="label">Email</span>
+					<a class="contact-value" href="mailto:lysiktory@gmail.com">lysiktory@gmail.com</a>
+				</div>
+				<div class="contact-row">
+					<span class="label">Signal</span>
+					<span class="contact-value">TBLysik.85</span>
+				</div>
+				<div class="contact-row">
+					<span class="label">Social</span>
+					<span class="contact-value">
+						<a href="https://github.com/torythetortle" target="_blank" rel="noopener noreferrer">GitHub</a>
+						<span class="dot" aria-hidden="true">·</span>
+						<a href="https://www.linkedin.com/in/tory-lysik/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+						<span class="dot" aria-hidden="true">·</span>
+						<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">X</a>
+						<span class="dot" aria-hidden="true">·</span>
+						<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+					</span>
+				</div>
 			</div>
 			<p class="footer-copyright">Copyright &copy; <strong>Tory Lysik</strong> {currentYear}</p>
 		</div>
@@ -562,22 +569,6 @@
 		color: var(--color-accent);
 	}
 
-	.skills-row {
-		display: flex;
-		align-items: baseline;
-		gap: var(--space-lg);
-		margin-top: var(--space-md);
-		padding-top: var(--space-md);
-		border-top: 1px solid var(--color-border);
-	}
-
-	.skills-value {
-		font-family: var(--font-mono);
-		font-size: 0.8125rem;
-		color: var(--color-text-muted);
-		line-height: 1.6;
-	}
-
 	/* --- portfolio --- */
 
 	.container.wide {
@@ -683,11 +674,10 @@
 	.site-footer {
 		background: rgba(255, 255, 255, 0.97);
 		position: relative;
-		padding: var(--space-lg) 0 var(--space-xl);
+		padding: var(--space-xl) 0;
 		border-top: 1px solid var(--color-border);
 		pointer-events: auto;
 		overflow: hidden;
-		text-align: center;
 	}
 
 	.footer-flower {
@@ -708,30 +698,43 @@
 		width: 34px;
 	}
 
-	.footer-contact {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		font-family: var(--font-mono);
-		font-size: 0.8125rem;
-		font-weight: 700;
-		margin-bottom: var(--space-sm);
+	.contact-intro {
+		font-size: 1.0625rem;
+		margin-bottom: var(--space-lg);
 	}
 
-	.footer-contact a {
+	.contact-list {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-sm);
+		margin-bottom: var(--space-xl);
+	}
+
+	.contact-row {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-lg);
+	}
+
+	.contact-value {
+		font-family: var(--font-mono);
+		font-size: 0.9375rem;
+		color: var(--color-text-bright);
+	}
+
+	.contact-row a {
 		color: var(--color-text-bright);
 		text-decoration: none;
 		transition: color var(--transition-base);
 	}
 
-	.footer-contact a:hover {
+	.contact-row a:hover {
 		color: var(--color-accent);
 	}
 
-	.footer-contact .dot {
+	.contact-row .dot {
 		color: var(--color-accent);
+		margin: 0 0.375rem;
 	}
 
 	.footer-copyright {
@@ -767,12 +770,11 @@
 		.name { font-size: 1.75rem; }
 		.hero-nav { gap: 0.5rem; }
 		.hero-nav a { font-size: 0.8125rem; }
-		.skills-row { flex-direction: column; gap: var(--space-xs); }
 		.sticky-links { gap: 0.5rem; font-size: 0.7rem; }
 		.sticky-inner { padding: 0.5rem var(--space-sm); gap: var(--space-sm); }
 		.sticky-name { font-size: 0.9rem; }
 		.container.wide { padding: 0 var(--space-sm); }
-		.footer-contact { gap: 0.375rem 0.625rem; }
+		.contact-row { flex-direction: column; gap: 0.125rem; }
 		.bio p { font-size: 1rem; line-height: 1.7; }
 		.section-heading { font-size: 1.375rem; }
 	}
