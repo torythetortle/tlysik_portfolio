@@ -183,9 +183,9 @@
 		<div class="sticky-inner">
 			<a href="#hero" class="sticky-name">Tory Lysik</a>
 			<nav class="sticky-links">
-				<a href="#portfolio">Select Work</a>
-				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="#about">About</a>
+				<span class="nav-dot" aria-hidden="true">·</span>
+				<a href="#portfolio">Select Work</a>
 				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="/illustrations">Illustrations</a>
 				<span class="nav-dot" aria-hidden="true">·</span>
@@ -210,9 +210,9 @@
 			<h1 class="name">Tory Lysik</h1>
 			<p class="tagline">Computational journalist</p>
 			<nav class="hero-nav" aria-label="Primary">
-				<a href="#portfolio">Select Work</a>
-				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="#about">About</a>
+				<span class="nav-dot" aria-hidden="true">·</span>
+				<a href="#portfolio">Select Work</a>
 				<span class="nav-dot" aria-hidden="true">·</span>
 				<a href="/illustrations">Illustrations</a>
 				<span class="nav-dot" aria-hidden="true">·</span>
@@ -226,6 +226,27 @@
 				<a href="https://x.com/tblysik" target="_blank" rel="noopener noreferrer">X</a>
 				<span class="social-dot" aria-hidden="true">·</span>
 				<a href="https://bsky.app/profile/tlysik.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ABOUT -->
+	<section id="about" class="content-section">
+		<div class="container">
+			<h2 class="section-heading">About</h2>
+			<div class="bio">
+				<p>I'm a <strong>computational and graphics journalist</strong> based in <strong>New York City</strong>. I most recently worked as a reporter at the <strong>Tow Center for Digital Journalism</strong> at Columbia University.</p>
+				<p>
+					I've worked at <a href="https://www.axios.com/results?q=tory%20lysik&sort=2" target="_blank" rel="noopener noreferrer">Axios</a>, <a href="https://www.vox.com/" target="_blank" rel="noopener noreferrer">Vox</a>, <a href="https://www.themarshallproject.org/" target="_blank" rel="noopener noreferrer">The Marshall Project</a>, the <a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Associated Press</a>, and others — spanning local shoeleather reporting to <strong>interactive graphics and data tools</strong>. My work has received numerous awards and has been cited in <strong>congressional testimony and federal legislation</strong>.
+				</p>
+				<p>
+					I care deeply about <strong>accessibility</strong> — making complex, critical information clear and understandable. Whether diving into legal documents, filing FOIA requests, or building maps to surface human rights issues, I thrive in the meticulous, detail-heavy work that makes complex stories click.
+				</p>
+				<p>In my free time, I'm usually escaping NYC for the mountains or working on becoming fluent in a fifth language.</p>
+				<div class="skills-row">
+					<span class="label">Tools</span>
+					<span class="skills-value">Python · R · SQL · JavaScript/TypeScript · Svelte · D3 · React · Mapbox · QGIS · Adobe Illustrator · LLM-assisted reporting · FOIA/public records</span>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -249,27 +270,6 @@
 						</div>
 					</article>
 				{/each}
-			</div>
-		</div>
-	</section>
-
-	<!-- ABOUT -->
-	<section id="about" class="content-section">
-		<div class="container">
-			<h2 class="section-heading">About</h2>
-			<div class="bio">
-				<p>I'm a <strong>computational and graphics journalist</strong> based in <strong>New York City</strong>. I most recently worked as a reporter at the <strong>Tow Center for Digital Journalism</strong> at Columbia University.</p>
-				<p>
-					I've worked at <a href="https://www.axios.com/results?q=tory%20lysik&sort=2" target="_blank" rel="noopener noreferrer">Axios</a>, <a href="https://www.vox.com/" target="_blank" rel="noopener noreferrer">Vox</a>, <a href="https://www.themarshallproject.org/" target="_blank" rel="noopener noreferrer">The Marshall Project</a>, the <a href="https://apnews.com/" target="_blank" rel="noopener noreferrer">Associated Press</a>, and others — spanning local shoeleather reporting to <strong>interactive graphics and data tools</strong>. My work has received numerous awards and has been cited in <strong>congressional testimony and federal legislation</strong>.
-				</p>
-				<p>
-					I care deeply about <strong>accessibility</strong> — making complex, critical information clear and understandable. Whether diving into legal documents, filing FOIA requests, or building maps to surface human rights issues, I thrive in the meticulous, detail-heavy work that makes complex stories click.
-				</p>
-				<p>In my free time, I'm usually escaping NYC for the mountains or working on becoming fluent in a fifth language.</p>
-				<div class="skills-row">
-					<span class="label">Tools</span>
-					<span class="skills-value">Python · R · SQL · JavaScript/TypeScript · Svelte · D3 · React · Mapbox · QGIS · Adobe Illustrator · LLM-assisted reporting · FOIA/public records</span>
-				</div>
 			</div>
 		</div>
 	</section>
